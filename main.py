@@ -55,16 +55,16 @@ if __name__ == "__main__":
 
     env_variables = EnvironmentVariables()
     engine.rootContext().setContextProperty("envVariables", env_variables)
-    engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))
-    # engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
+    # engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))
+    engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
 
-    # login_window = engine.rootObjects()[0]
+    login_window = engine.rootObjects()[0]
 
-    # def close_login():
-    #     login_window.close()
+    def close_login():
+        login_window.close()
 
-    # # Connect the signal to the close function
-    # login_window.loginSuccessful.connect(close_login)
+    # Connect the signal to the close function
+    login_window.loginSuccessful.connect(close_login)
 
     if not engine.rootObjects():
         sys.exit(-1)

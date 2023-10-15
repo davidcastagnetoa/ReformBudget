@@ -6,9 +6,9 @@ Button {
     id: button
 
     // Custom Properties
-    property color colorDefault: "#4891d9"
-    property color colorMouseOver: "#55AAFF"
-    property color colorPressed: "#3F7EBD"
+    property color colorDefault: "#00C859"
+    property color colorMouseOver: "#55FFA4"
+    property color colorPressed: "#3FBD7E"
     width: 30
     height: 30
     text: "Button"

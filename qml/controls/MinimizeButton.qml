@@ -5,10 +5,10 @@ import QtGraphicalEffects 1.15
 Button{
     id: btnTopBar
     // CUSTOM PROPERTIES
-    property url btnIconSource: "../../images/svg_images/minimize_icon.svg"
-    property color btnColorDefault: "#1c1d20"
-    property color btnColorMouseOver: "#23272E"
-    property color btnColorClicked: "#00a1f1"
+    property url btnIconSource: "../../images/svg_icons/minimize_icon.svg"
+    property color btnColorDefault: "#161b22"
+    property color btnColorMouseOver: "#0d1117"
+    property color btnColorClicked: "#00C859"
 
     QtObject{
         id: internal
@@ -32,7 +32,7 @@ Button{
         Image {
             id: iconBtn
             anchors.verticalCenter: parent.verticalCenter
-            source: "wanderson_icons_svg/minimize_icon.svg"
+            source: "../../images/svg_icons/minimize_icon.svg"
             anchors.horizontalCenter: parent.horizontalCenter
             height: 20
             width: 20

@@ -20,17 +20,17 @@ Item {
     property int dropShadowRadius: 10
     // Bg Circle
     property color bgColor: "transparent"
-    property color bgStrokeColor: "#7e7e7e"
+    property color bgStrokeColor: "#101214"
     property int strokeBgWidth: 16
     // Progress Circle
-    property color progressColor: "#55aaff"
+    property color progressColor: "#00C859"
     property int progressWidth: 16
     // Text
     property string text: "%"
     property bool textShowValue: true
-    property string textFontFamily: "Segoe UI"
+    property string textFontFamily: "Titillium Web Regular"
     property int textSize: 12
-    property color textColor: "#7c7c7c"
+    property color textColor: "#979aa0"
 
     // Internal Properties/Functions
     QtObject{

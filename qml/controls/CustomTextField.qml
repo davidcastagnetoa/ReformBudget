@@ -6,9 +6,9 @@ TextField {
     id: textField
 
     // Custom Properties
-    property color colorDefault: "#282c34"
-    property color colorOnFocus: "#242831"
-    property color colorMouseOver: "#2B2F38"
+    property color colorDefault: "#161b22"
+    property color colorOnFocus: "#202833"
+    property color colorMouseOver: "#293341"
 
     QtObject{
         id: internal
@@ -31,8 +31,8 @@ TextField {
 
     selectByMouse: true
     selectedTextColor: "#FFFFFF"
-    selectionColor: "#ff007f"
-    placeholderTextColor: "#81848c"
+    selectionColor: "#00FF7B"
+    placeholderTextColor: "#b1b4bf"
 }
 
 /*##^##

@@ -32,7 +32,7 @@ Window {
                 var win = component.createObject()
                 win.username = username
                 win.show()
-                // loginSuccessful()
+                loginSuccessful()
                 // visible = false
             }
         }

@@ -6,9 +6,9 @@ Button {
     id: button
 
     // Custom Properties
-    property color colorDefault: "#4891d9"
-    property color colorMouseOver: "#55AAFF"
-    property color colorPressed: "#3F7EBD"
+    property color colorDefault: "#00C859"
+    property color colorMouseOver: "#55FFA7"
+    property color colorPressed: "#3FBD7E"
 
     QtObject{
         id: internal
@@ -21,12 +21,15 @@ Button {
     }
 
     text: qsTr("Button")
+    font.pointSize: 11
+    font.family: "Titillium Web Regular"
+    padding: 6
     contentItem: Item{
         Text {
             id: name
             text: button.text
             font: button.font
-            color: "#ffffff"
+            color: "#000000"
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
         }
