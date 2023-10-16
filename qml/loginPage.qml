@@ -45,7 +45,7 @@ Window {
         width: 360
         height: 560
         opacity: 1
-        color: "#190033"
+        color: "#0d1117"
         radius: 9.9
         border.color: "#00000000"
         border.width: 1
@@ -85,9 +85,9 @@ Window {
     anchors.top: parent.top
     anchors.rightMargin: 15
     anchors.topMargin: 15
-    colorPressed: "#983fbd"
-    colorMouseOver: "#aa55ff"
-    colorDefault: "#b648d9"
+    colorPressed: "#00ef68"
+    colorMouseOver: "#008337"
+    colorDefault: "#00c859"
     onClicked: loginPage.close()
 }
 
@@ -96,10 +96,10 @@ Image {
     x: 17
     y: 65
     width: 326
-    height: 135
+    height: 180
     opacity: 1
     anchors.top: parent.top
-    source: "../images/V_SD_GPB.png"
+    source: "../images/Anera Logo II.png"
     anchors.topMargin: 65
     anchors.horizontalCenter: parent.horizontalCenter
     fillMode: Image.PreserveAspectFit
@@ -111,7 +111,7 @@ CircularProgressBar {
     y: 236
     opacity: 1
     visible: true
-    text: "% Cargando"
+    text: "% Loading"
     anchors.verticalCenter: parent.verticalCenter
     enabled: false
     z: 0
@@ -127,9 +127,9 @@ CircularProgressBar {
     progressWidth: 12
     samples: 55
     dropShadowRadius: 8
-    bgStrokeColor: "#737373"
-    textColor: "#a36aff"
-    progressColor: "#a36aff"
+    bgStrokeColor: "#151d27"
+    textColor: "#00c859"
+    progressColor: "#00c859"
     anchors.horizontalCenter: parent.horizontalCenter
 }
 
@@ -148,7 +148,7 @@ Label {
     verticalAlignment: Text.AlignVCenter
     anchors.bottomMargin: 10
     anchors.horizontalCenter: parent.horizontalCenter
-    font.family: "Segoe UI"
+    font.family: "Titillium Web Light"
     font.pointSize: 18
 }
 
@@ -167,7 +167,7 @@ Label {
     verticalAlignment: Text.AlignVCenter
     anchors.bottomMargin: 15
     anchors.horizontalCenter: parent.horizontalCenter
-    font.family: "Segoe UI"
+    font.family: "Titillium Web Light"
 }
 
 CustomTextField {
@@ -177,7 +177,7 @@ CustomTextField {
     opacity: 0
     anchors.bottom: textPassword.top
     colorDefault: "#161b22"
-    font.family: "Segoe UI"
+    font.family: "Titillium Web Light"
     font.pointSize: 9
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.bottomMargin: 8
@@ -191,7 +191,7 @@ CustomTextField {
     opacity: 1
     anchors.bottom: btnLogin.top
     colorDefault: "#161b22"
-    font.family: "Segoe UI"
+    font.family: "Titillium Web Light"
     font.pointSize: 9
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.bottomMargin: 13
@@ -208,11 +208,14 @@ CustomButton {
     opacity: 1.1
     text: "Acceder"
     anchors.bottom: parent.bottom
+    font.italic: false
+    font.family: "Titillium Web Regular"
+    font.bold: false
     font.pointSize: 10
     anchors.bottomMargin: 60
-    colorDefault: "#b648d9"
-    colorPressed: "#983fbd"
-    colorMouseOver: "#aa55ff"
+    colorDefault: "#00d15b"
+    colorPressed: "#00ef68"
+    colorMouseOver: "#008337"
     anchors.horizontalCenterOffset: 0
     anchors.horizontalCenter: parent.horizontalCenter
     onClicked: internal.checkLogin(textUsername.text, textPassword.text)
@@ -226,17 +229,18 @@ Label {
     height: 13
     opacity: 1
     color: "#dcdcdc"
-    text: qsTr("v0.1.0 - Developed by David Castagneto - 2023")
+    text: qsTr("v0.1.0 - David Castagneto - 2023")
     anchors.left: parent.left
     anchors.right: parent.right
     anchors.bottom: parent.bottom
     font.letterSpacing: -0.05
     horizontalAlignment: Text.AlignHCenter
     verticalAlignment: Text.AlignVCenter
+    font.bold: false
     anchors.rightMargin: 30
     anchors.bottomMargin: 20
     anchors.leftMargin: 30
-    font.family: "Segoe UI"
+    font.family: "Titillium Web Regular"
     font.pointSize: 8
 }
 

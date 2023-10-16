@@ -9,10 +9,57 @@ Window {
     height: 660
     visible: true
     color: "#00000000"
+
     //Custom Properties
     property string username
     property alias mainWindow: mainWindow
     title: "Reform Budget"
+
+    // REMOVE TITLE BAR
+    flags: Qt.Window | Qt.FramelessWindowHint
+
+    // // PROPERTIES
+    property int windowStatus: 0
+    property int windowMargin: 10
+
+    // INTERNAL FUNCTIONS
+    QtObject{
+        id: internal
+
+        // Maximize Restore
+        function maximizeRestore(){
+            if(windowStatus == 0){
+                mainWindow.showMaximized()
+                windowStatus = 1
+                windowMargin = 0
+                restoreButton.btnIconSource = "../images/svg_icons/restore_icon.svg"
+            }
+            else{
+                mainWindow.showNormal()
+                windowStatus = 0
+                windowMargin = 10
+                restoreButton.btnIconSource = "../images/svg_icons/maximize_icon.svg"
+            }
+        }
+
+        // If Maximized Restore
+        function ifMaximizedRestore(){
+            if(windowStatus == 1){
+                mainWindow.showNormal()
+                windowStatus = 0
+                windowMargin = 10
+                restoreButton.btnIconSource = "../images/svg_icons/maximize_icon.svg"
+            }
+        }
+
+        // Restore Margins
+        function restoreMargins(){
+            windowStatus = 0
+            windowMargin = 10
+            restoreButton.btnIconSource = "../images/svg_icons/maximize_icon.svg"
+        }
+
+    }
 
     Rectangle {
         id: bg
@@ -53,6 +100,7 @@ Window {
 
                 }
 
+
                 Rectangle {
                     id: titleBar
                     height: 35
@@ -63,6 +111,41 @@ Window {
                     anchors.rightMargin: 105
                     anchors.leftMargin: 70
                     anchors.topMargin: 0
+
+                    Rectangle {
+                        id: mouse_area
+                        opacity: 1
+                        border.color: "#00000000"
+                        border.width: 1
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        z: 0
+                        gradient: Gradient {
+                            GradientStop {
+                                position: 0
+                                color: "#00000000"
+                            }
+
+                            GradientStop {
+                                position: 1
+                                color: "#070a0d"
+                            }
+                        }
+                        anchors.bottomMargin: 0
+                        anchors.rightMargin: 0
+                        anchors.topMargin: 0
+                        anchors.leftMargin: 0
+
+                        MouseArea{
+                            id: mouseArea
+                            anchors.fill: parent
+                            onDoubleClicked: {
+                                internal.maximizeRestore()
+                            }
+                        }
+                    }
 
                     Image {
                         id: iconApp
@@ -81,10 +164,10 @@ Window {
 
                     Label {
                         id: label
+                        width: 120
                         color: "#ffffff"
                         text: qsTr("Reform Budget")
                         anchors.left: iconApp.right
-                        anchors.right: parent.right
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
                         horizontalAlignment: Text.AlignLeft
@@ -94,9 +177,9 @@ Window {
                         font.family: "Titillium Web Light"
                         anchors.topMargin: 0
                         anchors.bottomMargin: 0
-                        anchors.rightMargin: 0
                         anchors.leftMargin: 5
                     }
+
                 }
 
                 Row {
@@ -112,19 +195,34 @@ Window {
                     MinimizeButton {
                         id: minimizeButton
                         height: 35
+                        btnIconSource: "../images/svg_icons/minimize_icon.svg"
+                        onClicked: {
+                            mainWindow.showMinimized()
+                            internal.restoreMargins()
+                        }
                     }
 
                     RestoreButton {
                         id: restoreButton
                         height: 35
+                        btnIconSource: "../images/svg_icons/restore_icon.svg"
+                        onClicked: {
+                            internal.maximizeRestore()
+                        }
                     }
 
                     CloseButton {
                         id: closeButton
                         height: 35
+                        btnIconSource: "../images/svg_icons/close_icon.svg"
+                        onClicked: {
+                            mainWindow.close()
+                        }
                     }
 
+
                 }
+
 
 
                 Rectangle {
@@ -228,6 +326,7 @@ Window {
                 Rectangle {
                     id: contentArea
                     color: "#00000000"
+                    border.color: "#000000"
                     anchors.left: leftMenu.right
                     anchors.right: parent.right
                     anchors.top: parent.top
@@ -238,53 +337,71 @@ Window {
                     anchors.leftMargin: 0
 
                     Rectangle {
-                        id: rightSide
-                        x: 681
-                        y: 0
-                        width: 425
-                        color: "#161b22"
-                        radius: 5
-                        border.width: 0
+                        id: contentPreview
+                        x: 644
+                        width: 455
+                        height: 200
+                        color: "#00000000"
                         anchors.right: parent.right
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
-                        layer.wrapMode: ShaderEffectSource.ClampToEdge
-                        scale: 1
-                        transformOrigin: Item.Center
-                        z: 1
-                        anchors.topMargin: 5
-                        clip: true
-                        anchors.bottomMargin: 5
-                        anchors.rightMargin: 5
+                        anchors.topMargin: 0
+                        anchors.bottomMargin: 0
+                        anchors.rightMargin: 0
 
                         Button {
                             id: tooglePreviewBtn
-                            x: 4
-                            y: 56
+                            x: -648
+                            y: 282
                             width: 30
                             height: 30
                             text: qsTr("Toggle")
                             anchors.left: parent.left
                             anchors.top: parent.top
-                            anchors.topMargin: 0
+                            anchors.topMargin: 282
                             anchors.leftMargin: 0
                         }
 
-                        Label {
-                            id: previewLbl
-                            width: 65
-                            color: "#ffffff"
-                            text: qsTr("Preview")
-                            anchors.left: tooglePreviewBtn.right
+                        Rectangle {
+                            id: rightSide
+                            x: 30
+                            y: 5
+                            width: 425
+                            color: "#161b22"
+                            radius: 5
+                            border.width: 0
+                            anchors.right: parent.right
                             anchors.top: parent.top
-                            horizontalAlignment: Text.AlignLeft
-                            verticalAlignment: Text.AlignVCenter
-                            font.family: "Titillium Web Light"
+                            anchors.bottom: parent.bottom
+                            layer.wrapMode: ShaderEffectSource.ClampToEdge
+                            scale: 1
+                            transformOrigin: Item.Center
+                            z: 1
                             anchors.topMargin: 5
-                            anchors.leftMargin: 5
-                            font.pointSize: 11
+                            clip: true
+                            anchors.bottomMargin: 5
+                            anchors.rightMargin: 0
+
+                            Label {
+                                id: previewLbl
+                                width: 65
+                                color: "#ffffff"
+                                text: qsTr("Preview")
+                                anchors.left: parent.left
+                                anchors.top: parent.top
+                                horizontalAlignment: Text.AlignLeft
+                                verticalAlignment: Text.AlignVCenter
+                                font.family: "Titillium Web Light"
+                                anchors.topMargin: 5
+                                anchors.leftMargin: 30
+                                font.pointSize: 11
+                            }
                         }
+
+
                     }
+
+
                 }
 
                 Rectangle {
@@ -319,6 +436,7 @@ Window {
 
 
 
+
             }
 
 
@@ -332,6 +450,6 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.9}D{i:8}D{i:17}D{i:19}D{i:20}D{i:25}D{i:24}
+    D{i:0;formeditorZoom:0.9}D{i:7}
 }
 ##^##*/
