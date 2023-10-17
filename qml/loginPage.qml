@@ -20,7 +20,6 @@ Window {
     flags: Qt.SplashScreen | Qt.FramelessWindowHint
 
     // Internal Functions
-
     QtObject {
         id: internal
 
@@ -33,7 +32,7 @@ Window {
                 win.username = username
                 win.show()
                 loginSuccessful()
-                // visible = false
+                visible = false
             }
         }
     }
@@ -67,8 +66,8 @@ Window {
         anchors.horizontalCenterOffset: 0
         anchors.horizontalCenter: parent.horizontalCenter
 
-        DragHandler {
-            onActiveChanged: if(active){
+    DragHandler {
+        onActiveChanged: if(active){
             loginPage.startSystemMove()
         }
     }

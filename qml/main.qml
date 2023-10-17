@@ -9,11 +9,11 @@ Window {
     height: 660
     visible: true
     color: "#00000000"
+    title: qsTr("Reform Budget")
 
     //Custom Properties
     property string username
     property alias mainWindow: mainWindow
-    title: "Reform Budget"
 
     // REMOVE TITLE BAR
     flags: Qt.Window | Qt.FramelessWindowHint
@@ -145,6 +145,11 @@ Window {
                                 internal.maximizeRestore()
                             }
                         }
+                        DragHandler{
+                            onActiveChanged: if(active){
+                                mainWindow.startSystemMove()
+                            }
+                        }
                     }
 
                     Image {
@@ -227,12 +232,14 @@ Window {
 
                 Rectangle {
                     id: topBarDescription
-                    y: 16
-                    height: 24
                     color: "#0d1117"
+                    border.color: "#f2000000"
+                    border.width: 1
                     anchors.left: parent.left
                     anchors.right: parent.right
+                    anchors.top: parent.top
                     anchors.bottom: parent.bottom
+                    anchors.topMargin: 35
                     anchors.rightMargin: 0
                     anchors.leftMargin: 70
                     anchors.bottomMargin: 0
@@ -327,6 +334,7 @@ Window {
                     id: contentArea
                     color: "#00000000"
                     border.color: "#000000"
+                    border.width: 0
                     anchors.left: leftMenu.right
                     anchors.right: parent.right
                     anchors.top: parent.top
@@ -369,7 +377,8 @@ Window {
                             width: 425
                             color: "#161b22"
                             radius: 5
-                            border.width: 0
+                            border.color: "#59000000"
+                            border.width: 1
                             anchors.right: parent.right
                             anchors.top: parent.top
                             anchors.bottom: parent.bottom
@@ -407,6 +416,7 @@ Window {
                 Rectangle {
                     id: bottomArea
                     color: "#0d1117"
+                    border.color: "#f2000000"
                     anchors.left: leftMenu.right
                     anchors.right: parent.right
                     anchors.top: contentArea.bottom
@@ -450,6 +460,6 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.9}D{i:7}
+    D{i:0;formeditorZoom:0.9}D{i:19}
 }
 ##^##*/

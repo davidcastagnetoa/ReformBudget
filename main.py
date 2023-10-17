@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
     env_variables = EnvironmentVariables()
     engine.rootContext().setContextProperty("envVariables", env_variables)
-    # engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))
+    # engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml")) # Borrar en Producccion
     engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
 
     login_window = engine.rootObjects()[0]
