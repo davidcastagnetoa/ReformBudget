@@ -19,6 +19,13 @@ Window {
     //REMOVE TITLE BAR
     flags: Qt.SplashScreen | Qt.FramelessWindowHint
 
+    //TIMER
+    Timer {
+        id: hideLabelTimer
+        interval: 3000  // 5 segundos
+        onTriggered: lblIncorrectLoginData.visible = false
+    }
+
     // Internal Functions
     QtObject {
         id: internal
@@ -33,6 +40,9 @@ Window {
                 win.show()
                 loginSuccessful()
                 visible = false
+            } else {
+                lblIncorrectLoginData.visible = true
+                hideLabelTimer.start()
             }
         }
     }
@@ -188,14 +198,43 @@ CustomTextField {
     x: 30
     y: 389
     opacity: 1
+    anchors.bottom: rptTextPassword.top
+    colorDefault: "#161b22"
+    font.family: "Titillium Web Light"
+    font.pointSize: 9
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottomMargin: 8
+    placeholderText: "Password"
+    echoMode: TextInput.Password
+}
+
+CustomTextField {
+    id: rptTextPassword
+    x: 30
+    y: 389
+    opacity: 1
+    anchors.bottom: textEmail.top
+    colorDefault: "#161b22"
+    font.family: "Titillium Web Light"
+    font.pointSize: 9
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottomMargin: 8
+    placeholderText: "Repeat Password"
+    echoMode: TextInput.Password
+}
+
+CustomTextField {
+    id: textEmail
+    x: 30
+    y: 389
+    opacity: 1
     anchors.bottom: btnLogin.top
     colorDefault: "#161b22"
     font.family: "Titillium Web Light"
     font.pointSize: 9
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.bottomMargin: 13
-    placeholderText: "Password"
-    echoMode: TextInput.Password
+    placeholderText: "Email"
 }
 
 CustomButton {
@@ -206,6 +245,28 @@ CustomButton {
     height: 40
     opacity: 1.1
     text: "Acceder"
+    anchors.bottom: btnCreateUser.top
+    font.italic: false
+    font.family: "Titillium Web Regular"
+    font.bold: false
+    font.pointSize: 10
+    anchors.bottomMargin: 10
+    colorDefault: "#00d15b"
+    colorPressed: "#00ef68"
+    colorMouseOver: "#008337"
+    anchors.horizontalCenterOffset: 0
+    anchors.horizontalCenter: parent.horizontalCenter
+    onClicked: internal.checkLogin(textUsername.text, textPassword.text)
+}
+
+CustomButton {
+    id: btnCreateUser
+    x: 172
+    y: 435
+    width: 300
+    height: 40
+    opacity: 1.1
+    text: "Crear Usuario"
     anchors.bottom: parent.bottom
     font.italic: false
     font.family: "Titillium Web Regular"
@@ -217,10 +278,52 @@ CustomButton {
     colorMouseOver: "#008337"
     anchors.horizontalCenterOffset: 0
     anchors.horizontalCenter: parent.horizontalCenter
-    onClicked: internal.checkLogin(textUsername.text, textPassword.text)
+    onClicked: userHandler.create_user(textUsername.text, textEmail.text, textPassword.text, rptTextPassword.text)
+    Connections {
+        target: userHandler
+        function onUserCreated(message) {
+            console.log(message)
+            if (message === "Usuario creado con éxito.") {
+                var component = Qt.createComponent("main.qml")
+                var win = component.createObject()
+                win.username = username
+                win.show()
+                loginSuccessful()
+                visible = false
+                // Aquí puedes hacer alguna acción cuando el usuario ha sido creado exitosamente, por ejemplo, mostrar un mensaje de éxito o navegar a otra página.
+            } else {
+                // Si hay algún error (por ejemplo, las contraseñas no coinciden), puedes mostrar un mensaje de error al usuario.
+                console.error(message)
+                lblIncorrectLoginData.visible = true
+                lblIncorrectLoginData.text = message
+                hideLabelTimer.start()
+            }
+        }
+    }
 }
 
 
+Label {
+    id: lblIncorrectLoginData
+    y: 522
+    height: 13
+    opacity: 1
+    color: "#FF0000"
+    text: qsTr("Datos de acceso incorrectos.")
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    font.letterSpacing: -0.05
+    horizontalAlignment: Text.AlignHCenter
+    verticalAlignment: Text.AlignVCenter
+    font.bold: false
+    anchors.rightMargin: 30
+    anchors.bottomMargin: 30
+    anchors.leftMargin: 30
+    font.family: "Titillium Web Regular"
+    font.pointSize: 8
+    visible: false
+}
 
 Label {
     id: lblDevelopTeam
@@ -231,7 +334,7 @@ Label {
     text: qsTr("v0.1.0 - David Castagneto - 2023")
     anchors.left: parent.left
     anchors.right: parent.right
-    anchors.bottom: parent.bottom
+    anchors.top: lblIncorrectLoginData.bottom
     font.letterSpacing: -0.05
     horizontalAlignment: Text.AlignHCenter
     verticalAlignment: Text.AlignVCenter
@@ -239,8 +342,10 @@ Label {
     anchors.rightMargin: 30
     anchors.bottomMargin: 20
     anchors.leftMargin: 30
+    anchors.topMargin: 5
     font.family: "Titillium Web Regular"
     font.pointSize: 8
+    visible: true
 }
 
 
@@ -395,6 +500,44 @@ Timeline {
     }
 
     KeyframeGroup {
+        target: rptTextPassword
+        property: "opacity"
+        Keyframe {
+            frame: 2206
+            value: 0
+        }
+
+        Keyframe {
+            frame: 0
+            value: 0
+        }
+
+        Keyframe {
+            frame: 3107
+            value: 1
+        }
+    }
+
+    KeyframeGroup {
+        target: textEmail
+        property: "opacity"
+        Keyframe {
+            frame: 1805
+            value: 0
+        }
+
+        Keyframe {
+            frame: 0
+            value: 0
+        }
+
+        Keyframe {
+            frame: 3107
+            value: 1
+        }
+    }
+
+    KeyframeGroup {
         target: btnLogin
         property: "opacity"
         Keyframe {
@@ -414,7 +557,45 @@ Timeline {
     }
 
     KeyframeGroup {
+        target: btnCreateUser
+        property: "opacity"
+        Keyframe {
+            frame: 2706
+            value: 0
+        }
+
+        Keyframe {
+            frame: 0
+            value: 0
+        }
+
+        Keyframe {
+            frame: 3205
+            value: 1
+        }
+    }
+
+    KeyframeGroup {
         target: lblDevelopTeam
+        property: "opacity"
+        Keyframe {
+            frame: 2805
+            value: 0
+        }
+
+        Keyframe {
+            frame: 0
+            value: 0
+        }
+
+        Keyframe {
+            frame: 3305
+            value: 1
+        }
+    }
+
+    KeyframeGroup {
+        target: lblIncorrectLoginData
         property: "opacity"
         Keyframe {
             frame: 2805
