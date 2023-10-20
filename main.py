@@ -23,12 +23,6 @@ RPT_PASSWORD_RB = os.getenv("PASSWORD_RB")
 
 
 def createLocalEnv():
-    # your_Username = ""
-    # your_Password = ""
-    # your_Keyword = ""
-    # your_Email = ""
-    # your_phone = ""
-    # env_contain = f"USERNAME_RB={your_Username}\nEMAIL_RB={your_Email}\nPASSWORD_RB={your_Password}\nKEY={your_Keyword}\nPHONE={your_phone}"
     env_contain = ""
     with open(env_file, "w") as key_file:
         key_file.write(env_contain)
@@ -43,16 +37,6 @@ class EnvironmentVariables(QObject):
         super(EnvironmentVariables, self).__init__(parent)
         self._username = USERNAME_RB
         self._password = PASSWORD_RB
-
-    # @Property(str)
-    # def username(self):
-    #     self.userLogin.emit(f"The value in USERNAME_RB is {self._username}")
-    #     # return self._username
-
-    # @Property(str)
-    # def password(self):
-    #     self.userLogin.emit(f"The value in PASSWORD_RB is {self._password}")
-    #     # return self._password
 
     @Slot(str, str)
     def user_login(self, username, password):

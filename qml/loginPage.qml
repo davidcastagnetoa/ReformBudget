@@ -37,10 +37,12 @@ Window {
 
         function collapseWindow(window){
             if(windowCollapse == false){
-                btnColapse.btnIconSource = "../images/svg_icons/down_icon.svg"
+                // btnColapse.btnIconSource = "../images/svg_icons/down_icon.svg"
+                btnColapse.btnIconSource = "../images/svg_icons/lock-rounded-svgrepo-com.svg"
                 windowCollapse = true
             }else{
-                btnColapse.btnIconSource = "../images/svg_icons/up_icon.svg"
+                // btnColapse.btnIconSource = "../images/svg_icons/up_icon.svg"
+                btnColapse.btnIconSource = "../images/svg_icons/unlock-rounded-svgrepo-com.svg"
                 windowCollapse = false
             }
         }
@@ -55,6 +57,8 @@ Window {
                 btnLogin.height = 0
                 rptTextPassword.visible = true
                 rptTextPassword.height = 40
+                rptTextPassword.anchors.bottomMargin = 6
+                textPassword.anchors.bottomMargin = 6
                 textEmail.visible = true
                 textEmail.height = 40
                 signUp = true
@@ -68,6 +72,8 @@ Window {
                 btnLogin.height = 40
                 rptTextPassword.visible = false
                 rptTextPassword.height = 0
+                rptTextPassword.anchors.bottomMargin = 0
+                textPassword.anchors.bottomMargin = 0
                 textEmail.visible = false
                 textEmail.height = 0
                 signUp = false
@@ -115,7 +121,7 @@ Window {
         TopBarButton {
             id: btnColapse
             width: 35
-            btnIconSource: "../images/svg_icons/up_icon.svg"
+            btnIconSource: "../images/svg_icons/unlock-rounded-svgrepo-com.svg"
             btnColorDefault: "#00c859"
             btnColorClicked: "#00ef68"
             btnColorMouseOver: "#008337"
@@ -137,6 +143,7 @@ Window {
             text: "Button"
             anchors.right: parent.right
             anchors.top: parent.top
+            antialiasing: false
             anchors.rightMargin: 15
             anchors.topMargin: 15
             colorPressed: "#00ef68"
@@ -200,7 +207,7 @@ Window {
             anchors.bottom: lblCorpData.top
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            anchors.bottomMargin: 8
+            anchors.bottomMargin: 4
             anchors.horizontalCenter: parent.horizontalCenter
             font.family: "Titillium Web Light"
             font.pointSize: 18
@@ -248,7 +255,7 @@ Window {
             font.family: "Titillium Web Light"
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottomMargin: 6
+            anchors.bottomMargin: 0
             placeholderText: "Password"
             echoMode: TextInput.Password
         }
@@ -265,7 +272,7 @@ Window {
             font.family: "Titillium Web Light"
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottomMargin: 6
+            anchors.bottomMargin: 0
             placeholderText: "Repeat Password"
             echoMode: TextInput.Password
         }
@@ -282,7 +289,7 @@ Window {
             font.family: "Titillium Web Light"
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottomMargin: 55
+            anchors.bottomMargin: 60
             placeholderText: "Email"
         }
 
@@ -407,7 +414,7 @@ Window {
                 hoverEnabled: true
                 onClicked: internal.toogleSignIn_Up()
                 onEntered: {
-                    lblSignInUp.color = "#D6FFDB"
+                    lblSignInUp.color = "#489EFF"
                 }
                 onExited: {
                     lblSignInUp.color = "#F5F5F5"
@@ -447,16 +454,15 @@ Window {
             opacity: 1
             color: "#8a8a8a"
             text: qsTr("v0.1.0 - David Castagneto - 2023")
-            anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: parent.bottom
             font.letterSpacing: -0.05
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+            anchors.horizontalCenter: parent.horizontalCenter
             font.bold: false
             anchors.rightMargin: 30
             anchors.bottomMargin: 10
-            anchors.leftMargin: 30
             font.family: "Titillium Web Light"
             font.pointSize: 8
             visible: true
@@ -868,6 +874,6 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.9}D{i:22}D{i:26}
+    D{i:0;formeditorZoom:2}D{i:23}D{i:22}D{i:25}D{i:26}
 }
 ##^##*/

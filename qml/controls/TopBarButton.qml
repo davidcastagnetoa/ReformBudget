@@ -5,10 +5,12 @@ import QtGraphicalEffects 1.15
 Button {
     id: topBarButton
     //CUSTOM PROPERTIES
-    property url btnIconSource: "../../images/svg_icons/up_icon.svg"
-    property color btnColorDefault : "#1c1d20"
-    property color btnColorMouseOver : "#23272E"
-    property color btnColorClicked : "#00a1f1"
+    property url btnIconSource: "../../images/svg_icons/lock-rounded-svgrepo-com.svg"
+    property color btnColorDefault : "#00c859"
+    property color btnColorMouseOver : "#008337"
+    property color btnColorClicked : "#00ef68"
+    width: 35
+    height: 35
     autoRepeat: false
     autoExclusive: false
     checked: true
@@ -31,14 +33,20 @@ Button {
     background: Rectangle{
         id: bgBtn
         color: internal.dinamicColor
+        radius: 5
 
         Image {
             id: iconBtn
             source: btnIconSource
+            sourceSize.height: 35
+            sourceSize.width: 35
+            mirror: false
+            autoTransform: false
+            asynchronous: false
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
-            height: 16
-            width: 16
+            height: 25
+            width: 25
             fillMode: Image.PreserveAspectFit
         }
 
@@ -46,8 +54,14 @@ Button {
             anchors.fill: iconBtn
             source: iconBtn
             color: "#ffffff"
-            antialiasing: false
+            antialiasing: true
 
         }
     }
 }
+
+
+
+
+
+
