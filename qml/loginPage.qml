@@ -8,8 +8,8 @@ import QtQuick.Timeline 1.0
 
 Window {
     id: loginPage
-    width: 380
-    height: 670
+    width: 370
+    height: 620
     visible: true
     color: "#00000000"
     // color: "#ffffff" // For Test
@@ -22,11 +22,12 @@ Window {
 
     //PROPERTIES
     property bool windowCollapse: false
+    property bool signUp: true
 
     //TIMER
     Timer {
         id: hideLabelTimer
-        interval: 3500  // 3.5 segundos
+        interval: 3000  // 3 segundos
         onTriggered: lblIncorrectLoginData.visible = false
     }
 
@@ -43,6 +44,35 @@ Window {
                 windowCollapse = false
             }
         }
+        function toogleSignIn_Up() {
+            if(signUp == false){ // Modo Crear Cuenta
+                lblSignInUp.text = "Ya tienes cuenta? Inicia sesion"
+                lblSignIn.text = "Crea una Cuenta"
+                lblCorpData.text = "Registra tus datos"
+                btnCreateUser.visible = true
+                btnCreateUser.height = 40
+                btnLogin.visible = false
+                btnLogin.height = 0
+                rptTextPassword.visible = true
+                rptTextPassword.height = 40
+                textEmail.visible = true
+                textEmail.height = 40
+                signUp = true
+            }else{ // Modo Iniciar Sesion
+                lblSignInUp.text = "No tienes cuenta? Crea una cuenta"
+                lblSignIn.text = "Inicia Sesión"
+                lblCorpData.text = "Accede con tu usuario y contraseña"
+                btnCreateUser.visible = false
+                btnCreateUser.height = 0
+                btnLogin.visible = true
+                btnLogin.height = 40
+                rptTextPassword.visible = false
+                rptTextPassword.height = 0
+                textEmail.visible = false
+                textEmail.height = 0
+                signUp = false
+            }
+        }
     }
 
     Rectangle {
@@ -52,7 +82,7 @@ Window {
         // width: 360 // Plegado
         // height: 560 // Plegado
         width: 360 // Desplegado
-        height: 960 // Desplegado
+        height: 610 // Desplegado
         opacity: 1
         color: "#0d1117"
         radius: 9.9
@@ -86,9 +116,9 @@ Window {
             id: btnColapse
             width: 35
             btnIconSource: "../images/svg_icons/up_icon.svg"
-            btnColorDefault: "#110000"
-            btnColorClicked: "#611415"
-            btnColorMouseOver: "#2e0001"
+            btnColorDefault: "#00c859"
+            btnColorClicked: "#00ef68"
+            btnColorMouseOver: "#008337"
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.leftMargin: 15
@@ -124,8 +154,8 @@ Window {
             opacity: 1
             anchors.bottom: lblSignIn.top
             source: "../images/Anera Logo II.png"
-            anchors.bottomMargin: 25
             anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottomMargin: 15
             fillMode: Image.PreserveAspectFit
         }
 
@@ -170,7 +200,7 @@ Window {
             anchors.bottom: lblCorpData.top
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            anchors.bottomMargin: 10
+            anchors.bottomMargin: 8
             anchors.horizontalCenter: parent.horizontalCenter
             font.family: "Titillium Web Light"
             font.pointSize: 18
@@ -185,11 +215,11 @@ Window {
             opacity: 1
             color: "#dcdcdc"
             text: qsTr("Accede con tu usuario y contraseña")
-            anchors.bottom: textUsername.top
+            anchors.bottom: lblIncorrectLoginData.top
             font.pixelSize: 14
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            anchors.bottomMargin: 15
+            anchors.bottomMargin: 6
             anchors.horizontalCenter: parent.horizontalCenter
             font.family: "Titillium Web Light"
         }
@@ -204,7 +234,7 @@ Window {
             font.family: "Titillium Web Light"
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottomMargin: 8
+            anchors.bottomMargin: 6
             placeholderText: "Username"
         }
 
@@ -218,7 +248,7 @@ Window {
             font.family: "Titillium Web Light"
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottomMargin: 8
+            anchors.bottomMargin: 6
             placeholderText: "Password"
             echoMode: TextInput.Password
         }
@@ -227,13 +257,15 @@ Window {
             id: rptTextPassword
             x: 30
             y: 389
+            height: 0
             opacity: 1
+            visible: false
             anchors.bottom: textEmail.top
             colorDefault: "#161b22"
             font.family: "Titillium Web Light"
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottomMargin: 8
+            anchors.bottomMargin: 6
             placeholderText: "Repeat Password"
             echoMode: TextInput.Password
         }
@@ -242,14 +274,58 @@ Window {
             id: textEmail
             x: 30
             y: 389
+            height: 0
             opacity: 1
-            anchors.bottom: btnLogin.top
+            visible: false
+            anchors.bottom: lblSignInUp.top
             colorDefault: "#161b22"
             font.family: "Titillium Web Light"
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottomMargin: 13
+            anchors.bottomMargin: 55
             placeholderText: "Email"
+        }
+
+        CustomButton {
+            id: btnCreateUser
+            x: 172
+            y: 435
+            width: 300
+            height: 40
+            opacity: 1.1
+            text: "Crear cuenta"
+            anchors.bottom: lblSignInUp.top
+            font.italic: false
+            font.family: "Titillium Web Regular"
+            font.bold: false
+            font.pointSize: 10
+            anchors.bottomMargin: 7
+            colorDefault: "#00d15b"
+            colorPressed: "#00ef68"
+            colorMouseOver: "#008337"
+            anchors.horizontalCenterOffset: 0
+            anchors.horizontalCenter: parent.horizontalCenter
+            onClicked: userHandler.create_user(textUsername.text, textEmail.text, textPassword.text, rptTextPassword.text)
+            Connections {
+                target: userHandler
+                function onUserCreated(message) {
+                    console.log(message)
+                    if (message === "User created successfull") {
+                        var component = Qt.createComponent("main.qml")
+                        var win = component.createObject()
+                        win.username = textUsername.text
+                        win.show()
+                        loginSuccessful()
+                        visible = false
+                    } else {
+                        console.log(message)
+                        lblIncorrectLoginData.visible = true
+                        lblIncorrectLoginData.color = "#FF3535" // red
+                        lblIncorrectLoginData.text = message
+                        hideLabelTimer.start()
+                    }
+                }
+            }
         }
 
         CustomButton {
@@ -259,13 +335,14 @@ Window {
             width: 300
             height: 40
             opacity: 1.1
+            visible: true
             text: "Acceder"
-            anchors.bottom: btnCreateUser.top
+            anchors.bottom: lblSignInUp.top
             font.italic: false
             font.family: "Titillium Web Regular"
             font.bold: false
             font.pointSize: 10
-            anchors.bottomMargin: 10
+            anchors.bottomMargin: 7
             colorDefault: "#00d15b"
             colorPressed: "#00ef68"
             colorMouseOver: "#008337"
@@ -304,65 +381,59 @@ Window {
             }
         }
 
-        CustomButton {
-            id: btnCreateUser
-            x: 172
-            y: 435
-            width: 300
-            height: 40
-            opacity: 1.1
-            text: "Crear cuenta"
-            anchors.bottom: parent.bottom
-            font.italic: false
-            font.family: "Titillium Web Regular"
+        Label {
+            id: lblSignInUp
+            y: 606
+            height: 15
+            opacity: 1
+            visible: true
+            color: "#F5F5F5"
+            text: qsTr("No tienes cuenta? Crea una cuenta")
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: lblDevelopTeam.top
+            font.letterSpacing: -0.05
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            anchors.leftMargin: 30
             font.bold: false
+            anchors.bottomMargin: 5
+            anchors.rightMargin: 30
+            font.family: "Titillium Web Light"
             font.pointSize: 10
-            anchors.bottomMargin: 60
-            colorDefault: "#00d15b"
-            colorPressed: "#00ef68"
-            colorMouseOver: "#008337"
-            anchors.horizontalCenterOffset: 0
-            anchors.horizontalCenter: parent.horizontalCenter
-            onClicked: userHandler.create_user(textUsername.text, textEmail.text, textPassword.text, rptTextPassword.text)
-            Connections {
-                target: userHandler
-                function onUserCreated(message) {
-                    console.log(message)
-                    if (message === "User created successfull") {
-                        var component = Qt.createComponent("main.qml")
-                        var win = component.createObject()
-                        win.username = textUsername.text
-                        win.show()
-                        loginSuccessful()
-                        visible = false
-                    } else {
-                        console.error(message)
-                        lblIncorrectLoginData.visible = true
-                        lblIncorrectLoginData.color = "#FF3535" // red
-                        lblIncorrectLoginData.text = message
-                        hideLabelTimer.start()
-                    }
+            MouseArea {
+                height: 17
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: internal.toogleSignIn_Up()
+                onEntered: {
+                    lblSignInUp.color = "#D6FFDB"
+                }
+                onExited: {
+                    lblSignInUp.color = "#F5F5F5"
                 }
             }
+
         }
+
 
 
         Label {
             id: lblIncorrectLoginData
-            y: 522
+            y: 367
             height: 13
             opacity: 1
             color: "#FF0000"
             text: qsTr("Datos de acceso incorrectos.")
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.bottom: parent.bottom
+            anchors.bottom: textUsername.top
             font.letterSpacing: -0.05
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+            anchors.bottomMargin: 6
             font.bold: false
             anchors.rightMargin: 30
-            anchors.bottomMargin: 30
             anchors.leftMargin: 30
             font.family: "Titillium Web Regular"
             font.pointSize: 8
@@ -374,23 +445,23 @@ Window {
             y: 522
             height: 13
             opacity: 1
-            color: "#dcdcdc"
+            color: "#8a8a8a"
             text: qsTr("v0.1.0 - David Castagneto - 2023")
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.top: lblIncorrectLoginData.bottom
+            anchors.bottom: parent.bottom
             font.letterSpacing: -0.05
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             font.bold: false
             anchors.rightMargin: 30
-            anchors.bottomMargin: 20
+            anchors.bottomMargin: 10
             anchors.leftMargin: 30
-            anchors.topMargin: 5
-            font.family: "Titillium Web Regular"
+            font.family: "Titillium Web Light"
             font.pointSize: 8
             visible: true
         }
+
     }
 
     Timeline {
@@ -532,7 +603,7 @@ Window {
             }
 
             Keyframe {
-                frame: 3107
+                frame: 3105
                 value: 1
             }
         }
@@ -541,7 +612,7 @@ Window {
             target: rptTextPassword
             property: "opacity"
             Keyframe {
-                frame: 2206
+                frame: 2709
                 value: 0
             }
 
@@ -551,7 +622,7 @@ Window {
             }
 
             Keyframe {
-                frame: 3107
+                frame: 3206
                 value: 1
             }
         }
@@ -560,7 +631,7 @@ Window {
             target: textEmail
             property: "opacity"
             Keyframe {
-                frame: 1805
+                frame: 2807
                 value: 0
             }
 
@@ -570,7 +641,7 @@ Window {
             }
 
             Keyframe {
-                frame: 3107
+                frame: 3307
                 value: 1
             }
         }
@@ -589,7 +660,7 @@ Window {
             }
 
             Keyframe {
-                frame: 3205
+                frame: 3207
                 value: 1
             }
         }
@@ -598,7 +669,7 @@ Window {
             target: btnCreateUser
             property: "opacity"
             Keyframe {
-                frame: 2706
+                frame: 2807
                 value: 0
             }
 
@@ -608,7 +679,7 @@ Window {
             }
 
             Keyframe {
-                frame: 3205
+                frame: 3307
                 value: 1
             }
         }
@@ -617,7 +688,7 @@ Window {
             target: lblDevelopTeam
             property: "opacity"
             Keyframe {
-                frame: 2805
+                frame: 2807
                 value: 0
             }
 
@@ -627,7 +698,7 @@ Window {
             }
 
             Keyframe {
-                frame: 3305
+                frame: 3307
                 value: 1
             }
         }
@@ -636,7 +707,7 @@ Window {
             target: lblIncorrectLoginData
             property: "opacity"
             Keyframe {
-                frame: 2805
+                frame: 2807
                 value: 0
             }
 
@@ -646,7 +717,7 @@ Window {
             }
 
             Keyframe {
-                frame: 3305
+                frame: 3307
                 value: 1
             }
         }
@@ -725,7 +796,7 @@ Window {
             Keyframe {
                 easing.bezierCurve: [0.89, 0.00372, 0.11, 0.999, 1, 1]
                 frame: 2101
-                value: 660
+                value: 610
             }
         }
 
@@ -766,6 +837,25 @@ Window {
                 value: 0
             }
         }
+
+        KeyframeGroup {
+            target: lblSignInUp
+            property: "opacity"
+            Keyframe {
+                frame: 2807
+                value: 0
+            }
+
+            Keyframe {
+                frame: 0
+                value: 0
+            }
+
+            Keyframe {
+                frame: 3307
+                value: 1
+            }
+        }
     }
 
 }
@@ -775,3 +865,9 @@ Window {
 
 
 
+
+/*##^##
+Designer {
+    D{i:0;formeditorZoom:0.9}D{i:22}D{i:26}
+}
+##^##*/

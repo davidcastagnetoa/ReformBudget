@@ -59,7 +59,8 @@ class EnvironmentVariables(QObject):
         self.userLogin.emit(self._username, self._password)
 
         if self._username == None:
-            self.userLogin.emit("No existe usuario debe crear una cuenta", None)
+            self.userLogin.emit(
+                "No existe usuario debe crear una cuenta", None)
 
         if self._username == username and self._password == password:
             self.userLogin.emit("Acceso granted", None)
@@ -67,7 +68,8 @@ class EnvironmentVariables(QObject):
 
 # Clase para creacion de usuarios,  en PRODUCCIÓN guardará credenciales de DB
 class UserHandler(QObject):
-    userCreated = Signal(str)  # Esta señal se emitirá después de crear el usuario
+    # Esta señal se emitirá después de crear el usuario
+    userCreated = Signal(str)
 
     if not os.path.exists(env_file):
         createLocalEnv()
