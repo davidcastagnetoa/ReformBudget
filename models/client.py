@@ -1,20 +1,62 @@
-class Client:
+from PySide2.QtCore import QObject, Signal, Slot
+
+class Client(QObject):
+    # Señal que emite el nombre, direccion, email, ciudad, cp, y telefono del cliente
+    clientCreated = Signal(str,str,str,str,str,str)
+
     def __init__(self, nombre, direccion, email, ciudad, cp, telefono):
+        super().__init__()  # Inicializa el QObject
         self.nombre = nombre
         self.direccion = direccion
         self.email = email
         self.ciudad = ciudad
         self.cp = cp
         self.telefono = telefono
-        self.presupuestos = []  # Lista para guardar los presupuestos de este cliente
 
-    def agregar_presupuesto(self, presupuesto):
-        """Agrega un presupuesto a la lista de presupuestos del cliente."""
-        self.presupuestos.append(presupuesto)
+    # # Método para actualizar el cliente
+    # def update_client(self, name, address, email, city, zip_code, phone):
+    #     self._name = name
+    #     self._address = address
+    #     self._email = email
+    #     self._city = city
+    #     self._zip_code = zip_code
+    #     self._phone = phone
 
-    def obtener_presupuesto(self, numero_budget):
-        """Devuelve un presupuesto específico basado en el número de presupuesto."""
-        for presupuesto in self.presupuestos:
-            if presupuesto.numero_budget == numero_budget:
-                return presupuesto
-        return None  # Si no se encuentra el presupuesto con ese número
+    # Función para crear un nuevo cliente y emitir la señal
+    @Slot()
+    def createClient(self):
+        self.clientCreated.emit(self.nombre, self.direccion, self.email, self.ciudad, self.cp, self.telefono)
+
+
+class ClientManager(QObject):
+    def __init__(self, parent=None):
+        super(ClientManager, self).__init__(parent)
+        self._client = Client()  # Instancia vacía de cliente.
+
+    @Slot(str, str, str, str, str, str)
+    def createClient(self, name, address, email, city, zip_code, phone):
+        self._client.update_client(name, address, email, city, zip_code, phone)
+        # Puedes añadir más lógica aquí si es necesario.
+
+
+
+# class Client:
+#     def __init__(self, nombre, direccion, email, ciudad, cp, telefono):
+#         self.nombre = nombre
+#         self.direccion = direccion
+#         self.email = email
+#         self.ciudad = ciudad
+#         self.cp = cp
+#         self.telefono = telefono
+#         self.presupuestos = []  # Lista para guardar los presupuestos de este cliente
+
+#     def agregar_presupuesto(self, presupuesto):
+#         """Agrega un presupuesto a la lista de presupuestos del cliente."""
+#         self.presupuestos.append(presupuesto)
+
+#     def obtener_presupuesto(self, numero_budget):
+#         """Devuelve un presupuesto específico basado en el número de presupuesto."""
+#         for presupuesto in self.presupuestos:
+#             if presupuesto.numero_budget == numero_budget:
+#                 return presupuesto
+#         return None  # Si no se encuentra el presupuesto con ese número

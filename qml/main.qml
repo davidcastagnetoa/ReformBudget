@@ -22,6 +22,7 @@ Window {
     property int windowStatus: 0
     property int windowMargin: 10
     property bool previewCollapse: false
+    property int buttonCount: 2
 
     // INTERNAL FUNCTIONS
     QtObject{
@@ -299,7 +300,6 @@ Window {
                     }
                 }
 
-
             }
 
             Rectangle {
@@ -316,7 +316,7 @@ Window {
 
                 Rectangle {
                     id: leftMenu
-                    width: 70
+                    width: 200
                     color: "#161b22"
                     anchors.left: parent.left
                     anchors.top: parent.top
@@ -335,6 +335,7 @@ Window {
                         easing.type: Easing.InOutQuint
                     }
 
+
                     Column {
                         id: clientCol
                         height: 400
@@ -347,7 +348,7 @@ Window {
 
                         Item {
                             width: 70
-                            height: 15  // Añade un espacio de 15px en la parte superior de la columna.
+                            height: 20  // Añade un espacio de 15px en la parte superior de la columna.
                         }
 
                         Image {
@@ -368,35 +369,72 @@ Window {
 
                         Item {
                             width: 70
-                            height: 15  // Añade un espacio de 15px en la parte superior de la columna.
+                            height: 20  // Añade un espacio de 15px en la parte superior de la columna.
                         }
 
                         LeftMenuBtn{
                             id: leftMenuBtn01
                             width: leftMenuBtn01.width
                             text: "Client 01"
+                            font.weight: Font.Light
+                            font.family: "Titillium Web Light"
+                            secondaryTextContent: "Direccion"
                             isActiveMenu: true
                             z: 0
-                            font.pointSize: 9
+                            font.pointSize: 10
                             btnIconSource: "../images/svg_icons/icon_users.svg"
                         }
-                        LeftMenuBtn{
-                            id: leftMenuBtn02
-                            width: leftMenuBtn02.width
-                            text: "Client 02"
-                            z: 0
-                            font.pointSize: 9
-                            btnIconSource: "../images/svg_icons/icon_users.svg"
+                        Component {
+                            id: leftMenuBtnComponent
+                            LeftMenuBtn {
+                                property string tag: ""
+                                font.weight: Font.Light
+                                font.family: "Titillium Web Light"
+                                isActiveMenu: false
+                                z: 0
+                                font.pointSize: 10
+                                btnIconSource: "../images/svg_icons/icon_users.svg"
+                            }
                         }
-                        LeftMenuBtn{
-                            id: leftMenuBtn03
-                            width: leftMenuBtn03.width
-                            text: "Client 03"
-                            z: 0
-                            font.pointSize: 9
-                            btnIconSource: "../images/svg_icons/icon_users.svg"
-                        }
+                    }
 
+                    CustomButton{
+                        id: createCustomer
+                        width: 190
+                        height: 35
+                        text: "Añadir cliente"
+                        anchors.left: parent.left
+                        anchors.top: clientCol.bottom
+                        anchors.leftMargin: 5
+                        anchors.topMargin: 5
+                        font.weight: Font.Light
+                        font.pointSize: 9
+                        colorDefault: "#00d15b"
+                        colorPressed: "#00ef68"
+                        colorMouseOver: "#008337"
+                        onClicked: {
+                            clientObj.createClient();  // Llama a la función create() de la clase Client en Python
+                        }
+                        Connections {
+                            target: clientObj
+                            function onClientCreated(name, address, mail, city, zip, phone) {
+                                console.log(name)
+                                console.log(address)
+                                console.log(mail)
+                                console.log(city)
+                                console.log(zip)
+                                console.log(phone)
+                                var newButton = leftMenuBtnComponent.createObject(clientCol);
+                                newButton.text = name;  // Establece el texto del nuevo botón con el nombre del cliente
+                                newButton.secondaryTextContent = address; // Establece el texto secundario del nuevo botón con la direccion del cliente
+                                // Incrementa el conteo de botones
+                                buttonCount ++;
+
+                                // Asigna la propiedad tag al nuevo botón
+                                newButton.tag = "leftMenuBtn" + buttonCount;
+                                newButton.width = newButton.tag.width
+                            }
+                        }
                     }
 
                     Column {
@@ -410,6 +448,7 @@ Window {
                         anchors.leftMargin: 0
                         anchors.bottomMargin: 0
                     }
+
                 }
 
                 Rectangle {
@@ -638,3 +677,11 @@ Window {
 
 
 
+
+
+
+/*##^##
+Designer {
+    D{i:0;formeditorZoom:0.9}D{i:32}
+}
+##^##*/

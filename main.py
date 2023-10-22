@@ -1,6 +1,5 @@
 # This Python file uses the following encoding: utf-8
 from PySide2.QtCore import QObject, Qt, Signal, Property, Slot
-
 # from PySide2.QtCore import QObject, Qt, Slot, Signal, QUrl, QTimer
 import sys
 import os
@@ -134,12 +133,17 @@ class WindowManager(QObject):
 # else:
 #     print("Presupuesto no encontrado.")
 
+# clientObj.create()
 
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
 
-    # CARGANDO DE CLASES:
+    # CARGA DE CLASES:
+    # Carga la clase para crear clientes
+    client_01 = Client("Juan Perez", "Calle Falsa 123", "juan@email.com", "Madrid", "28001", "+34123456789")
+    engine.rootContext().setContextProperty("clientObj", client_01)
+    
     # Carga la clase EnvironmentVariables
     env_variables = EnvironmentVariables()
     engine.rootContext().setContextProperty("envVariables", env_variables)
@@ -148,10 +152,12 @@ if __name__ == "__main__":
     user_handler = UserHandler()
     engine.rootContext().setContextProperty("userHandler", user_handler)
 
-    # ARRANCANDO MOTORES DE VENTANA
-    # engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))   # Borrar en Producccion
+    
 
-    engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
+    # ARRANCANDO MOTORES DE VENTANA
+    engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))   # Borrar en Producccion
+
+    # engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
 
     # ASIGNANDO a primera posicion VENTANA loginPage
     login_window = engine.rootObjects()[0]
@@ -166,7 +172,7 @@ if __name__ == "__main__":
         login_window.close()
 
     # Connect the signal to the close function
-    login_window.loginSuccessful.connect(close_login)
+    # login_window.loginSuccessful.connect(close_login)
 
     # FUNCION PARA CERRAR VENTANA
     if not engine.rootObjects():

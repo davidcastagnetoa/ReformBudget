@@ -16,6 +16,7 @@ Button{
     property color activeMenuColor: "#00C859"
     property color activeMenuColorRight: "#00C859"
     property bool isActiveMenu: false
+    property string secondaryTextContent: "Texto Secundario"
     QtObject{
         id: internal
 
@@ -107,19 +108,47 @@ Button{
             width: iconWidth
             height: iconHeight
         }
-
-        Text{
-            color: "#ffffff"
-            text: btnLeftMenu.text
-            font: btnLeftMenu.font
+        Item{
+            id: item1
+            width: 175
+            height: 60
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.leftMargin: 75
+            Text{
+                color: "#ffffff"
+                text: btnLeftMenu.text
+                font: btnLeftMenu.font
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+                verticalAlignment: Text.AlignVCenter
+                anchors.rightMargin: 15
+                anchors.topMargin: 12
+                anchors.leftMargin: 0
+            }
+            Text{
+                y: 8
+                color: "#a1a1a1"
+                text: secondaryTextContent
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                font.weight: Font.Thin
+                font.pointSize: 8
+                anchors.rightMargin: 15
+                anchors.bottomMargin: 12
+                anchors.leftMargin: 0
+            }
         }
+
+
     }
 }
 /*##^##
 Designer {
-    D{i:0;autoSize:true;height:60;width:250}
+    D{i:0;autoSize:true;formeditorZoom:3;height:60;width:250}
 }
 ##^##*/
