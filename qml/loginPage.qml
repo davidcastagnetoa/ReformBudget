@@ -474,12 +474,13 @@ Window {
             height: 13
             opacity: 1
             color: "#a1a1a1"
-            text: qsTr("v0.1.0 - David Castagneto - 2023")
+            text: qsTr("v0.1.0 - David Castagneto - 2023 ©")
             anchors.right: parent.right
             anchors.bottom: parent.bottom
             font.letterSpacing: -0.05
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+            font.weight: Font.Light
             anchors.horizontalCenter: parent.horizontalCenter
             font.bold: false
             anchors.rightMargin: 30
