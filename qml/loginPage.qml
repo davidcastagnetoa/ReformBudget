@@ -9,7 +9,7 @@ import QtQuick.Timeline 1.0
 Window {
     id: loginPage
     width: 366
-    height: 616
+    height: 556
     visible: true
     color: "#00000000"
     // color: "#ffffff" // For Test
@@ -47,6 +47,7 @@ Window {
         function toogleSignIn_Up() {
             if(signUp == false){ // Modo Crear Cuenta
                 animationBg.running = true
+                animationWindow.running = true
                 lblSignInUp.text = "Ya tienes cuenta? Inicia sesion"
                 lblSignIn.text = "Crea una Cuenta"
                 lblCorpData.text = "Registra tus datos"
@@ -63,6 +64,7 @@ Window {
                 signUp = true
             }else{ // Modo Iniciar Sesion
                 animationBg.running = true
+                animationWindow.running = true
                 lblSignInUp.text = "No tienes cuenta? Crea una cuenta"
                 lblSignIn.text = "Inicia Sesión"
                 lblCorpData.text = "Accede con tu usuario y contraseña"
@@ -80,6 +82,15 @@ Window {
             }
         }
     }
+
+    PropertyAnimation{
+           id: animationWindow
+           target: loginPage
+           property: "height"
+           to: if(signUp == false) return 616; else return 556
+           duration: 150
+           easing.type: Easing.InOutCubic
+       }
 
     Rectangle {
         id: background
