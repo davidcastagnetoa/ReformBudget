@@ -22,7 +22,7 @@ Window {
 
     //PROPERTIES
     property bool windowCollapse: false
-    property bool signUp: true
+    property bool signUp: false
 
     //TIMER
     Timer {
@@ -46,6 +46,7 @@ Window {
         }
         function toogleSignIn_Up() {
             if(signUp == false){ // Modo Crear Cuenta
+                animationBg.running = true
                 lblSignInUp.text = "Ya tienes cuenta? Inicia sesion"
                 lblSignIn.text = "Crea una Cuenta"
                 lblCorpData.text = "Registra tus datos"
@@ -61,6 +62,7 @@ Window {
                 textEmail.height = 40
                 signUp = true
             }else{ // Modo Iniciar Sesion
+                animationBg.running = true
                 lblSignInUp.text = "No tienes cuenta? Crea una cuenta"
                 lblSignIn.text = "Inicia Sesión"
                 lblCorpData.text = "Accede con tu usuario y contraseña"
@@ -84,7 +86,7 @@ Window {
         x: 90
         y: 190
         width: 360 // Desplegado
-        height: 610 // Desplegado
+        height: 550 // Desplegado
         opacity: 1
         color: "#0d1117"
         radius: 9.9
@@ -112,9 +114,9 @@ Window {
            id: animationBg
            target: background
            property: "height"
-           to: if(contentPreview.height === 550) return 610; else return 550
-           duration: 450
-           easing.type: Easing.InOutCirc
+           to: if(signUp == false) return 610; else return 550
+           duration: 150
+           easing.type: Easing.InOutCubic
        }
 
         DragHandler {
@@ -810,7 +812,7 @@ Window {
             Keyframe {
                 easing.bezierCurve: [0.89, 0.00372, 0.11, 0.999, 1, 1]
                 frame: 2101
-                value: 610
+                value: 550
             }
         }
 
