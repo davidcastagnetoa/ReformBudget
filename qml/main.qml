@@ -5,8 +5,8 @@ import "controls"
 
 Window {
     id: mainWindow
-    width: 1173
-    height: 660
+    width: 1220
+    height: 670
     visible: true
     color: "#00000000"
     title: qsTr("Reform Budget")
@@ -21,6 +21,7 @@ Window {
     // // PROPERTIES
     property int windowStatus: 0
     property int windowMargin: 10
+    property bool previewCollapse: false
 
     // INTERNAL FUNCTIONS
     QtObject{
@@ -32,12 +33,18 @@ Window {
                 mainWindow.showMaximized()
                 windowStatus = 1
                 windowMargin = 0
+                bg.anchors.leftMargin = 0
+                bg.anchors.rightMargin = 0
+                bg.anchors.bottomMargin = 0
                 restoreButton.btnIconSource = "../images/svg_icons/restore_icon.svg"
             }
             else{
                 mainWindow.showNormal()
                 windowStatus = 0
                 windowMargin = 10
+                bg.anchors.leftMargin = 10
+                bg.anchors.rightMargin = 10
+                bg.anchors.bottomMargin = 10
                 restoreButton.btnIconSource = "../images/svg_icons/maximize_icon.svg"
             }
         }
@@ -59,17 +66,29 @@ Window {
             restoreButton.btnIconSource = "../images/svg_icons/maximize_icon.svg"
         }
 
+        function collapsePreview(){
+            if(previewCollapse == false){
+                tooglePreviewBtn.btnIconMirror = true
+                animationPreview.running = true
+                previewCollapse = true
+            }else{
+                tooglePreviewBtn.btnIconMirror = false
+                animationPreview.running = true
+                previewCollapse = false
+            }
+        }
+
     }
 
     Rectangle {
         id: bg
-        width: 1173
+        width: 1200
         height: 660
         color: "#0d1117"
         anchors.fill: parent
-        anchors.rightMargin: 0
-        anchors.leftMargin: 0
-        anchors.bottomMargin: 0
+        anchors.rightMargin: 10
+        anchors.leftMargin: 10
+        anchors.bottomMargin: 10
         anchors.topMargin: 0
 
         Rectangle {
@@ -97,7 +116,7 @@ Window {
                 anchors.leftMargin: 0
 
                 ToggleBtnHamburger {
-
+                    onClicked: animationMenu.running = true
                 }
 
 
@@ -147,8 +166,8 @@ Window {
                         }
                         DragHandler{
                             onActiveChanged: if(active){
-                                mainWindow.startSystemMove()
-                            }
+                                                 mainWindow.startSystemMove()
+                                             }
                         }
                     }
 
@@ -210,7 +229,7 @@ Window {
                     RestoreButton {
                         id: restoreButton
                         height: 35
-                        btnIconSource: "../images/svg_icons/restore_icon.svg"
+                        btnIconSource: "../images/svg_icons/maximize_icon.svg"
                         onClicked: {
                             internal.maximizeRestore()
                         }
@@ -274,7 +293,7 @@ Window {
                         font.family: "Titillium Web Light"
                         anchors.topMargin: 0
                         anchors.bottomMargin: 0
-                        anchors.rightMargin: 5
+                        anchors.rightMargin: 6
                         anchors.leftMargin: 0
                         font.pointSize: 10
                     }
@@ -302,19 +321,82 @@ Window {
                     anchors.left: parent.left
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-                    anchors.leftMargin: 0
+                    clip: true
                     anchors.bottomMargin: 0
+                    anchors.leftMargin: 0
                     anchors.topMargin: 0
+
+                    PropertyAnimation{
+                        id: animationMenu
+                        target: leftMenu
+                        property: "width"
+                        to: if(leftMenu.width == 200) return 70; else return 200
+                        duration: 250
+                        easing.type: Easing.InOutQuint
+                    }
 
                     Column {
                         id: clientCol
-                        anchors.fill: parent
-                        anchors.bottomMargin: 203
+                        height: 400
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.rightMargin: 0
+                        z: 0
+                        spacing: -1
 
-                        Button {
-                            id: button
-                            text: qsTr("Button")
+                        Item {
+                            width: 70
+                            height: 15  // Añade un espacio de 15px en la parte superior de la columna.
                         }
+
+                        Image {
+                            id: image
+                            width: 190
+                            height: 50
+                            anchors.left: parent.left
+                            horizontalAlignment: Image.AlignHCenter
+                            verticalAlignment: Image.AlignVCenter
+                            source: "../images/ReformBudget_Logo.png"
+                            z: 0
+                            anchors.leftMargin: 0
+                            mirror: false
+                            sourceSize.height: 50
+                            sourceSize.width: 190
+                            fillMode: Image.PreserveAspectFit
+                        }
+
+                        Item {
+                            width: 70
+                            height: 15  // Añade un espacio de 15px en la parte superior de la columna.
+                        }
+
+                        LeftMenuBtn{
+                            id: leftMenuBtn01
+                            width: leftMenuBtn01.width
+                            text: "Client 01"
+                            isActiveMenu: true
+                            z: 0
+                            font.pointSize: 9
+                            btnIconSource: "../images/svg_icons/icon_users.svg"
+                        }
+                        LeftMenuBtn{
+                            id: leftMenuBtn02
+                            width: leftMenuBtn02.width
+                            text: "Client 02"
+                            z: 0
+                            font.pointSize: 9
+                            btnIconSource: "../images/svg_icons/icon_users.svg"
+                        }
+                        LeftMenuBtn{
+                            id: leftMenuBtn03
+                            width: leftMenuBtn03.width
+                            text: "Client 03"
+                            z: 0
+                            font.pointSize: 9
+                            btnIconSource: "../images/svg_icons/icon_users.svg"
+                        }
+
                     }
 
                     Column {
@@ -324,21 +406,22 @@ Window {
                         anchors.top: clientCol.bottom
                         anchors.bottom: parent.bottom
                         anchors.rightMargin: 0
-                        anchors.bottomMargin: 0
+                        anchors.topMargin: 0
                         anchors.leftMargin: 0
-                        anchors.topMargin: 5
+                        anchors.bottomMargin: 0
                     }
                 }
 
                 Rectangle {
                     id: contentArea
-                    color: "#00000000"
+                    color: "#0d1117"
                     border.color: "#000000"
                     border.width: 0
                     anchors.left: leftMenu.right
                     anchors.right: parent.right
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
+                    z: 0
                     anchors.rightMargin: 0
                     anchors.bottomMargin: 25
                     anchors.topMargin: 0
@@ -346,9 +429,8 @@ Window {
 
                     Rectangle {
                         id: contentPreview
-                        x: 644
-                        width: 455
-                        height: 200
+                        x: 639
+                        width: 550
                         color: "#00000000"
                         anchors.right: parent.right
                         anchors.top: parent.top
@@ -357,31 +439,40 @@ Window {
                         anchors.bottomMargin: 0
                         anchors.rightMargin: 0
 
-                        Button {
+                        PropertyAnimation{
+                            id: animationPreview
+                            target: contentPreview
+                            property: "width"
+                            to: if(contentPreview.width == 550) return 35; else return 550
+                            duration: 450
+                            easing.type: Easing.InOutCirc
+                        }
+
+                        ExpandPanelButton {
                             id: tooglePreviewBtn
-                            x: -648
-                            y: 282
-                            width: 30
-                            height: 30
-                            text: qsTr("Toggle")
-                            anchors.left: parent.left
-                            anchors.top: parent.top
-                            anchors.topMargin: 282
-                            anchors.leftMargin: 0
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.right: rightSide.left
+                            clip: true
+                            anchors.rightMargin: -5
+                            btnIconMirror: false
+                            onClicked: {
+                                internal.collapsePreview()
+
+                            }
                         }
 
                         Rectangle {
                             id: rightSide
-                            x: 30
                             y: 5
-                            width: 425
                             color: "#161b22"
                             radius: 5
                             border.color: "#59000000"
                             border.width: 1
+                            anchors.left: parent.left
                             anchors.right: parent.right
                             anchors.top: parent.top
                             anchors.bottom: parent.bottom
+                            anchors.leftMargin: 30
                             layer.wrapMode: ShaderEffectSource.ClampToEdge
                             scale: 1
                             transformOrigin: Item.Center
@@ -402,7 +493,7 @@ Window {
                                 verticalAlignment: Text.AlignVCenter
                                 font.family: "Titillium Web Light"
                                 anchors.topMargin: 5
-                                anchors.leftMargin: 30
+                                anchors.leftMargin: 20
                                 font.pointSize: 11
                             }
                         }
@@ -435,31 +526,116 @@ Window {
                         verticalAlignment: Text.AlignVCenter
                         font.family: "Titillium Web Light"
                         anchors.bottomMargin: 0
-                        anchors.rightMargin: 5
+                        anchors.rightMargin: 30
                         anchors.topMargin: 0
                         anchors.leftMargin: 10
                         font.pointSize: 10
                     }
+
+                    MouseArea {
+                        id: resizeWindow
+                        x: 884
+                        y: 1
+                        width: 25
+                        height: 25
+                        opacity: 0.5
+                        anchors.right: parent.right
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 0
+                        anchors.rightMargin: 0
+                        cursorShape: Qt.SizeFDiagCursor
+
+                        DragHandler{
+                            target: null
+                            onActiveChanged: if(active){
+                                                 mainWindow.startSystemResize(Qt.RightEdge | Qt.BottomEdge)
+                                             }
+                        }
+
+                        Image {
+                            id: resizeImage
+                            width: 16
+                            height: 16
+                            anchors.fill: parent
+                            source: "../images/svg_icons/resize_icon.svg"
+                            anchors.leftMargin: 5
+                            anchors.topMargin: 5
+                            sourceSize.height: 16
+                            sourceSize.width: 16
+                            fillMode: Image.PreserveAspectFit
+                            antialiasing: false
+                        }
+                    }
                 }
-
-
-
-
-
 
             }
 
 
         }
     }
+
+    MouseArea {
+        id: resizeLeft
+        x: 990
+        y: 20
+        width: 10
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.leftMargin: 0
+        anchors.bottomMargin: 10
+        anchors.topMargin: 10
+        cursorShape: Qt.SizeHorCursor
+
+        DragHandler{
+            target: null
+            onActiveChanged: if(active){ mainWindow.startSystemResize(Qt.LeftEdge) }
+        }
+    }
+
+    MouseArea {
+        id: resizeRight
+        width: 10
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.rightMargin: 0
+        anchors.bottomMargin: 10
+        anchors.topMargin: 10
+        cursorShape: Qt.SizeHorCursor
+
+        DragHandler{
+            target: null
+            onActiveChanged: if(active){ mainWindow.startSystemResize(Qt.RightEdge) }
+        }
+
+    }
+
+    MouseArea {
+        id: resizeBottom
+        height: 10
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.leftMargin: 10
+        anchors.rightMargin: 10
+        anchors.bottomMargin: 0
+        cursorShape: Qt.SizeVerCursor
+
+        DragHandler{
+            target: null
+            onActiveChanged: if(active){ mainWindow.startSystemResize(Qt.BottomEdge) }
+        }
+    }
+
 }
 
 
 
 
 
-/*##^##
-Designer {
-    D{i:0;formeditorZoom:0.9}D{i:19}
-}
-##^##*/
+
+
+
+
+

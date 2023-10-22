@@ -149,7 +149,8 @@ if __name__ == "__main__":
     engine.rootContext().setContextProperty("userHandler", user_handler)
 
     # ARRANCANDO MOTORES DE VENTANA
-    # engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml")) # Borrar en Producccion
+    # engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))   # Borrar en Producccion
+
     engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
 
     # ASIGNANDO a primera posicion VENTANA loginPage

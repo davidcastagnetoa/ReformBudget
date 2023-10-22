@@ -10,13 +10,12 @@ Button{
     property url btnIconSource: "../../images/svg_icons/home_icon.svg"
     property color btnColorDefault: "#0d1117"
     property color btnColorMouseOver: "#161b22"
-    property color btnColorClicked: "#00C859"
+    property color btnColorClicked: "#003F1C"
     property int iconWidth: 18
     property int iconHeight: 18
     property color activeMenuColor: "#00C859"
-    property color activeMenuColorRight: "#10161D"
+    property color activeMenuColorRight: "#00C859"
     property bool isActiveMenu: false
-
     QtObject{
         id: internal
 
@@ -29,12 +28,33 @@ Button{
 
     }
 
-    implicitWidth: 250
+    implicitWidth: 200
     implicitHeight: 60
 
     background: Rectangle{
         id: bgBtn
         color: internal.dynamicColor
+//        border.color: "#99757575"
+
+        Canvas {
+            anchors.fill: parent
+            onPaint: {
+                var ctx = getContext('2d');
+                ctx.strokeStyle = "#99757575"; // Color del borde
+                ctx.lineWidth = 1; // Grosor del borde
+                ctx.beginPath();
+
+                // Dibuja el borde superior
+                ctx.moveTo(0, 0);
+                ctx.lineTo(parent.width, 0);
+
+                // Dibuja el borde inferior
+                ctx.moveTo(0, parent.height);
+                ctx.lineTo(parent.width, parent.height);
+
+                ctx.stroke();
+            }
+        }
 
         Rectangle{
             anchors{
@@ -43,7 +63,7 @@ Button{
                 bottom: parent.bottom
             }
             color: activeMenuColor
-            width: 3
+            width: 2
             visible: isActiveMenu
         }
 
@@ -54,7 +74,7 @@ Button{
                 bottom: parent.bottom
             }
             color: activeMenuColorRight
-            width: 5
+            width: 2
             visible: isActiveMenu
         }
 

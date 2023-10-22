@@ -8,8 +8,8 @@ import QtQuick.Timeline 1.0
 
 Window {
     id: loginPage
-    width: 370
-    height: 620
+    width: 366
+    height: 616
     visible: true
     color: "#00000000"
     // color: "#ffffff" // For Test
@@ -37,12 +37,10 @@ Window {
 
         function collapseWindow(window){
             if(windowCollapse == false){
-                // btnColapse.btnIconSource = "../images/svg_icons/down_icon.svg"
-                btnColapse.btnIconSource = "../images/svg_icons/lock-rounded-svgrepo-com.svg"
+                btnColapse.btnIconSource = "../images/svg_icons/lock-rounded.svg"
                 windowCollapse = true
             }else{
-                // btnColapse.btnIconSource = "../images/svg_icons/up_icon.svg"
-                btnColapse.btnIconSource = "../images/svg_icons/unlock-rounded-svgrepo-com.svg"
+                btnColapse.btnIconSource = "../images/svg_icons/unlock-rounded.svg"
                 windowCollapse = false
             }
         }
@@ -85,8 +83,6 @@ Window {
         id: background
         x: 90
         y: 190
-        // width: 360 // Plegado
-        // height: 560 // Plegado
         width: 360 // Desplegado
         height: 610 // Desplegado
         opacity: 1
@@ -112,6 +108,15 @@ Window {
         anchors.horizontalCenterOffset: 0
         anchors.horizontalCenter: parent.horizontalCenter
 
+       PropertyAnimation{
+           id: animationBg
+           target: background
+           property: "height"
+           to: if(contentPreview.height === 550) return 610; else return 550
+           duration: 450
+           easing.type: Easing.InOutCirc
+       }
+
         DragHandler {
             onActiveChanged: if(active){
                 loginPage.startSystemMove()
@@ -121,12 +126,12 @@ Window {
         TopBarButton {
             id: btnColapse
             width: 35
-            btnIconSource: "../images/svg_icons/unlock-rounded-svgrepo-com.svg"
-            btnColorDefault: "#00c859"
+            btnIconSource: "../images/svg_icons/unlock-rounded.svg"
             btnColorClicked: "#00ef68"
             btnColorMouseOver: "#008337"
             anchors.left: parent.left
             anchors.top: parent.top
+            btnColorDefault: "#00000000"
             anchors.leftMargin: 15
             anchors.topMargin: 15
             onClicked: {
@@ -258,6 +263,8 @@ Window {
             anchors.bottomMargin: 0
             placeholderText: "Password"
             echoMode: TextInput.Password
+            Keys.onEnterPressed: envVariables.user_login(textUsername.text, textPassword.text) // Para teclados windows
+            Keys.onReturnPressed: envVariables.user_login(textUsername.text, textPassword.text) // Para teclados Mac
         }
 
         CustomTextField {
@@ -291,6 +298,8 @@ Window {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottomMargin: 60
             placeholderText: "Email"
+            Keys.onEnterPressed: userHandler.create_user(textUsername.text, textEmail.text, textPassword.text, rptTextPassword.text) // Para teclados windows
+            Keys.onReturnPressed: userHandler.create_user(textUsername.text, textEmail.text, textPassword.text, rptTextPassword.text) // Para teclados Mac
         }
 
         CustomButton {
@@ -404,12 +413,11 @@ Window {
             verticalAlignment: Text.AlignVCenter
             anchors.leftMargin: 30
             font.bold: false
-            anchors.bottomMargin: 5
+            anchors.bottomMargin: 10
             anchors.rightMargin: 30
             font.family: "Titillium Web Light"
             font.pointSize: 10
             MouseArea {
-                height: 17
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked: internal.toogleSignIn_Up()
@@ -452,7 +460,7 @@ Window {
             y: 522
             height: 13
             opacity: 1
-            color: "#8a8a8a"
+            color: "#a1a1a1"
             text: qsTr("v0.1.0 - David Castagneto - 2023")
             anchors.right: parent.right
             anchors.bottom: parent.bottom
@@ -462,7 +470,7 @@ Window {
             anchors.horizontalCenter: parent.horizontalCenter
             font.bold: false
             anchors.rightMargin: 30
-            anchors.bottomMargin: 10
+            anchors.bottomMargin: 15
             font.family: "Titillium Web Light"
             font.pointSize: 8
             visible: true
@@ -872,8 +880,4 @@ Window {
 
 
 
-/*##^##
-Designer {
-    D{i:0;formeditorZoom:2}D{i:23}D{i:22}D{i:25}D{i:26}
-}
-##^##*/
+
