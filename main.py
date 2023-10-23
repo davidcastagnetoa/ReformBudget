@@ -3,7 +3,7 @@
 from PySide2.QtCore import QObject, Qt, Signal, Property, Slot
 import sys
 import os
-from PySide2.QtGui import QGuiApplication
+from PySide2.QtGui import QGuiApplication, QIcon
 from PySide2.QtQml import QQmlApplicationEngine
 from models.client import ClientManager
 from models.budget import Budget
@@ -38,7 +38,7 @@ class EnvironmentVariables(QObject):
     def user_login(self, username, password):
         self.userLogin.emit(self._username, self._password)
 
-        if self._username == None:
+        if self._username is None:
             self.userLogin.emit(
                 "No existe usuario debe crear una cuenta", None)
 
@@ -115,13 +115,14 @@ class WindowManager(QObject):
 
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
+    app.setWindowIcon(QIcon('./images/anera_ico.png'))
     engine = QQmlApplicationEngine()
 
     # CARGA DE CLASES:
     # Carga la clase para crear clientes
     client_manager = ClientManager()
     engine.rootContext().setContextProperty("clientObj", client_manager)
-    
+
     # Carga la clase EnvironmentVariables
     env_variables = EnvironmentVariables()
     engine.rootContext().setContextProperty("envVariables", env_variables)
@@ -131,8 +132,9 @@ if __name__ == "__main__":
     engine.rootContext().setContextProperty("userHandler", user_handler)
 
     # ARRANCANDO MOTORES DE VENTANA
-    # engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))   # Borrar en Producccion
-    engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
+    engine.load(os.path.join(os.path.dirname(__file__),
+                "qml/main.qml"))   # Borrar en Producccion
+    # engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
 
     # ASIGNANDO a primera posicion VENTANA loginPage
     login_window = engine.rootObjects()[0]
@@ -147,7 +149,7 @@ if __name__ == "__main__":
         login_window.close()
 
     # Connect the signal to the close function
-    login_window.loginSuccessful.connect(close_login)
+    # login_window.loginSuccessful.connect(close_login)
 
     # FUNCION PARA CERRAR VENTANA
     if not engine.rootObjects():

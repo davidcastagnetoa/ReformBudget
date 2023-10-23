@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 import "controls"
 
 Window {
@@ -318,6 +319,7 @@ Window {
                     id: leftMenu
                     width: 200
                     color: "#161b22"
+                    border.width: 0
                     anchors.left: parent.left
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
@@ -338,7 +340,7 @@ Window {
 
                     Column {
                         id: clientCol
-                        height: 400
+                        height: leftMenu.height * 0.65
                         anchors.left: parent.left
                         anchors.right: parent.right
                         anchors.top: parent.top
@@ -346,8 +348,10 @@ Window {
                         z: 0
                         spacing: -1
 
+
                         Item {
-                            width: 70
+                            id: separator01
+                            width: clientCol.width
                             height: 20  // Añade un espacio de 15px en la parte superior de la columna.
                         }
 
@@ -355,111 +359,140 @@ Window {
                             id: image
                             width: 190
                             height: 50
-                            anchors.left: parent.left
                             horizontalAlignment: Image.AlignHCenter
                             verticalAlignment: Image.AlignVCenter
                             source: "../images/ReformBudget_Logo.png"
                             z: 0
-                            anchors.leftMargin: 0
                             mirror: false
                             sourceSize.height: 50
                             sourceSize.width: 190
                             fillMode: Image.PreserveAspectFit
                         }
-
                         Item {
-                            width: 70
+                            id: separator02
+                            width: clientCol.width
                             height: 20  // Añade un espacio de 15px en la parte superior de la columna.
                         }
-
-//                        LeftMenuBtn{
-//                            id: leftMenuBtn01
-//                            width: leftMenuBtn01.width
-//                            text: "Client 01"
-//                            font.weight: Font.Light
-//                            font.family: "Titillium Web Light"
-//                            secondaryTextContent: "Direccion"
-//                            isActiveMenu: true
-//                            z: 0
-//                            font.pointSize: 10
-//                            btnIconSource: "../images/svg_icons/icon_users.svg"
-//                        }
-                        Component {
-                            id: leftMenuBtnComponent
-                            LeftMenuBtn {
-                                property string tag: ""
-                                font.weight: Font.Light
-                                font.family: "Titillium Web Light"
-                                isActiveMenu: false
-                                z: 0
-                                font.pointSize: 10
-                                btnIconSource: "../images/svg_icons/icon_users.svg"
-                            }
+                        Label {
+                            id: labelClients
+                            width: clientCol.width
+                            color: "#efefef"
+                            text: qsTr("Clients")
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            font.weight: Font.ExtraLight
+                            font.pointSize: 10
+                            font.family: "Titillium Web Light"
                         }
+                        Item {
+                            id: separator03
+                            width: clientCol.width
+                            height: 10  // Añade un espacio de 15px en la parte superior de la columna.
+                        }
+
+                        ScrollView {
+                            id: flickable
+                            y: 90
+                            width: clientCol.width
+                            height: clientCol.height - 115
+                            contentWidth: -1
+                            focusPolicy: Qt.ClickFocus
+                            wheelEnabled: true
+                            hoverEnabled: true
+                            spacing: 2
+                            contentHeight: columnBtnClients.height
+                            clip: true
+                            ScrollBar.vertical.interactive: true
+                            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                            //                            ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+
+
+                            Column {
+                                id: columnBtnClients
+                                width: clientCol.width
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                anchors.top: parent.top
+                                spacing: -1
+
+                                Component {
+                                    id: leftMenuBtnComponent
+                                    LeftMenuBtn {
+                                        property string tag: ""
+                                        font.weight: Font.Light
+                                        font.family: "Titillium Web Light"
+                                        isActiveMenu: false
+                                        z: 0
+                                        font.pointSize: 10
+                                        btnIconSource: "../images/svg_icons/icon_users.svg"
+                                    }
+                                }
+                            }
+
+                        }
+
+
+
                     }
 
-                    // CustomButton{
-                    //     id: createCustomer
-                    //     width: 190
-                    //     height: 35
-                    //     text: "Añadir cliente"
-                    //     anchors.left: parent.left
-                    //     anchors.top: clientCol.bottom
-                    //     anchors.leftMargin: 5
-                    //     anchors.topMargin: 5
-                    //     font.weight: Font.Light
-                    //     font.pointSize: 9
-                    //     colorDefault: "#00d15b"
-                    //     colorPressed: "#00ef68"
-                    //     colorMouseOver: "#008337"
-                    //     onClicked: {
-                    //         clientObj.createClient("Juan Carlos", "Call de la Piruleta, 1", "juancarlos@gmail.com", "Madrid", "28016", "680771328");
-                    //     }
-                    //     Connections {
-                    //         target: clientObj
-                    //         function onClientCreated(name, address, mail, city, zip_code, phone) {
-                    //             console.log(name)
-                    //             console.log(address)
-                    //             console.log(mail)
-                    //             console.log(city)
-                    //             console.log(zip_code)
-                    //             console.log(phone)
-                    //             function createButton() {
-                    //                 var newButton = leftMenuBtnComponent.createObject(clientCol);
-                    //                 if (newButton) {
-                    //                     newButton.text = name;
-                    //                     newButton.secondaryTextContent = address
-                    //                     buttonCount ++;
-                    //                     newButton.tag = "leftMenuBtn" + buttonCount;
-                    //                     newButton.width = newButton.tag.width
-                    //                 } else {
-                    //                     console.error("Error al crear el botón desde leftMenuBtnComponent");
-                    //                 }
-                    //             }
-                    //             // Usamos Qt.callLater para llamar a la función createButton en el próximo ciclo del bucle de eventos
-                    //             Qt.callLater(createButton)
-                    //         }
-                    //     }
-                    // }
-
-                    Column {
-                        id: budgetCol
+                    Rectangle {
+                        id: bgBudgetCol
+                        x: 0
+                        y: 520
+                        color: "#161b22"
+                        border.color: "#00000000"
+                        border.width: 0
                         anchors.left: parent.left
                         anchors.right: parent.right
                         anchors.top: clientCol.bottom
                         anchors.bottom: parent.bottom
-                        anchors.rightMargin: 0
                         anchors.topMargin: 0
-                        anchors.leftMargin: 0
-                        anchors.bottomMargin: 0
+
+                        Canvas {
+                            anchors.fill: parent
+                            onPaint: {
+                                var ctx = getContext('2d');
+                                ctx.strokeStyle = "#99757575"; // Color del borde
+                                ctx.lineWidth = 1; // Grosor del borde
+                                ctx.beginPath();
+
+                                // Dibuja el borde superior
+                                ctx.moveTo(0, 0);
+                                ctx.lineTo(parent.width, 0);
+                                ctx.stroke();
+                            }
+                        }
+                        Label {
+                            id: labelBudgets
+                            width: clientCol.width
+                            color: "#efefef"
+                            text: qsTr("Budgets")
+                            anchors.top: parent.top
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            font.weight: Font.ExtraLight
+                            anchors.topMargin: 5
+                            font.pointSize: 10
+                            font.family: "Titillium Web Light"
+                        }
+
+
+                        Column {
+                            id: budgetCol
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.top: labelBudgets.bottom
+                            anchors.bottom: parent.bottom
+                            anchors.topMargin: 5
+                        }
                     }
+
 
                 }
 
                 Rectangle {
                     id: contentArea
                     color: "#0d1117"
-                    border.color: "#000000"
                     border.width: 0
                     anchors.left: leftMenu.right
                     anchors.right: parent.right
@@ -474,6 +507,7 @@ Window {
                     Rectangle {
                         id: contentPages
                         color: "#00000000"
+                        border.width: 0
                         anchors.fill: parent
 
                         StackView {
@@ -486,7 +520,7 @@ Window {
                     Rectangle {
                         id: contentPreview
                         x: 639
-                        width: 550
+                        width: contentArea.width * 2/5
                         color: "#00000000"
                         anchors.right: parent.right
                         anchors.top: parent.top
@@ -499,7 +533,7 @@ Window {
                             id: animationPreview
                             target: contentPreview
                             property: "width"
-                            to: if(contentPreview.width == 550) return 35; else return 550
+                            to: if(contentPreview.width == contentArea.width * 2/5) return 35; else return contentArea.width * 2/5
                             duration: 450
                             easing.type: Easing.InOutCirc
                         }
@@ -546,7 +580,8 @@ Window {
                                 anchors.top: parent.top
                                 horizontalAlignment: Text.AlignLeft
                                 verticalAlignment: Text.AlignVCenter
-                                font.family: "Titillium Web Light"
+                                font.weight: Font.Normal
+                                font.family: "Titillium Web ExtraLight"
                                 anchors.topMargin: 5
                                 anchors.leftMargin: 20
                                 font.pointSize: 11
@@ -585,7 +620,7 @@ Window {
                         anchors.rightMargin: 30
                         anchors.topMargin: 0
                         anchors.leftMargin: 10
-                        font.pointSize: 10
+                        font.pointSize: 9
                     }
 
                     MouseArea {
@@ -630,6 +665,7 @@ Window {
 
         }
     }
+
 
     MouseArea {
         id: resizeLeft
@@ -699,8 +735,12 @@ Window {
 
 
 
+
+
+
+
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.66}
+    D{i:0;formeditorZoom:1.25}D{i:38}D{i:35}
 }
 ##^##*/

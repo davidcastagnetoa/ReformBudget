@@ -1,11 +1,14 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 import "../controls"
 
 
 Item {
     //PROPERTIES
     property var buttonList: []
+    implicitWidth: 1200
+    implicitHeight: 775
 
     Timer {
         id: hideWarningTimer
@@ -17,7 +20,7 @@ Item {
     QtObject{
         id: internal
         function createButton(name, address) {
-            var newButton = leftMenuBtnComponent.createObject(clientCol);
+            var newButton = leftMenuBtnComponent.createObject(columnBtnClients);
             if (newButton) {
                 newButton.text = name;
                 newButton.secondaryTextContent = address
@@ -50,7 +53,7 @@ Item {
         Label {
             id: label
             color: "#ffffff"
-            text: qsTr("Datos del cliente")
+            text: qsTr("Customer Data")
             anchors.left: parent.left
             anchors.top: parent.top
             horizontalAlignment: Text.AlignHCenter
@@ -61,74 +64,81 @@ Item {
         }
         CustomTextField{
             id: textName
+            width: bgPage.width * 1/5
             font.family: "Titillium Web Light"
             font.pointSize: 9
             anchors.left: parent.left;
             anchors.top: label.bottom;
-            anchors.leftMargin: 20;
+            anchors.leftMargin: 15
             anchors.topMargin: 10;
-            placeholderText: "Nombre"
+            placeholderText: "Name"
         }
         CustomTextField{
             id: textAddress
+            width: bgPage.width * 1/5
             font.family: "Titillium Web Light"
             font.pointSize: 9
-            anchors.left: parent.left;
-            anchors.top: textName.bottom
-            anchors.leftMargin: 20;
-            anchors.topMargin: 5
-            placeholderText: "Direccion"
+            anchors.left: textName.right
+            anchors.top: parent.top
+            anchors.leftMargin: 6
+            anchors.topMargin: 44
+            placeholderText: "Address"
         }
         CustomTextField{
-            id: textEmailCustomer
+            id: textPhone
+            width: bgPage.width * 1/5
             font.family: "Titillium Web Light"
             font.pointSize: 9
-            anchors.left: parent.left;
-            anchors.top: textAddress.bottom
-            anchors.leftMargin: 20;
-            anchors.topMargin: 5
+            anchors.left: textAddress.right
+            anchors.top: parent.top
+            anchors.leftMargin: 6
+            anchors.topMargin: 44
+            placeholderText: "Phone number"
+        }
+
+        CustomTextField{
+            id: textEmailCustomer
+            width: bgPage.width * 1/5
+            font.family: "Titillium Web Light"
+            font.pointSize: 9
+            anchors.left: parent.left
+            anchors.top: textName.bottom
+            anchors.topMargin: 7
+            anchors.leftMargin: 15
             placeholderText: "Email"
         }
         CustomTextField{
             id: textCity
+            width: bgPage.width * 1/5
             font.family: "Titillium Web Light"
             font.pointSize: 9
-            anchors.left: parent.left;
-            anchors.top: textEmailCustomer.bottom
-            anchors.leftMargin: 20;
-            anchors.topMargin: 5
-            placeholderText: "Ciudad"
+            anchors.left: textEmailCustomer.right
+            anchors.top: textAddress.bottom
+            anchors.leftMargin: 6
+            anchors.topMargin: 7
+            placeholderText: "City"
         }
         CustomTextField{
             id: textZip
+            width: bgPage.width * 1/5
             font.family: "Titillium Web Light"
             font.pointSize: 9
-            anchors.left: parent.left;
-            anchors.top: textCity.bottom
-            anchors.leftMargin: 20;
-            anchors.topMargin: 5
-            placeholderText: "Codigo Postal"
-        }
-        CustomTextField{
-            id: textPhone
-            font.family: "Titillium Web Light"
-            font.pointSize: 9
-            anchors.left: parent.left;
-            anchors.top: textZip.bottom
-            anchors.leftMargin: 20;
-            anchors.topMargin: 5
-            placeholderText: "Telefono"
+            anchors.left: textCity.right
+            anchors.top: textPhone.bottom
+            anchors.leftMargin: 6
+            anchors.topMargin: 7
+            placeholderText: "Zip"
         }
 
         CustomButton{
             id: createCustomer
-            width: 190
+            width: 150
             height: 35
-            text: "Añadir cliente"
+            text: "Add customer"
             anchors.left: parent.left
-            anchors.top: textPhone.bottom
-            anchors.leftMargin: 20
-            anchors.topMargin: 10
+            anchors.top: textEmailCustomer.bottom
+            anchors.leftMargin: 15
+            anchors.topMargin: 15
             font.weight: Font.Light
             font.pointSize: 9
             colorDefault: "#00d15b"
@@ -162,11 +172,13 @@ Item {
             id: warningLabel
             color: "#ee0000"
             text: qsTr("mensaje de advertencia")
-            anchors.left: parent.left
-            anchors.top: createCustomer.bottom
-            horizontalAlignment: Text.AlignHCenter
+            anchors.left: createCustomer.right
+            anchors.top: createCustomer.top
+            anchors.bottom: createCustomer.bottom
+            horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
-            anchors.topMargin: 10
+            anchors.bottomMargin: 11
+            anchors.topMargin: 11
             font.pointSize: 8
             anchors.leftMargin: 20
             visible: false
@@ -176,8 +188,6 @@ Item {
 }
 
 
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/
+
+
+
