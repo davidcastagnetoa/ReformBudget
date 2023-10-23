@@ -240,6 +240,7 @@ Window {
                     CloseButton {
                         id: closeButton
                         height: 35
+                        btnColorClicked: "#c82424"
                         btnIconSource: "../images/svg_icons/close_icon.svg"
                         onClicked: {
                             mainWindow.close()
@@ -391,7 +392,7 @@ Window {
                         }
 
                         ScrollView {
-                            id: flickable
+                            id: scrollViewClients
                             y: 90
                             width: clientCol.width
                             height: clientCol.height - 115
@@ -404,7 +405,6 @@ Window {
                             clip: true
                             ScrollBar.vertical.interactive: true
                             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-                            //                            ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
 
                             Column {
@@ -542,6 +542,7 @@ Window {
                             id: tooglePreviewBtn
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.right: rightSide.left
+                            btnColorMouseOver: "#0f141b"
                             clip: true
                             anchors.rightMargin: -5
                             btnIconMirror: false
@@ -694,7 +695,7 @@ Window {
         anchors.bottom: parent.bottom
         anchors.rightMargin: 0
         anchors.bottomMargin: 10
-        anchors.topMargin: 10
+        anchors.topMargin: 35
         cursorShape: Qt.SizeHorCursor
 
         DragHandler{
@@ -741,6 +742,6 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:1.25}D{i:38}D{i:35}
+    D{i:0;formeditorZoom:0.75}D{i:38}D{i:35}
 }
 ##^##*/
