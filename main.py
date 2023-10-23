@@ -28,11 +28,23 @@ def createLocalEnv():
 # Clase para carga de variables de entorno, en PRODUCCIÓN cargará credenciales de DB
 class EnvironmentVariables(QObject):
     userLogin = Signal(str, str)
+    loggedUsernameChanged = Signal()
 
     def __init__(self, parent=None):
         super(EnvironmentVariables, self).__init__(parent)
         self._username = USERNAME_RB
         self._password = PASSWORD_RB
+        self._loggedUsername = ""
+
+    @Property(str, notify=loggedUsernameChanged)
+    def loggedUsername(self):
+        return self._loggedUsername
+
+    @loggedUsername.setter
+    def loggedUsername(self, value):
+        if self._loggedUsername != value:
+            self._loggedUsername = value
+            self.loggedUsernameChanged.emit()
 
     @Slot(str, str)
     def user_login(self, username, password):
@@ -44,9 +56,10 @@ class EnvironmentVariables(QObject):
 
         if self._username == username and self._password == password:
             self.userLogin.emit("Acceso granted", None)
+            self.loggedUsername = self._username
 
 
-# Clase para creacion de usuarios,  en PRODUCCIÓN guardará credenciales de DB
+# Clase para creacion de usuarios, en PRODUCCIÓN guardará credenciales de DB
 class UserHandler(QObject):
     # Esta señal se emitirá después de crear el usuario
     userCreated = Signal(str)
@@ -132,9 +145,8 @@ if __name__ == "__main__":
     engine.rootContext().setContextProperty("userHandler", user_handler)
 
     # ARRANCANDO MOTORES DE VENTANA
-    engine.load(os.path.join(os.path.dirname(__file__),
-                "qml/main.qml"))   # Borrar en Producccion
-    # engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
+    # engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))   # Borrar en Producccion
+    engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
 
     # ASIGNANDO a primera posicion VENTANA loginPage
     login_window = engine.rootObjects()[0]
@@ -149,7 +161,7 @@ if __name__ == "__main__":
         login_window.close()
 
     # Connect the signal to the close function
-    # login_window.loginSuccessful.connect(close_login)
+    login_window.loginSuccessful.connect(close_login)
 
     # FUNCION PARA CERRAR VENTANA
     if not engine.rootObjects():

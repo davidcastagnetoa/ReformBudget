@@ -68,6 +68,7 @@ Window {
             restoreButton.btnIconSource = "../images/svg_icons/maximize_icon.svg"
         }
 
+        // Toggle Preview right screen
         function collapsePreview(){
             if(previewCollapse == false){
                 tooglePreviewBtn.btnIconMirror = true
@@ -175,13 +176,15 @@ Window {
 
                     Image {
                         id: iconApp
-                        width: 55
+                        width: 46
+                        height: 30
                         anchors.left: parent.left
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
                         source: "../images/Logo.png"
-                        sourceSize.height: 35
-                        sourceSize.width: 55
+                        smooth: true
+                        sourceSize.height: 30
+                        sourceSize.width: 46
                         anchors.bottomMargin: 0
                         anchors.leftMargin: 5
                         anchors.topMargin: 0
@@ -189,8 +192,9 @@ Window {
                     }
 
                     Label {
-                        id: label
-                        width: 120
+                        id: labelTitle
+                        width: 110
+                        height: 35
                         color: "#ffffff"
                         text: qsTr("Reform Budget")
                         anchors.left: iconApp.right
@@ -198,9 +202,43 @@ Window {
                         anchors.bottom: parent.bottom
                         horizontalAlignment: Text.AlignLeft
                         verticalAlignment: Text.AlignVCenter
-                        font.pointSize: 13
+                        font.pointSize: 12
                         font.bold: false
-                        font.family: "Titillium Web Light"
+                        font.family: "Titillium Web Extralight"
+                        anchors.topMargin: 0
+                        anchors.bottomMargin: 0
+                        anchors.leftMargin: 5
+                    }
+                    Label {
+                        id: labelWelcome
+                        width: 65
+                        color: "#ffffff"
+                        text: qsTr("Welcome: ")
+                        anchors.left: labelTitle.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        horizontalAlignment: Text.AlignLeft
+                        verticalAlignment: Text.AlignVCenter
+                        font.pointSize: 12
+                        font.bold: false
+                        font.family: "Titillium Web Extralight"
+                        anchors.topMargin: 0
+                        anchors.bottomMargin: 0
+                        anchors.leftMargin: 5
+                    }
+                    Label {
+                        id: labelUsername
+                        width: 350
+                        color: "#ffffff"
+                        text: envVariables.loggedUsername
+                        anchors.left: labelWelcome.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        horizontalAlignment: Text.AlignLeft
+                        verticalAlignment: Text.AlignVCenter
+                        font.pointSize: 12
+                        font.bold: false
+                        font.family: "Titillium Web Extralight"
                         anchors.topMargin: 0
                         anchors.bottomMargin: 0
                         anchors.leftMargin: 5
@@ -740,8 +778,4 @@ Window {
 
 
 
-/*##^##
-Designer {
-    D{i:0;formeditorZoom:0.75}D{i:38}D{i:35}
-}
-##^##*/
+

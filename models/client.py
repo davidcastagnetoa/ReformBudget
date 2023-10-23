@@ -1,5 +1,6 @@
 from PySide2.QtCore import QObject, Signal, Slot
 
+
 class Client(QObject):
     def __init__(self, name="", address="", email="", city="", zip_code="", phone="", parent=None):
         super(Client, self).__init__(parent)  # Inicializa el QObject
@@ -22,7 +23,7 @@ class Client(QObject):
 
 class ClientManager(QObject):
     # Señal que emite el nombre, direccion, email, ciudad, cp, y telefono del cliente
-    clientCreated = Signal(str,str,str,str,str,str)
+    clientCreated = Signal(str, str, str, str, str, str)
     clientValidated = Signal(str)
 
     def __init__(self, parent=None):
@@ -37,7 +38,7 @@ class ClientManager(QObject):
             return
         self._client.create_client(name, address, email, city, zip_code, phone)
         self.clientCreated.emit(name, address, email, city, zip_code, phone)
-        self.clientValidated = Signal(True)
+        self.clientValidated.emit("Cliente creado")
 
 
 # class Client:
