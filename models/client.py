@@ -40,8 +40,6 @@ class ClientManager(QObject):
         self.clientValidated = Signal(True)
 
 
-
-
 # class Client:
 #     def __init__(self, nombre, direccion, email, ciudad, cp, telefono):
 #         self.nombre = nombre
@@ -62,3 +60,16 @@ class ClientManager(QObject):
 #             if presupuesto.numero_budget == numero_budget:
 #                 return presupuesto
 #         return None  # Si no se encuentra el presupuesto con ese número
+
+# # Crear un presupuesto
+# budget_001 = Budget("001")
+
+# # Agregar el presupuesto al cliente
+# client_01.agregar_presupuesto(budget_001)
+
+# # Recuperar un presupuesto específico del cliente
+# presupuesto_recuperado = client_01.obtener_presupuesto("001")
+# if presupuesto_recuperado:
+#     print(f"Presupuesto recuperado: {presupuesto_recuperado.numero_budget}")
+# else:
+#     print("Presupuesto no encontrado.")

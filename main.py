@@ -1,15 +1,12 @@
 # This Python file uses the following encoding: utf-8
-from PySide2.QtCore import QObject, Qt, Signal, Property, Slot
 # from PySide2.QtCore import QObject, Qt, Slot, Signal, QUrl, QTimer
+from PySide2.QtCore import QObject, Qt, Signal, Property, Slot
 import sys
 import os
-
 from PySide2.QtGui import QGuiApplication
 from PySide2.QtQml import QQmlApplicationEngine
-
-from models.client import Client, ClientManager
+from models.client import ClientManager
 from models.budget import Budget
-
 from dotenv import load_dotenv, set_key
 
 load_dotenv()
@@ -26,7 +23,6 @@ def createLocalEnv():
     with open(env_file, "w") as key_file:
         key_file.write(env_contain)
     # os.system(f"attrib +s +h {env_file}")
-
 
 
 # Clase para carga de variables de entorno, en PRODUCCIÓN cargará credenciales de DB
@@ -117,21 +113,6 @@ class WindowManager(QObject):
         self.setAlwaysOnTop(not self.alwaysOnTop)
 
 
-# # Crear un presupuesto
-# budget_001 = Budget("001")
-
-# # Agregar el presupuesto al cliente
-# client_01.agregar_presupuesto(budget_001)
-
-# # Recuperar un presupuesto específico del cliente
-# presupuesto_recuperado = client_01.obtener_presupuesto("001")
-# if presupuesto_recuperado:
-#     print(f"Presupuesto recuperado: {presupuesto_recuperado.numero_budget}")
-# else:
-#     print("Presupuesto no encontrado.")
-
-# clientObj.create()
-
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
@@ -149,11 +130,9 @@ if __name__ == "__main__":
     user_handler = UserHandler()
     engine.rootContext().setContextProperty("userHandler", user_handler)
 
-
     # ARRANCANDO MOTORES DE VENTANA
-    engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))   # Borrar en Producccion
-
-    # engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
+    # engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))   # Borrar en Producccion
+    engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
 
     # ASIGNANDO a primera posicion VENTANA loginPage
     login_window = engine.rootObjects()[0]
@@ -168,7 +147,7 @@ if __name__ == "__main__":
         login_window.close()
 
     # Connect the signal to the close function
-    # login_window.loginSuccessful.connect(close_login)
+    login_window.loginSuccessful.connect(close_login)
 
     # FUNCION PARA CERRAR VENTANA
     if not engine.rootObjects():
