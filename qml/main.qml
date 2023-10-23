@@ -5,8 +5,8 @@ import "controls"
 
 Window {
     id: mainWindow
-    width: 1220
-    height: 670
+    width: 1420
+    height: 870
     visible: true
     color: "#00000000"
     title: qsTr("Reform Budget")
@@ -83,8 +83,8 @@ Window {
 
     Rectangle {
         id: bg
-        width: 1200
-        height: 660
+        width: 1400
+        height: 860
         color: "#0d1117"
         anchors.fill: parent
         anchors.rightMargin: 10
@@ -372,18 +372,18 @@ Window {
                             height: 20  // Añade un espacio de 15px en la parte superior de la columna.
                         }
 
-                        LeftMenuBtn{
-                            id: leftMenuBtn01
-                            width: leftMenuBtn01.width
-                            text: "Client 01"
-                            font.weight: Font.Light
-                            font.family: "Titillium Web Light"
-                            secondaryTextContent: "Direccion"
-                            isActiveMenu: true
-                            z: 0
-                            font.pointSize: 10
-                            btnIconSource: "../images/svg_icons/icon_users.svg"
-                        }
+//                        LeftMenuBtn{
+//                            id: leftMenuBtn01
+//                            width: leftMenuBtn01.width
+//                            text: "Client 01"
+//                            font.weight: Font.Light
+//                            font.family: "Titillium Web Light"
+//                            secondaryTextContent: "Direccion"
+//                            isActiveMenu: true
+//                            z: 0
+//                            font.pointSize: 10
+//                            btnIconSource: "../images/svg_icons/icon_users.svg"
+//                        }
                         Component {
                             id: leftMenuBtnComponent
                             LeftMenuBtn {
@@ -398,44 +398,49 @@ Window {
                         }
                     }
 
-                    CustomButton{
-                        id: createCustomer
-                        width: 190
-                        height: 35
-                        text: "Añadir cliente"
-                        anchors.left: parent.left
-                        anchors.top: clientCol.bottom
-                        anchors.leftMargin: 5
-                        anchors.topMargin: 5
-                        font.weight: Font.Light
-                        font.pointSize: 9
-                        colorDefault: "#00d15b"
-                        colorPressed: "#00ef68"
-                        colorMouseOver: "#008337"
-                        onClicked: {
-                            clientObj.createClient();  // Llama a la función create() de la clase Client en Python
-                        }
-                        Connections {
-                            target: clientObj
-                            function onClientCreated(name, address, mail, city, zip, phone) {
-                                console.log(name)
-                                console.log(address)
-                                console.log(mail)
-                                console.log(city)
-                                console.log(zip)
-                                console.log(phone)
-                                var newButton = leftMenuBtnComponent.createObject(clientCol);
-                                newButton.text = name;  // Establece el texto del nuevo botón con el nombre del cliente
-                                newButton.secondaryTextContent = address; // Establece el texto secundario del nuevo botón con la direccion del cliente
-                                // Incrementa el conteo de botones
-                                buttonCount ++;
-
-                                // Asigna la propiedad tag al nuevo botón
-                                newButton.tag = "leftMenuBtn" + buttonCount;
-                                newButton.width = newButton.tag.width
-                            }
-                        }
-                    }
+                    // CustomButton{
+                    //     id: createCustomer
+                    //     width: 190
+                    //     height: 35
+                    //     text: "Añadir cliente"
+                    //     anchors.left: parent.left
+                    //     anchors.top: clientCol.bottom
+                    //     anchors.leftMargin: 5
+                    //     anchors.topMargin: 5
+                    //     font.weight: Font.Light
+                    //     font.pointSize: 9
+                    //     colorDefault: "#00d15b"
+                    //     colorPressed: "#00ef68"
+                    //     colorMouseOver: "#008337"
+                    //     onClicked: {
+                    //         clientObj.createClient("Juan Carlos", "Call de la Piruleta, 1", "juancarlos@gmail.com", "Madrid", "28016", "680771328");
+                    //     }
+                    //     Connections {
+                    //         target: clientObj
+                    //         function onClientCreated(name, address, mail, city, zip_code, phone) {
+                    //             console.log(name)
+                    //             console.log(address)
+                    //             console.log(mail)
+                    //             console.log(city)
+                    //             console.log(zip_code)
+                    //             console.log(phone)
+                    //             function createButton() {
+                    //                 var newButton = leftMenuBtnComponent.createObject(clientCol);
+                    //                 if (newButton) {
+                    //                     newButton.text = name;
+                    //                     newButton.secondaryTextContent = address
+                    //                     buttonCount ++;
+                    //                     newButton.tag = "leftMenuBtn" + buttonCount;
+                    //                     newButton.width = newButton.tag.width
+                    //                 } else {
+                    //                     console.error("Error al crear el botón desde leftMenuBtnComponent");
+                    //                 }
+                    //             }
+                    //             // Usamos Qt.callLater para llamar a la función createButton en el próximo ciclo del bucle de eventos
+                    //             Qt.callLater(createButton)
+                    //         }
+                    //     }
+                    // }
 
                     Column {
                         id: budgetCol
@@ -465,6 +470,18 @@ Window {
                     anchors.bottomMargin: 25
                     anchors.topMargin: 0
                     anchors.leftMargin: 0
+
+                    Rectangle {
+                        id: contentPages
+                        color: "#00000000"
+                        anchors.fill: parent
+
+                        StackView {
+                            id: stackView
+                            anchors.fill: parent
+                            initialItem: Qt.resolvedUrl("pages/clientPage.qml")
+                        }
+                    }
 
                     Rectangle {
                         id: contentPreview
@@ -540,6 +557,7 @@ Window {
                     }
 
 
+
                 }
 
                 Rectangle {
@@ -605,6 +623,7 @@ Window {
                         }
                     }
                 }
+
 
             }
 
@@ -682,6 +701,6 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.9}D{i:32}
+    D{i:0;formeditorZoom:0.66}
 }
 ##^##*/

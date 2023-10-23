@@ -7,7 +7,7 @@ import os
 from PySide2.QtGui import QGuiApplication
 from PySide2.QtQml import QQmlApplicationEngine
 
-from models.client import Client
+from models.client import Client, ClientManager
 from models.budget import Budget
 
 from dotenv import load_dotenv, set_key
@@ -26,6 +26,7 @@ def createLocalEnv():
     with open(env_file, "w") as key_file:
         key_file.write(env_contain)
     # os.system(f"attrib +s +h {env_file}")
+
 
 
 # Clase para carga de variables de entorno, en PRODUCCIÓN cargará credenciales de DB
@@ -116,10 +117,6 @@ class WindowManager(QObject):
         self.setAlwaysOnTop(not self.alwaysOnTop)
 
 
-# # Crear un cliente. ejemplo
-# client_01 = Client(
-#     "Juan Perez", "Calle Falsa 123", "juan@email.com", "Madrid", "28001", "+34123456789"
-# )
 # # Crear un presupuesto
 # budget_001 = Budget("001")
 
@@ -141,8 +138,8 @@ if __name__ == "__main__":
 
     # CARGA DE CLASES:
     # Carga la clase para crear clientes
-    client_01 = Client("Juan Perez", "Calle Falsa 123", "juan@email.com", "Madrid", "28001", "+34123456789")
-    engine.rootContext().setContextProperty("clientObj", client_01)
+    client_manager = ClientManager()
+    engine.rootContext().setContextProperty("clientObj", client_manager)
     
     # Carga la clase EnvironmentVariables
     env_variables = EnvironmentVariables()
@@ -152,7 +149,6 @@ if __name__ == "__main__":
     user_handler = UserHandler()
     engine.rootContext().setContextProperty("userHandler", user_handler)
 
-    
 
     # ARRANCANDO MOTORES DE VENTANA
     engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))   # Borrar en Producccion
