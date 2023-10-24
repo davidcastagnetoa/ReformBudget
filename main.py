@@ -7,6 +7,10 @@ from PySide2.QtGui import QGuiApplication, QIcon
 from PySide2.QtQml import QQmlApplicationEngine
 from models.client import ClientManager
 from models.budget import Budget
+
+from data.user import UserData
+from models.user import User
+
 from dotenv import load_dotenv, set_key
 
 load_dotenv()
@@ -23,6 +27,50 @@ def createLocalEnv():
     with open(env_file, "w") as key_file:
         key_file.write(env_contain)
     # os.system(f"attrib +s +h {env_file}")
+
+
+# En desarrollo aun no en uso
+class Login(QObject):
+    userLoged = Signal(str, str)
+    loggedUsernameChanged = Signal()
+
+    def __init__(self, parent=None):
+        super(EnvironmentVariables, self).__init__(parent)
+        self._username = ""  # Esta es la variable con la que se compara, guardada en DB
+        self._password = ""  # Esta es la variable con la que se compara, guardada en DB
+        self._loggedUsername = ""
+
+    # Asigna el nombre de usuario a la señal loggedUsernameChanged
+    @Property(str, notify=loggedUsernameChanged)
+    def loggedUsername(self):
+        return self._loggedUsername
+
+    @loggedUsername.setter
+    def loggedUsername(self, value):
+        if self._loggedUsername != value:
+            self._loggedUsername = value
+            self.loggedUsernameChanged.emit()
+
+    # Emita la señal userLoged
+    @Slot(str, str)
+    # los argumentos username y password aqui son los que recibe de LoginPage.qml
+    def user_login(self, username, password):
+        # Catch user and password from DB
+        user = User(username, password)
+        userData = UserData()
+        response = userData.login(user)
+        if response:
+            print("user logged")
+            self._username = username
+            self._password = password
+            self.userLoged.emit("Access granted", None)
+            self.loggedUsername = self._username
+        else:
+            print("Incorrect data!")
+            self.userLoged.emit("Incorrect data!", None)
+
+        if self._username is None:
+            self.userLoged.emit("No existe usuario debe crear una cuenta", None)
 
 
 # Clase para carga de variables de entorno, en PRODUCCIÓN cargará credenciales de DB
@@ -51,11 +99,10 @@ class EnvironmentVariables(QObject):
         self.userLogin.emit(self._username, self._password)
 
         if self._username is None:
-            self.userLogin.emit(
-                "No existe usuario debe crear una cuenta", None)
+            self.userLogin.emit("No existe usuario debe crear una cuenta", None)
 
         if self._username == username and self._password == password:
-            self.userLogin.emit("Acceso granted", None)
+            self.userLogin.emit("Access granted", None)
             self.loggedUsername = self._username
 
 
@@ -128,7 +175,7 @@ class WindowManager(QObject):
 
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
-    app.setWindowIcon(QIcon('./images/anera_ico.png'))
+    app.setWindowIcon(QIcon("./images/anera_ico.png"))
     engine = QQmlApplicationEngine()
 
     # CARGA DE CLASES:

@@ -42,8 +42,5 @@ class ConnectionDB:
         except Exception as error:
             print(f"El usuario {error} ya existe")
 
-    def connect():
-        print()
-
-
-con = ConnectionDB()
+    def connect(self):
+        return self.con

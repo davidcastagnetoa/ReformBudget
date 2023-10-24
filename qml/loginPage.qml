@@ -381,7 +381,7 @@ Window {
             Connections {
                 target: envVariables
                 function onUserLogin(user, pass) {
-                    if (user === "Acceso granted") {
+                    if (user === "Access granted") {
                         lblIncorrectLoginData.visible = true
                         lblIncorrectLoginData.color = "#08FF00" // green
                         lblIncorrectLoginData.text = user
