@@ -1,6 +1,7 @@
 # ReformBudget
 
 ReformBudget is a desktop application built with Python, leveraging PySide2 for its user interface and dotenv for environment configuration. It provides an intuitive solution for client and budget management.
+This application saves the user data, clients, and budgets in SQLite DB
 
 ## Requirements:
 
@@ -13,7 +14,7 @@ ReformBudget is a desktop application built with Python, leveraging PySide2 for 
 1. **Clone the Repository**
 
    ```bash
-    git clone https://github.com/[YOUR_USERNAME]/ReformBudget.git
+    git clone https://github.com/davidcastagnetoa/ReformBudget.git
     cd ReformBudget
    ```
 
