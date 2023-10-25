@@ -5,7 +5,7 @@ This application saves the user data, clients, and budgets in SQLite3 DB
 
 ## Requirements:
 
-- Python 3.x
+- Python 3.6 or higher
 - PySide2
 - python-dotenv
 - sqlite3
@@ -29,7 +29,7 @@ This application saves the user data, clients, and budgets in SQLite3 DB
 3. **Install Dependencies**
 
    ```bash
-   pip install PySide2 python-dotenv cryptography
+   pip install -r requirements.txt
    ```
 
 4. **Configure Environment Variables**
