@@ -10,11 +10,6 @@ class UserData:
             "SELECT * FROM users WHERE username = ? AND password = ?",
             (user._username, user._password),
         )
-        # res = self.cursor.execute(
-        #     "SELECT * FROM users WHERE username = '{}' AND password = '{}'".format(
-        #         user._username, user._password
-        #     )
-        # )
         row = res.fetchone()
 
         # Cerrar el cursor.

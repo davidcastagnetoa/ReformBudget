@@ -29,7 +29,7 @@ This application saves the user data, clients, and budgets in SQLite3 DB
 3. **Install Dependencies**
 
    ```bash
-   pip install PySide2 python-dotenv
+   pip install PySide2 python-dotenv cryptography
    ```
 
 4. **Configure Environment Variables**

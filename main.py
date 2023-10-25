@@ -1,24 +1,20 @@
 # This Python file uses the following encoding: utf-8
-# from PySide2.QtCore import QObject, Qt, Slot, Signal, QUrl, QTimer
+# from PySide2.QtCore import QUrl, QTimer
 from PySide2.QtCore import QObject, Qt, Signal, Property, Slot
 import sys
 import os
 from PySide2.QtGui import QGuiApplication, QIcon
 from PySide2.QtQml import QQmlApplicationEngine
 from models.client import ClientManager
-
 from data.user import UserData
 from models.user import User
-
+from utils.encrypter import (
+    generate_key,
+    load_key,
+    criptedPassword,
+    decriptedPassword,
+)
 from dotenv import load_dotenv, set_key
-
-load_dotenv()
-env_file = ".env"
-
-USERNAME_RB = os.getenv("USERNAME_RB")
-EMAIL_RB = os.getenv("PASSWORD_RB")
-PASSWORD_RB = os.getenv("PASSWORD_RB")
-RPT_PASSWORD_RB = os.getenv("PASSWORD_RB")
 
 
 def createLocalEnv():
@@ -28,7 +24,30 @@ def createLocalEnv():
     # os.system(f"attrib +s +h {env_file}")
 
 
-# En desarrollo aun no en uso
+load_dotenv()
+env_file = ".env"
+
+# Tus credenciales
+USERNAME_RB = os.getenv("USERNAME_RB")
+EMAIL_RB = os.getenv("PASSWORD_RB")
+PASSWORD_RB = os.getenv("PASSWORD_RB")
+RPT_PASSWORD_RB = os.getenv("PASSWORD_RB")
+
+
+# Define tu llave para encriptar las contraseñas
+KEY = os.getenv("KEY")
+your_key_word = KEY if KEY else "Default_word"
+generate_key(your_key_word)
+
+# Carga la clave
+key = load_key()
+
+
+# Desencripamos contraseña
+# decrypted_password = decriptedPassword(encrypted_password, key)
+
+
+# Clase para logarse
 class Login(QObject):
     userLoged = Signal(str, str)
     loggedUsernameChanged = Signal()
@@ -55,7 +74,9 @@ class Login(QObject):
     # los argumentos username y password aqui son los que recibe de LoginPage.qml
     def user_login(self, username, password):
         # Catch user and password from DB
-        user = User(username, password)
+        user = User(
+            username, None, password
+        )  # Requiere 3 parametros username, email, password (ver en models.user.py), pero solo necesita dos
         userData = UserData()
         response = userData.login(user)
 
@@ -63,7 +84,7 @@ class Login(QObject):
         if self._username is None:
             print("No existe usuario debe crear una cuenta")
             self.userLoged.emit("No existe usuario debe crear una cuenta", None)
-            return  # Sal del método aquí.
+            return
 
         if response:
             print("user logged")
@@ -74,39 +95,6 @@ class Login(QObject):
         else:
             print("Incorrect data!")
             self.userLoged.emit("Incorrect data!", None)
-
-
-# Clase para carga de variables de entorno, en PRODUCCIÓN cargará credenciales de DB
-class EnvironmentVariables(QObject):
-    userLogin = Signal(str, str)
-    loggedUsernameChanged = Signal()
-
-    def __init__(self, parent=None):
-        super(EnvironmentVariables, self).__init__(parent)
-        self._username = USERNAME_RB
-        self._password = PASSWORD_RB
-        self._loggedUsername = ""
-
-    @Property(str, notify=loggedUsernameChanged)
-    def loggedUsername(self):
-        return self._loggedUsername
-
-    @loggedUsername.setter
-    def loggedUsername(self, value):
-        if self._loggedUsername != value:
-            self._loggedUsername = value
-            self.loggedUsernameChanged.emit()
-
-    @Slot(str, str)
-    def user_login(self, username, password):
-        self.userLogin.emit(self._username, self._password)
-
-        if self._username is None:
-            self.userLogin.emit("No existe usuario debe crear una cuenta", None)
-
-        if self._username == username and self._password == password:
-            self.userLogin.emit("Access granted", None)
-            self.loggedUsername = self._username
 
 
 # Clase para creacion de usuarios, en PRODUCCIÓN guardará credenciales de DB
@@ -135,7 +123,7 @@ class UserHandler(QObject):
             return
 
         # Cifrar la contraseña (esto es un paso crucial que debes investigar más)
-        encrypted_password = password  # Aquí debes implementar un método de cifrado
+        encrypted_password = criptedPassword(password, key)
 
         # Cargar el archivo .env si existe
         load_dotenv(".env")
@@ -186,13 +174,13 @@ if __name__ == "__main__":
     client_manager = ClientManager()
     engine.rootContext().setContextProperty("clientObj", client_manager)
 
-    # Carga la clase EnvironmentVariables
-    env_variables = EnvironmentVariables()
-    engine.rootContext().setContextProperty("envVariables", env_variables)
+    # Carga la clase Login
+    login_userdata = Login()
+    engine.rootContext().setContextProperty("loginUser", login_userdata)
 
     # Carga la clase UserHandler
-    user_handler = UserHandler()
-    engine.rootContext().setContextProperty("userHandler", user_handler)
+    signup_userdata = UserHandler()
+    engine.rootContext().setContextProperty("signupUser", signup_userdata)
 
     # ARRANCANDO MOTORES DE VENTANA
     # engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))   # Borrar en Producccion

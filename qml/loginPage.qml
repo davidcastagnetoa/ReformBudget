@@ -276,8 +276,8 @@ Window {
             anchors.bottomMargin: 0
             placeholderText: "Password"
             echoMode: TextInput.Password
-            Keys.onEnterPressed: envVariables.user_login(textUsername.text, textPassword.text) // Para teclados windows
-            Keys.onReturnPressed: envVariables.user_login(textUsername.text, textPassword.text) // Para teclados Mac
+            Keys.onEnterPressed: loginUser.user_login(textUsername.text, textPassword.text) // Para teclados windows
+            Keys.onReturnPressed: loginUser.user_login(textUsername.text, textPassword.text) // Para teclados Mac
         }
 
         CustomTextField {
@@ -311,8 +311,8 @@ Window {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottomMargin: 60
             placeholderText: "Email"
-            Keys.onEnterPressed: userHandler.create_user(textUsername.text, textEmail.text, textPassword.text, rptTextPassword.text) // Para teclados windows
-            Keys.onReturnPressed: userHandler.create_user(textUsername.text, textEmail.text, textPassword.text, rptTextPassword.text) // Para teclados Mac
+            Keys.onEnterPressed: signupUser.create_user(textUsername.text, textEmail.text, textPassword.text, rptTextPassword.text) // Para teclados windows
+            Keys.onReturnPressed: signupUser.create_user(textUsername.text, textEmail.text, textPassword.text, rptTextPassword.text) // Para teclados Mac
         }
 
         CustomButton {
@@ -334,9 +334,9 @@ Window {
             colorMouseOver: "#008337"
             anchors.horizontalCenterOffset: 0
             anchors.horizontalCenter: parent.horizontalCenter
-            onClicked: userHandler.create_user(textUsername.text, textEmail.text, textPassword.text, rptTextPassword.text)
+            onClicked: signupUser.create_user(textUsername.text, textEmail.text, textPassword.text, rptTextPassword.text)
             Connections {
-                target: userHandler
+                target: signupUser
                 function onUserCreated(message) {
                     console.log(message)
                     if (message === "User created successfull") {
@@ -377,10 +377,11 @@ Window {
             colorMouseOver: "#008337"
             anchors.horizontalCenterOffset: 0
             anchors.horizontalCenter: parent.horizontalCenter
-            onClicked: envVariables.user_login(textUsername.text, textPassword.text)
+            onClicked: loginUser.user_login(textUsername.text, null, textPassword.text) // En model.user este consta de 3 atributos, pero solo se usan dos aqui
             Connections {
-                target: envVariables
-                function onUserLogin(user, pass) {
+                target: loginUser
+                // function onUserLogin(user, pass) {
+                function onUserLoged(user, pass) {
                     if (user === "Access granted") {
                         lblIncorrectLoginData.visible = true
                         lblIncorrectLoginData.color = "#08FF00" // green
