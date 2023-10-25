@@ -6,7 +6,6 @@ import os
 from PySide2.QtGui import QGuiApplication, QIcon
 from PySide2.QtQml import QQmlApplicationEngine
 from models.client import ClientManager
-from models.budget import Budget
 
 from data.user import UserData
 from models.user import User
@@ -35,7 +34,7 @@ class Login(QObject):
     loggedUsernameChanged = Signal()
 
     def __init__(self, parent=None):
-        super(EnvironmentVariables, self).__init__(parent)
+        super(Login, self).__init__(parent)
         self._username = ""  # Esta es la variable con la que se compara, guardada en DB
         self._password = ""  # Esta es la variable con la que se compara, guardada en DB
         self._loggedUsername = ""
@@ -59,18 +58,22 @@ class Login(QObject):
         user = User(username, password)
         userData = UserData()
         response = userData.login(user)
+
+        # Primero, comprobar si el nombre de usuario existe.
+        if self._username is None:
+            print("No existe usuario debe crear una cuenta")
+            self.userLoged.emit("No existe usuario debe crear una cuenta", None)
+            return  # Sal del método aquí.
+
         if response:
             print("user logged")
             self._username = username
-            self._password = password
+            # self._password = password
             self.userLoged.emit("Access granted", None)
             self.loggedUsername = self._username
         else:
             print("Incorrect data!")
             self.userLoged.emit("Incorrect data!", None)
-
-        if self._username is None:
-            self.userLoged.emit("No existe usuario debe crear una cuenta", None)
 
 
 # Clase para carga de variables de entorno, en PRODUCCIÓN cargará credenciales de DB
