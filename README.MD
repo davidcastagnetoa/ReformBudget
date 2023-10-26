@@ -10,7 +10,7 @@ This application saves the user data, clients, and budgets in SQLite3 DB
 - QT5
 - python-dotenv
 - sqlite3
-- QT Creator (optional)
+- QT Creator (Optional, but Recommended)
 
 ## Installation:
 

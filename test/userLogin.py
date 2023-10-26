@@ -136,7 +136,6 @@ class Login(QObject):
             return
 
         if response:
-            print("user logged")
             self._username = username
             # self._password = password
             self.userLoged.emit("Access granted", None)
