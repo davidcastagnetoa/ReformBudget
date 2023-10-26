@@ -7,8 +7,10 @@ This application saves the user data, clients, and budgets in SQLite3 DB
 
 - Python 3.6 or higher
 - PySide2
+- QT5
 - python-dotenv
 - sqlite3
+- QT Creator (optional)
 
 ## Installation:
 
@@ -37,8 +39,10 @@ This application saves the user data, clients, and budgets in SQLite3 DB
 - Create a `.env` file in the root directory.
 - Add your configuration:
   ```.env
-  USERNAME_RB="your_username"
-  PASSWORD_RB="your_password"
+   ADMIN_USERNAME='Your admin user'
+   ADMIN_USERNAME='your email'
+   ADMIN_PASS='Your password'
+   KEY="Your Keyword"
   ```
 
 5. **Run the Application**

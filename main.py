@@ -8,13 +8,8 @@ from PySide2.QtQml import QQmlApplicationEngine
 from models.client import ClientManager
 from data.user import UserData
 from models.user import User
-from utils.encrypter import (
-    generate_key,
-    load_key,
-    criptedPassword,
-    decriptedPassword,
-)
-from dotenv import load_dotenv, set_key
+from utils.encrypter import generate_key, load_key, criptedPassword
+from dotenv import load_dotenv
 
 
 def createLocalEnv():
@@ -26,6 +21,9 @@ def createLocalEnv():
 
 load_dotenv()
 env_file = ".env"
+
+if not os.path.exists(env_file):
+    createLocalEnv()
 
 # Tus credenciales
 USERNAME_RB = os.getenv("USERNAME_RB")
@@ -41,10 +39,6 @@ generate_key(your_key_word)
 
 # Carga la clave
 key = load_key()
-
-
-# Desencripamos contraseña
-# decrypted_password = decriptedPassword(encrypted_password, key)
 
 
 # Clase para logarse
@@ -98,17 +92,29 @@ class Login(QObject):
 
 
 # Clase para creacion de usuarios, en PRODUCCIÓN guardará credenciales de DB
-class UserHandler(QObject):
+class signUp(QObject):
     # Esta señal se emitirá después de crear el usuario
     userCreated = Signal(str)
+    loggedUsernameChanged = Signal()
 
-    if not os.path.exists(env_file):
-        createLocalEnv()
+    def __init__(self, parent=None):
+        super(signUp, self).__init__(parent)
+        self._loggedUsername = ""
+
+    # Asigna el nombre de usuario a la señal loggedUsernameChanged
+    @Property(str, notify=loggedUsernameChanged)
+    def loggedUsername(self):
+        return self._loggedUsername
+
+    @loggedUsername.setter
+    def loggedUsername(self, value):
+        if self._loggedUsername != value:
+            self._loggedUsername = value
+            self.loggedUsernameChanged.emit()
 
     @Slot(str, str, str, str)
     def create_user(self, username, email, password, rptPassword):
         # Aquí implementas la lógica para crear un usuario.
-        # Finalmente, emites la señal userCreated
 
         if username == "" or password == "":
             self.userCreated.emit("Ningún campo puede quedar vacío")
@@ -118,24 +124,37 @@ class UserHandler(QObject):
             self.userCreated.emit("Las contraseñas no coinciden.")
             return
 
-        if username == USERNAME_RB:
+        userData = UserData()
+        if userData.user_Exists(username):
             self.userCreated.emit("Este usuario ya existe.")
+            return
+
+        if userData.email_Exists(email):
+            self.userCreated.emit("Este email ya está registrado.")
             return
 
         # Cifrar la contraseña (esto es un paso crucial que debes investigar más)
         encrypted_password = criptedPassword(password, key)
+        print("Antes de guardar:", encrypted_password)
 
-        # Cargar el archivo .env si existe
-        load_dotenv(".env")
+        # Guardar username, email y password en DB
+        user = userData.create_User(User(username, email, encrypted_password))
+        self.loggedUsername = username
 
-        # Guardar las variables en el archivo .env
-        set_key(".env", "USERNAME_RB", username)
-        set_key(".env", "EMAIL_RB", email)
-        set_key(".env", "PASSWORD_RB", encrypted_password)
+        if user is None:
+            self.userCreated.emit("Error al crear el usuario")
+            print("Error al crear el usuario")
+            return
 
-        self.userCreated.emit(
-            "User created successfull"
-        )  # Finalmente, emites la señal userCreated correcta
+        print(userData)
+        print(username)
+        print(email)
+        print(password)
+        print(rptPassword)
+        print(encrypted_password)
+
+        # Finalmente, emites la señal userCreated correcta
+        self.userCreated.emit("User created successfull")
 
 
 # Clase para control de ventanas
@@ -178,8 +197,8 @@ if __name__ == "__main__":
     login_userdata = Login()
     engine.rootContext().setContextProperty("loginUser", login_userdata)
 
-    # Carga la clase UserHandler
-    signup_userdata = UserHandler()
+    # Carga la clase signUp
+    signup_userdata = signUp()
     engine.rootContext().setContextProperty("signupUser", signup_userdata)
 
     # ARRANCANDO MOTORES DE VENTANA

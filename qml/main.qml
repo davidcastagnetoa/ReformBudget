@@ -230,7 +230,7 @@ Window {
                         id: labelUsername
                         width: 350
                         color: "#ffffff"
-                        text: loginUser.loggedUsername
+                        text: loginUser.loggedUsername || signupUser.loggedUsername
                         anchors.left: labelWelcome.right
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom

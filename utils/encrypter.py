@@ -15,11 +15,10 @@ def generate_key(key):
 
     with open(filename, "wb") as file:
         file.write(key_hashed_encoded)
-
-    if platform.system() == "Windows":
-        os.system(f"attrib +s +h {filename}")
-    else:
-        filename = "." + filename
+        if platform.system() == "Windows":
+            os.system(f"attrib +s +h {filename}")
+        else:
+            filename = "." + filename
 
 
 # Cargamos la llave
