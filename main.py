@@ -25,17 +25,12 @@ env_file = ".env"
 if not os.path.exists(env_file):
     createLocalEnv()
 
-# Tus credenciales
-USERNAME_RB = os.getenv("USERNAME_RB")
-EMAIL_RB = os.getenv("PASSWORD_RB")
-PASSWORD_RB = os.getenv("PASSWORD_RB")
-RPT_PASSWORD_RB = os.getenv("PASSWORD_RB")
-
 
 # Define tu llave para encriptar las contraseñas
 KEY = os.getenv("KEY")
 your_key_word = KEY if KEY else "Default_word"
 generate_key(your_key_word)
+
 
 # Carga la clave
 key = load_key()
@@ -74,21 +69,19 @@ class Login(QObject):
         userData = UserData()
         response = userData.login(user)
 
-        # Primero, comprobar si el nombre de usuario existe.
-        if self._username is None:
+        if response == "user_not_found":
             print("No existe usuario debe crear una cuenta")
             self.userLoged.emit("No existe usuario debe crear una cuenta", None)
             return
-
-        if response:
+        elif response == "incorrect_password":
+            print("Incorrect password!")
+            self.userLoged.emit("Incorrect password!", None)
+            return
+        elif isinstance(response, User):
             print("user logged")
             self._username = username
-            # self._password = password
             self.userLoged.emit("Access granted", None)
             self.loggedUsername = self._username
-        else:
-            print("Incorrect data!")
-            self.userLoged.emit("Incorrect data!", None)
 
 
 # Clase para creacion de usuarios, en PRODUCCIÓN guardará credenciales de DB

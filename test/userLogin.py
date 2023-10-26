@@ -74,13 +74,8 @@ class UserData:
         self.db = con.ConnectionDB().connect()
         self.cursor = self.db.cursor()
 
-        # Encriptamos la contraseña para su comparación con la base de datos
-        encrypted_password = criptedPassword(user._password, key)
-        print(encrypted_password)
-
         res = self.cursor.execute(
-            "SELECT * FROM users WHERE username = ? AND password = ?",
-            (user._username, encrypted_password),
+            "SELECT * FROM users WHERE username = ?", (user._username,)
         )
         row = res.fetchone()
 
@@ -91,12 +86,11 @@ class UserData:
         self.db.close()
 
         if row:
-            user = User(username=row[1], email=row[2], password=row[3])
-            user._password = decriptedPassword(user._password, key)
-            print(user)
-            return user
-        else:
-            return None
+            stored_password = decriptedPassword(row[3], key)
+            if stored_password == user._password:
+                user = User(username=row[1], email=row[2], password=stored_password)
+                print(user)
+                return user
 
 
 # Clase para logarse

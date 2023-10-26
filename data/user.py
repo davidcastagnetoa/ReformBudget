@@ -22,14 +22,15 @@ class UserData:
         # Cerrar la conexión a la base de datos.
         self.db.close()
 
-        if row:
-            stored_password = decriptedPassword(row[3], key)
-            if stored_password == user._password:
-                user = User(username=row[1], email=row[2], password=stored_password)
-                print(user)
-                return user
-        else:
-            return None
+        if not row:
+            return "user_not_found"
+
+        stored_password = decriptedPassword(row[3], key)
+        if stored_password != user._password:
+            return "incorrect_password"
+
+        user = User(username=row[1], email=row[2], password=stored_password)
+        return user
 
     def user_Exists(self, username):
         self.db = con.ConnectionDB().connect()
