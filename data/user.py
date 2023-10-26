@@ -1,6 +1,6 @@
 import connection as con
 from models.user import User
-from utils.encrypter import criptedPassword, decriptedPassword, load_key
+from utils.encrypter import encriptedPassword, decryptedPassword, load_key
 
 # Carga la clave
 key = load_key()
@@ -25,7 +25,7 @@ class UserData:
         if not row:
             return "user_not_found"
 
-        stored_password = decriptedPassword(row[3], key)
+        stored_password = decryptedPassword(row[3], key)
         if stored_password != user._password:
             return "incorrect_password"
 
@@ -35,7 +35,8 @@ class UserData:
     def user_Exists(self, username):
         self.db = con.ConnectionDB().connect()
         self.cursor = self.db.cursor()
-        res = self.cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
+        res = self.cursor.execute(
+            "SELECT * FROM users WHERE username = ?", (username,))
         row = res.fetchone()
         self.cursor.close()
         self.db.close()
@@ -44,7 +45,8 @@ class UserData:
     def email_Exists(self, email):
         self.db = con.ConnectionDB().connect()
         self.cursor = self.db.cursor()
-        res = self.cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
+        res = self.cursor.execute(
+            "SELECT * FROM users WHERE email = ?", (email,))
         row = res.fetchone()
         self.cursor.close()
         self.db.close()

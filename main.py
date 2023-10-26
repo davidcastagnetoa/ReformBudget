@@ -3,12 +3,13 @@
 from PySide2.QtCore import QObject, Qt, Signal, Property, Slot
 import sys
 import os
+from connection import ConnectionDB
 from PySide2.QtGui import QGuiApplication, QIcon
 from PySide2.QtQml import QQmlApplicationEngine
 from models.client import ClientManager
 from data.user import UserData
 from models.user import User
-from utils.encrypter import generate_key, load_key, criptedPassword
+from utils.encrypter import generate_key, load_key, encriptedPassword
 from dotenv import load_dotenv
 
 
@@ -16,11 +17,12 @@ def createLocalEnv():
     env_contain = ""
     with open(env_file, "w") as key_file:
         key_file.write(env_contain)
-    # os.system(f"attrib +s +h {env_file}")
+    os.system(f"attrib +s +h {env_file}")
 
 
 load_dotenv()
 env_file = ".env"
+
 
 if not os.path.exists(env_file):
     createLocalEnv()
@@ -34,6 +36,13 @@ generate_key(your_key_word)
 
 # Carga la clave
 key = load_key()
+
+
+# Verifica si el archivo users.db existe
+if not os.path.exists("users.db"):
+    # Si no existe, crea la conexión y llama al método para inicializar la DB y crear el usuario administrador
+    db_connection = ConnectionDB()
+    db_connection.init_db()
 
 
 # Clase para logarse
@@ -71,7 +80,8 @@ class Login(QObject):
 
         if response == "user_not_found":
             print("No existe usuario debe crear una cuenta")
-            self.userLoged.emit("No existe usuario debe crear una cuenta", None)
+            self.userLoged.emit(
+                "No existe usuario debe crear una cuenta", None)
             return
         elif response == "incorrect_password":
             print("Incorrect password!")
@@ -127,7 +137,7 @@ class signUp(QObject):
             return
 
         # Cifrar la contraseña (esto es un paso crucial que debes investigar más)
-        encrypted_password = criptedPassword(password, key)
+        encrypted_password = encriptedPassword(password, key)
         print("Antes de guardar:", encrypted_password)
 
         # Guardar username, email y password en DB
@@ -138,13 +148,6 @@ class signUp(QObject):
             self.userCreated.emit("Error al crear el usuario")
             print("Error al crear el usuario")
             return
-
-        print(userData)
-        print(username)
-        print(email)
-        print(password)
-        print(rptPassword)
-        print(encrypted_password)
 
         # Finalmente, emites la señal userCreated correcta
         self.userCreated.emit("User created successfull")
@@ -195,7 +198,7 @@ if __name__ == "__main__":
     engine.rootContext().setContextProperty("signupUser", signup_userdata)
 
     # ARRANCANDO MOTORES DE VENTANA
-    # engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))   # Borrar en Producccion
+    # engine.load(os.path.join(os.path.dirname(__file__),"qml/main.qml"))   # Borrar en Producccion
     engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
 
     # ASIGNANDO a primera posicion VENTANA loginPage

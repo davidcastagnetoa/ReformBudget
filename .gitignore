@@ -82,4 +82,7 @@ venv/
 main.pyproject.user
 main.pyproject
 
+# key
+pylon.key
+
 .vscode

@@ -1,6 +1,7 @@
 import connection as con
 from PySide2.QtCore import QObject, Qt, Signal, Property, Slot
-import os, platform
+import os
+import platform
 import hashlib
 import base64
 from cryptography.fernet import Fernet
@@ -31,14 +32,14 @@ def load_key():
 
 
 # Encriptar contraseña para su almacenamiento
-def criptedPassword(message, key):
+def encriptedPassword(message, key):
     f = Fernet(key)
     encrypted_message = f.encrypt(message.encode())
     return encrypted_message
 
 
 # Desencriptamos la contraseña para su uso
-def decriptedPassword(encrypted_message, key):
+def decryptedPassword(encrypted_message, key):
     f = Fernet(key)
     decrypted_message = f.decrypt(encrypted_message).decode()
     return decrypted_message
@@ -86,9 +87,10 @@ class UserData:
         self.db.close()
 
         if row:
-            stored_password = decriptedPassword(row[3], key)
+            stored_password = decryptedPassword(row[3], key)
             if stored_password == user._password:
-                user = User(username=row[1], email=row[2], password=stored_password)
+                user = User(username=row[1], email=row[2],
+                            password=stored_password)
                 print(user)
                 return user
 
@@ -129,7 +131,8 @@ class Login(QObject):
         # Primero, comprobar si el nombre de usuario existe.
         if self._username is None:
             print("No existe usuario debe crear una cuenta")
-            self.userLoged.emit("No existe usuario debe crear una cuenta", None)
+            self.userLoged.emit(
+                "No existe usuario debe crear una cuenta", None)
             return
 
         if response:

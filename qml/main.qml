@@ -548,10 +548,15 @@ Window {
                         border.width: 0
                         anchors.fill: parent
 
-                        StackView {
+                        // StackView {
+                        //     id: stackView
+                        //     anchors.fill: parent
+                        //     initialItem: Qt.resolvedUrl("pages/clientPage.qml")
+                        // }
+                        Loader{
                             id: stackView
                             anchors.fill: parent
-                            initialItem: Qt.resolvedUrl("pages/clientPage.qml")
+                            source: Qt.resolvedUrl("pages/clientPage.qml")
                         }
                     }
 
