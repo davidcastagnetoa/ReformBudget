@@ -54,6 +54,44 @@ Item {
         layer.samples: progress.samples
         layer.effect: progress.enableDropShadow ? internal.dropShadow : null
 
+        Text {
+            id: textProgress
+            color: "#9da0a6"
+            text: progress.textShowValue ? parseInt(progress.value) + progress.text : progress.text
+            anchors.bottom: parent.bottom
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            anchors.bottomMargin: 80
+            font.pointSize: 25
+            font.family: "Titillium Web Extralight"
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+
+        Rectangle {
+            id: loadingBar
+            x: 98
+            y: 100
+            width: 75
+            height: 25
+            color: "#151d27"
+            radius: 12
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 55
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            Text {
+                id: text1
+                color: "#ffffff"
+                text: qsTr("Loading ...")
+                anchors.verticalCenter: parent.verticalCenter
+                font.pixelSize: 15
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.family: "Titillium Web Light"
+            }
+        }
+
         ShapePath{
             id: pathBG
             strokeColor: progress.bgStrokeColor
@@ -88,20 +126,26 @@ Item {
             }
         }
 
-        Text {
-            id: textProgress
-            text: progress.textShowValue ? parseInt(progress.value) + progress.text : progress.text
-            anchors.verticalCenter: parent.verticalCenter
+        Image {
+            id: image
+            x: 75
+            width: 190
+            height: 50
+            anchors.top: parent.top
+            source: "../../images/Anera Logo III.png"
+            sourceSize.height: 50
+            sourceSize.width: 190
+            anchors.topMargin: 65
             anchors.horizontalCenter: parent.horizontalCenter
-            color: progress.textColor
-            font.pointSize: progress.textSize
-            font.family: progress.textFontFamily
+            fillMode: Image.PreserveAspectFit
         }
+
+
     }
 }
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;height:250;width:250}
+    D{i:0;autoSize:true;height:250;width:250}D{i:5}D{i:11}
 }
 ##^##*/

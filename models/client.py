@@ -34,7 +34,7 @@ class ClientManager(QObject):
     @Slot(str, str, str, str, str, str)
     def createClient(self, name, address, email, city, zip_code, phone):
         if not name or not address or not phone:
-            self.clientValidated.emit("Ningún campo puede quedar vacío")
+            self.clientValidated.emit("Rellene todos los campos")
             return
         self._client.create_client(name, address, email, city, zip_code, phone)
         self.clientCreated.emit(name, address, email, city, zip_code, phone)

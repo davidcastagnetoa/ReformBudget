@@ -9,10 +9,10 @@ import QtQuick.Timeline 1.0
 Window {
     id: loginPage
     width: 366
-    height: 556
     visible: true
     color: "#00000000"
     // color: "#ffffff" // For Test
+    height: 556
     title: qsTr("Acceso")
 
     signal loginSuccessful()
@@ -46,8 +46,6 @@ Window {
         }
         function toogleSignIn_Up() {
             if(signUp == false){ // Modo Crear Cuenta
-                animationBg.running = true
-                animationWindow.running = true
                 lblSignInUp.text = "Ya tienes cuenta? Inicia sesion"
                 lblSignIn.text = "Crea una Cuenta"
                 lblCorpData.text = "Registra tus datos"
@@ -55,16 +53,10 @@ Window {
                 btnCreateUser.height = 40
                 btnLogin.visible = false
                 btnLogin.height = 0
-                rptTextPassword.visible = true
-                rptTextPassword.height = 40
-                rptTextPassword.anchors.bottomMargin = 6
-                textPassword.anchors.bottomMargin = 6
-                textEmail.visible = true
-                textEmail.height = 40
+                animationToggleRptTextPassword.running = true
                 signUp = true
+                loginPage.height = 616
             }else{ // Modo Iniciar Sesion
-                animationBg.running = true
-                animationWindow.running = true
                 lblSignInUp.text = "No tienes cuenta? Crea una cuenta"
                 lblSignIn.text = "Inicia Sesión"
                 lblCorpData.text = "Accede con tu usuario y contraseña"
@@ -72,25 +64,81 @@ Window {
                 btnCreateUser.height = 0
                 btnLogin.visible = true
                 btnLogin.height = 40
-                rptTextPassword.visible = false
-                rptTextPassword.height = 0
-                rptTextPassword.anchors.bottomMargin = 0
-                textPassword.anchors.bottomMargin = 0
-                textEmail.visible = false
-                textEmail.height = 0
+                animationToggleRptTextPassword.running = true
                 signUp = false
+                loginPage.height = 556
             }
         }
     }
 
+
+
+ParallelAnimation {
+    id: animationToggleRptTextPassword
+
     PropertyAnimation{
-           id: animationWindow
-           target: loginPage
-           property: "height"
-           to: if(signUp == false) return 616; else return 556
-           duration: 150
-           easing.type: Easing.InOutCubic
-       }
+        target: background
+        property: "height"
+        to: signUp ? 550 : 610
+        duration: 450
+        easing.type: Easing.InOutCirc
+    }
+    
+    PropertyAnimation{
+        target: rptTextPassword
+        property: "height"
+        to: if(signUp == false) return 40; else return 00
+        duration: 450
+        easing.type: Easing.InOutCirc
+    }
+
+     PropertyAnimation {
+        target: rptTextPassword
+        property: "anchors.bottomMargin"
+        to: signUp ? 0 : 6
+        duration: 450
+        easing.type: Easing.InOutCirc
+    }
+
+     PropertyAnimation {
+        target: rptTextPassword
+        property: "opacity"
+        to: signUp ? 0 : 1
+        duration: 450
+        easing.type: Easing.InOutCirc
+    }
+
+    PropertyAnimation{
+        target: textEmail
+        property: "height"
+        to: if(signUp == false) return 40; else return 00
+        duration: 450
+        easing.type: Easing.InOutCirc
+    }
+
+    PropertyAnimation{
+        target: textEmail
+        property: "opacity"
+        to: signUp ? 0 : 1
+        duration: 450
+        easing.type: Easing.InOutCirc
+    }
+
+     PropertyAnimation {
+        target: textPassword
+        property: "anchors.bottomMargin"
+        to: signUp ? 0 : 6
+        duration: 450
+        easing.type: Easing.InOutCirc
+    }
+
+}
+
+    
+
+
+
+
 
     Rectangle {
         id: background
@@ -121,15 +169,6 @@ Window {
         anchors.horizontalCenterOffset: 0
         anchors.horizontalCenter: parent.horizontalCenter
 
-       PropertyAnimation{
-           id: animationBg
-           target: background
-           property: "height"
-           to: if(signUp == false) return 610; else return 550
-           duration: 150
-           easing.type: Easing.InOutCubic
-       }
-
         DragHandler {
             onActiveChanged: if(active){
                 loginPage.startSystemMove()
@@ -140,8 +179,8 @@ Window {
             id: btnColapse
             width: 35
             btnIconSource: "../images/svg_icons/unlock-rounded.svg"
-            btnColorClicked: "#00ef68"
-            btnColorMouseOver: "#008337"
+            btnColorClicked: "#99f1ff"
+            btnColorMouseOver: "#6dacb6"
             anchors.left: parent.left
             anchors.top: parent.top
             btnColorDefault: "#00000000"
@@ -161,12 +200,12 @@ Window {
             text: "Button"
             anchors.right: parent.right
             anchors.top: parent.top
+            colorDefault: "#00000000"
             antialiasing: false
             anchors.rightMargin: 15
             anchors.topMargin: 15
-            colorPressed: "#00ef68"
-            colorMouseOver: "#008337"
-            colorDefault: "#00c859"
+            colorPressed: "#99f1ff"
+            colorMouseOver: "#6dacb6"
             onClicked: loginPage.close()
         }
 
@@ -190,8 +229,9 @@ Window {
             y: 236
             opacity: 1
             visible: true
-            text: "% Loading"
+            text: "%"
             anchors.verticalCenter: parent.verticalCenter
+            textFontFamily: "Titillium Web Light"
             enabled: false
             z: 0
             textSize: 18
@@ -207,8 +247,8 @@ Window {
             samples: 55
             dropShadowRadius: 8
             bgStrokeColor: "#151d27"
-            textColor: "#00c859"
-            progressColor: "#00c859"
+            textColor: "#00b9ec"
+            progressColor: "#436b70"
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
@@ -286,7 +326,7 @@ Window {
             y: 389
             height: 0
             opacity: 1
-            visible: false
+            visible: true
             anchors.bottom: textEmail.top
             colorDefault: "#161b22"
             font.family: "Titillium Web Light"
@@ -303,7 +343,7 @@ Window {
             y: 389
             height: 0
             opacity: 1
-            visible: false
+            visible: true
             anchors.bottom: lblSignInUp.top
             colorDefault: "#161b22"
             font.family: "Titillium Web Light"
@@ -329,9 +369,9 @@ Window {
             font.bold: false
             font.pointSize: 10
             anchors.bottomMargin: 7
-            colorDefault: "#00d15b"
-            colorPressed: "#00ef68"
-            colorMouseOver: "#008337"
+            colorDefault: "#6dacb6"
+            colorPressed: "#99f1ff"
+            colorMouseOver: "#6198a1"
             anchors.horizontalCenterOffset: 0
             anchors.horizontalCenter: parent.horizontalCenter
             onClicked: signupUser.create_user(textUsername.text, textEmail.text, textPassword.text, rptTextPassword.text)
@@ -349,7 +389,7 @@ Window {
                     } else {
                         console.log(message)
                         lblIncorrectLoginData.visible = true
-                        lblIncorrectLoginData.color = "#FF3535" // red
+                        lblIncorrectLoginData.color = "#FF7777" // red
                         lblIncorrectLoginData.text = message
                         hideLabelTimer.start()
                     }
@@ -367,14 +407,16 @@ Window {
             visible: true
             text: "Acceder"
             anchors.bottom: lblSignInUp.top
+            display: AbstractButton.TextBesideIcon
+            checked: false
             font.italic: false
-            font.family: "Titillium Web Regular"
-            font.bold: false
-            font.pointSize: 10
+            font.family: "Titillium Web Light"
+            font.bold: true
+            font.pointSize: 12
             anchors.bottomMargin: 7
-            colorDefault: "#00d15b"
-            colorPressed: "#00ef68"
-            colorMouseOver: "#008337"
+            colorDefault: "#6dacb6"
+            colorPressed: "#99f1ff"
+            colorMouseOver: "#6198a1"
             anchors.horizontalCenterOffset: 0
             anchors.horizontalCenter: parent.horizontalCenter
             onClicked: loginUser.user_login(textUsername.text, null, textPassword.text) // En model.user este consta de 3 atributos, pero solo se usan dos aqui
@@ -382,7 +424,7 @@ Window {
                 target: loginUser
                 // function onUserLogin(user, pass) {
                 function onUserLoged(user, pass) {
-                    if (user === "Access granted") {
+                    if (user === "Acceso concedido") {
                         lblIncorrectLoginData.visible = true
                         lblIncorrectLoginData.color = "#08FF00" // green
                         lblIncorrectLoginData.text = user
@@ -394,16 +436,16 @@ Window {
                         loginSuccessful()
                         visible = false
                     }
-                    else if (user === "No existe usuario debe crear una cuenta"){
+                    else if (user === "No existe usuario o debe crear una cuenta"){
                         console.log(user)
                         lblIncorrectLoginData.visible = true
-                        lblIncorrectLoginData.color = "#FF35F0"  // purple
+                        lblIncorrectLoginData.color = "#FF86FF"  // purple
                         lblIncorrectLoginData.text = user
                         hideLabelTimer.start()
                     } else {
                         console.log(user)
                         lblIncorrectLoginData.visible = true
-                        lblIncorrectLoginData.color = "#FF3535" // red
+                        lblIncorrectLoginData.color = "#FF7777" // red
                         lblIncorrectLoginData.text = "Usuario o Contaseña Incorrectos"
                         hideLabelTimer.start()
                     }
@@ -436,10 +478,10 @@ Window {
                 hoverEnabled: true
                 onClicked: internal.toogleSignIn_Up()
                 onEntered: {
-                    lblSignInUp.color = "#489EFF"
+                    lblSignInUp.color = "#0492c9" // turquoise
                 }
                 onExited: {
-                    lblSignInUp.color = "#F5F5F5"
+                    lblSignInUp.color = "#F5F5F5" // lightgrey
                 }
             }
 
@@ -527,7 +569,7 @@ Window {
             target: circularProgressBar
             property: "opacity"
             Keyframe {
-                frame: 1720
+                frame: 1719
                 value: 1
             }
 
@@ -818,7 +860,7 @@ Window {
             }
 
             Keyframe {
-                frame: 1501
+                frame: 1502
                 value: 250
             }
 
@@ -883,6 +925,44 @@ Window {
             Keyframe {
                 frame: 3307
                 value: 1
+            }
+        }
+
+        KeyframeGroup {
+            target: circularProgressBar
+            property: "progressColor"
+            Keyframe {
+                value: "#436b70"
+                frame: 0
+            }
+
+            Keyframe {
+                value: "#73b7c1"
+                frame: 1300
+            }
+
+            Keyframe {
+                value: "#99f1ff"
+                frame: 1500
+            }
+
+            Keyframe {
+                frame: 1720
+                value: "#99f1ff"
+            }
+        }
+
+        KeyframeGroup {
+            target: circularProgressBar
+            property: "textColor"
+            Keyframe {
+                value: "#00c859"
+                frame: 0
+            }
+
+            Keyframe {
+                value: "#00b9ec"
+                frame: 1719
             }
         }
     }

@@ -149,6 +149,6 @@ Button{
 }
 /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:3;height:60;width:250}
+    D{i:0;autoSize:true;formeditorZoom:4;height:60;width:250}
 }
 ##^##*/

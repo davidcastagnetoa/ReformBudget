@@ -20,10 +20,17 @@ Window {
     flags: Qt.Window | Qt.FramelessWindowHint
 
     // // PROPERTIES
+    property var buttonList: []
     property int windowStatus: 0
     property int windowMargin: 10
     property bool previewCollapse: false
     property int buttonCount: 2
+
+    Timer {
+        id: hideWarningTimer
+        interval: 2000  // 2 segundos
+        onTriggered: warningLabel.visible = false
+    }
 
     // INTERNAL FUNCTIONS
     QtObject{
@@ -50,7 +57,6 @@ Window {
                 restoreButton.btnIconSource = "../images/svg_icons/maximize_icon.svg"
             }
         }
-
         // If Maximized Restore
         function ifMaximizedRestore(){
             if(windowStatus == 1){
@@ -60,14 +66,12 @@ Window {
                 restoreButton.btnIconSource = "../images/svg_icons/maximize_icon.svg"
             }
         }
-
         // Restore Margins
         function restoreMargins(){
             windowStatus = 0
             windowMargin = 10
             restoreButton.btnIconSource = "../images/svg_icons/maximize_icon.svg"
         }
-
         // Toggle Preview right screen
         function collapsePreview(){
             if(previewCollapse == false){
@@ -78,6 +82,29 @@ Window {
                 tooglePreviewBtn.btnIconMirror = false
                 animationPreview.running = true
                 previewCollapse = false
+            }
+        }
+        // Create Client LeftMenuButtons
+        function createButton(name, address) {
+            var newButton = leftMenuBtnComponent.createObject(columnBtnClients);
+            if (newButton) {
+                newButton.text = name;
+                newButton.secondaryTextContent = address
+                buttonCount++;
+                newButton.tag = "leftMenuBtn" + buttonCount;
+                newButton.width = newButton.tag.width
+                newButton.clicked.connect(function() {
+                    // Itera sobre todos los botones y establece su propiedad isActiveMenu en false
+                    for (var i = 0; i < buttonList.length; i++) {
+                        buttonList[i].isActiveMenu = false;
+                    }
+                    // Establece el botón presionado en true
+                    newButton.isActiveMenu = true;
+                    // Agrega el nuevo botón a la lista buttonList
+                    buttonList.push(newButton);
+                });
+            } else {
+                console.error("Error al crear el botón desde leftMenuBtnComponent");
             }
         }
 
@@ -119,6 +146,7 @@ Window {
                 anchors.leftMargin: 0
 
                 ToggleBtnHamburger {
+                    btnColorClicked: "#99f1ff"
                     onClicked: animationMenu.running = true
                 }
 
@@ -196,7 +224,7 @@ Window {
                         width: 110
                         height: 35
                         color: "#ffffff"
-                        text: qsTr("Reform Budget")
+                        text: qsTr("Reform Budget -")
                         anchors.left: iconApp.right
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
@@ -260,6 +288,7 @@ Window {
                     MinimizeButton {
                         id: minimizeButton
                         height: 35
+                        btnColorClicked: "#6dacb6"
                         btnIconSource: "../images/svg_icons/minimize_icon.svg"
                         onClicked: {
                             mainWindow.showMinimized()
@@ -270,6 +299,7 @@ Window {
                     RestoreButton {
                         id: restoreButton
                         height: 35
+                        btnColorClicked: "#6dacb6"
                         btnIconSource: "../images/svg_icons/maximize_icon.svg"
                         onClicked: {
                             internal.maximizeRestore()
@@ -279,7 +309,7 @@ Window {
                     CloseButton {
                         id: closeButton
                         height: 35
-                        btnColorClicked: "#c82424"
+                        btnColorClicked: "#ff5555"
                         btnIconSource: "../images/svg_icons/close_icon.svg"
                         onClicked: {
                             mainWindow.close()
@@ -357,7 +387,7 @@ Window {
 
                 Rectangle {
                     id: leftMenu
-                    width: 200
+                    width: 70
                     color: "#161b22"
                     border.width: 0
                     anchors.left: parent.left
@@ -544,10 +574,198 @@ Window {
                     anchors.leftMargin: 0
 
                     Rectangle {
+                        id: customerDataContent
+                        height: 196
+                        color: "#00000000"
+                        anchors.left: parent.left
+                        anchors.right: contentPreview.left
+                        anchors.top: parent.top
+                        anchors.rightMargin: 0
+                        anchors.leftMargin: 0
+                        anchors.topMargin: 0
+
+                        Label {
+                            id: customerDataLbl
+                            color: "#ededed"
+                            text: qsTr("Customer Data")
+                            anchors.left: parent.left
+                            anchors.top: parent.top
+                            font.family: "Titillium Web Extralight"
+                            font.pointSize: 16
+                            anchors.leftMargin: 15
+                            anchors.topMargin: 10
+                        }
+
+                        Grid {
+                            id: customerData
+                            x: 0
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.top: customerDataLbl.bottom
+                            anchors.topMargin: 10
+                            anchors.rightMargin: 10
+                            anchors.leftMargin: 10
+                            spacing: 5
+                            rows: 2
+                            columns: 3
+
+
+                            CustomTextField{
+                                id: textName
+                                x: 0
+                                y: 0
+                                width: (customerData.width * 1/3) - 5
+                                font.family: "Titillium Web Light"
+                                font.pointSize: 9
+                                placeholderText: "Name"
+                            }
+
+                            CustomTextField{
+                                id: textAddress
+                                x: 246
+                                y: 0
+                                width: (customerData.width * 1/3) - 5
+                                font.family: "Titillium Web Light"
+                                font.pointSize: 9
+                                placeholderText: "Address"
+                            }
+
+                            CustomTextField{
+                                id: textPhone
+                                x: 492
+                                y: 0
+                                width: (customerData.width * 1/3) - 5
+                                font.family: "Titillium Web Light"
+                                font.pointSize: 9
+                                placeholderText: "Phone number"
+                            }
+
+                            CustomTextField{
+                                id: textEmailCustomer
+                                x: 0
+                                y: 47
+                                width: (customerData.width * 1/3) - 5
+                                font.family: "Titillium Web Light"
+                                font.pointSize: 9
+                                placeholderText: "Email"
+                            }
+
+                            CustomTextField{
+                                id: textCity
+                                x: 246
+                                y: 47
+                                width: (customerData.width * 1/3) - 5
+                                font.family: "Titillium Web Light"
+                                font.pointSize: 9
+                                placeholderText: "City"
+                            }
+
+                            CustomTextField{
+                                id: textZip
+                                x: 492
+                                y: 47
+                                width: (customerData.width * 1/3) - 5
+                                font.family: "Titillium Web Light"
+                                font.pointSize: 9
+                                placeholderText: "Zip"
+                            }
+
+
+                        }
+
+                        CustomButton{
+                            id: createCustomer
+                            y: 160
+                            width: 150
+                            height: 35
+                            text: "Add customer"
+                            anchors.left: parent.left
+                            anchors.bottom: parent.bottom
+                            anchors.leftMargin: 10
+                            anchors.bottomMargin: 10
+                            font.weight: Font.Light
+                            font.pointSize: 9
+                            colorDefault: "#6dacb6"
+                            colorPressed: "#99f1ff"
+                            colorMouseOver: "#5f969e"
+                            onClicked: {
+                                clientObj.createClient(textName.text, textAddress.text, textEmailCustomer.text, textCity.text, textZip.text, textPhone.text);
+                            }
+                            Connections {
+                                target: clientObj
+                                function onClientValidated(message){
+                                    warningLabel.visible = true
+                                    if (message == "Rellene todos los campos"){
+                                        warningLabel.text = message;
+                                        warningLabel.color = "#ffa0a0"
+                                    } else {
+                                        warningLabel.text = message;
+                                        warningLabel.color = "#99f1ff"
+                                    }
+
+                                    hideWarningTimer.restart()
+                                }
+                                function onClientCreated(name, address, mail, city, zip_code, phone) {
+                                    console.log(name)
+                                    console.log(address)
+                                    console.log(mail)
+                                    console.log(city)
+                                    console.log(zip_code)
+                                    console.log(phone)
+                                    Qt.callLater(function() {
+                                        internal.createButton(name, address);
+                                    });
+                                }
+                            }
+                        }
+
+                        Label {
+                            id: warningLabel
+                            color: "#ffa0a0"
+                            text: qsTr("mensaje de advertencia")
+                            anchors.left: createCustomer.right
+                            anchors.top: createCustomer.top
+                            anchors.bottom: createCustomer.bottom
+                            horizontalAlignment: Text.AlignLeft
+                            verticalAlignment: Text.AlignVCenter
+                            font.bold: true
+                            font.family: "Titillium Web Light"
+                            anchors.leftMargin: 15
+                            anchors.bottomMargin: 10
+                            anchors.topMargin: 10
+                            font.pointSize: 11
+                            visible: false
+                        }
+
+
+
+
+
+                    }
+
+                    // Separator
+                    Rectangle{
+                        id: separator
+                        height: 1
+                        color: "#bf2c333a"
+                        anchors.left: parent.left
+                        anchors.right: contentPreview.left
+                        anchors.top: customerDataContent.bottom
+                        anchors.topMargin: 0
+                        anchors.rightMargin: 0
+                        anchors.leftMargin: 0
+                    }
+
+                    Rectangle {
                         id: contentPages
                         color: "#00000000"
                         border.width: 0
-                        anchors.fill: parent
+                        anchors.left: parent.left
+                        anchors.right: contentPreview.left
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.rightMargin: 0
+                        anchors.topMargin: 201
 
                         // StackView {
                         //     id: stackView
@@ -558,6 +776,14 @@ Window {
                             id: stackView
                             anchors.fill: parent
                             source: Qt.resolvedUrl("pages/clientPage.qml")
+                        }
+                    }
+
+                    onWidthChanged: {
+                        if (previewCollapse) {
+                            contentPreview.width = 5;
+                        } else {
+                            contentPreview.width = contentArea.width * 2/5;
                         }
                     }
 
@@ -577,7 +803,8 @@ Window {
                             id: animationPreview
                             target: contentPreview
                             property: "width"
-                            to: if(contentPreview.width == contentArea.width * 2/5) return 35; else return contentArea.width * 2/5
+                            // to: if(contentPreview.width == contentArea.width * 2/5) return 35; else return contentArea.width * 2/5
+                            to: if(previewCollapse == false) return 5; else return (contentArea.width * 2/5)
                             duration: 450
                             easing.type: Easing.InOutCirc
                         }
@@ -586,6 +813,7 @@ Window {
                             id: tooglePreviewBtn
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.right: rightSide.left
+                            btnColorClicked: "#99f1ff"
                             btnColorMouseOver: "#0f141b"
                             clip: true
                             anchors.rightMargin: -5
@@ -606,7 +834,7 @@ Window {
                             anchors.right: parent.right
                             anchors.top: parent.top
                             anchors.bottom: parent.bottom
-                            anchors.leftMargin: 30
+                            anchors.leftMargin: 0
                             layer.wrapMode: ShaderEffectSource.ClampToEdge
                             scale: 1
                             transformOrigin: Item.Center
@@ -635,6 +863,9 @@ Window {
 
 
                     }
+
+
+
 
 
 
@@ -722,7 +953,7 @@ Window {
         anchors.bottom: parent.bottom
         anchors.leftMargin: 0
         anchors.bottomMargin: 10
-        anchors.topMargin: 10
+        anchors.topMargin: 0
         cursorShape: Qt.SizeHorCursor
 
         DragHandler{
@@ -767,6 +998,10 @@ Window {
     }
 
 }
+
+
+
+
 
 
 

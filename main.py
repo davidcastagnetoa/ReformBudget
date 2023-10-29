@@ -79,18 +79,18 @@ class Login(QObject):
         response = userData.login(user)
 
         if response == "user_not_found":
-            print("No existe usuario debe crear una cuenta")
+            print("No existe usuario o debe crear una cuenta")
             self.userLoged.emit(
                 "No existe usuario debe crear una cuenta", None)
             return
         elif response == "incorrect_password":
             print("Incorrect password!")
-            self.userLoged.emit("Incorrect password!", None)
+            self.userLoged.emit("Contraseña incorrecta!", None)
             return
         elif isinstance(response, User):
             print("user logged")
             self._username = username
-            self.userLoged.emit("Access granted", None)
+            self.userLoged.emit("Acceso concedido", None)
             self.loggedUsername = self._username
 
 
@@ -120,7 +120,7 @@ class signUp(QObject):
         # Aquí implementas la lógica para crear un usuario.
 
         if username == "" or password == "":
-            self.userCreated.emit("Ningún campo puede quedar vacío")
+            self.userCreated.emit("Rellene todos los campos")
             return
 
         if password != rptPassword:
@@ -198,7 +198,7 @@ if __name__ == "__main__":
     engine.rootContext().setContextProperty("signupUser", signup_userdata)
 
     # ARRANCANDO MOTORES DE VENTANA
-    # engine.load(os.path.join(os.path.dirname(__file__),"qml/main.qml"))   # Borrar en Producccion
+    # engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))   # Borrar en Producccion
     engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
 
     # ASIGNANDO a primera posicion VENTANA loginPage
