@@ -10,11 +10,11 @@ Button{
     property url btnIconSource: "../../images/svg_icons/home_icon.svg"
     property color btnColorDefault: "#0d1117"
     property color btnColorMouseOver: "#161b22"
-    property color btnColorClicked: "#003F1C"
+    property color btnColorClicked: "#6dacb6"
     property int iconWidth: 18
     property int iconHeight: 18
-    property color activeMenuColor: "#00C859"
-    property color activeMenuColorRight: "#00C859"
+    property color activeMenuColor: "#99f1ff"
+    property color activeMenuColorRight: "#99f1ff"
     property bool isActiveMenu: false
     property string secondaryTextContent: "Texto Secundario"
     QtObject{
@@ -63,9 +63,9 @@ Button{
                 left: parent.left
                 bottom: parent.bottom
             }
-            color: activeMenuColor
             width: 2
             visible: isActiveMenu
+            color: "#99f1ff"
         }
 
         Rectangle{

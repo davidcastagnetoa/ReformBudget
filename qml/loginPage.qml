@@ -23,6 +23,42 @@ Window {
     //PROPERTIES
     property bool windowCollapse: false
     property bool signUp: false
+    property bool isDarkMode: false
+    property url logoSourceW: "../images/Anera Solutions Logo W.png"
+    property url logoSourceB: "../images/Anera Solutions Logo B.png"
+    property url toggleDarkModelogoSourceW: "../images/svg_icons/png_icons_wanderson/bluedaynight.png"
+    property url toggleDarkModelogoSourceB: "../images/svg_icons/png_icons_wanderson/blackdaynight.png"
+    property color gradientStart : "#0d1117"
+    property color gradientEnd : "#000000"
+    property color textColor: "#dcdcdc"
+    property color textColorDay: "#111111"
+    property color textColorNight: "#dcdcdc"
+    property color textColorSecondary: "#a1a1a1"
+    property color textDayTurquoise: "#0492c9"
+    property color textNightTurquoise: "#007bff"
+    property color btnColorDefault: "#6dacb6"
+    property color btnColorMouseOver: "#6198a1"
+    property color btnColorClicked: "#99f1ff"
+    // InputField
+    property color colorOnFocusNight: "#202833"
+    property color colorMouseOverNight: "#293341"
+    property color colorDefaultNight: "#161b22"
+    property color placeholderTextColorNight: "#b1b4bf"
+    // InputField
+    property color colorOnFocusDay: "#ccd1d3"
+    property color colorMouseOverDay: "#d9d9d9" 
+    property color colorDefaultDay: "#ececec"
+    property color placeholderTextColorDay: "#111215"
+    //Button
+     property color colorDefaultBtnNight: "#0c1122"
+     property color colorPressedBtnNight: "#060810"
+     property color colorMouseOverBtnNight: "#111831"
+     property color textBtnColorNight: "#ffffff"
+    //Button
+     property color colorDefaultBtnDay: "#6dacb6"
+     property color colorPressedBtnDay: "#99f1ff"
+     property color colorMouseOverBtnDay: "#6198a1"
+     property color textBtnColorDay: "#000000"
 
     //TIMER
     Timer {
@@ -34,7 +70,6 @@ Window {
     // Internal Functions
     QtObject {
         id: internal
-
         function collapseWindow(window){
             if(windowCollapse == false){
                 btnColapse.btnIconSource = "../images/svg_icons/lock-rounded.svg"
@@ -69,75 +104,85 @@ Window {
                 loginPage.height = 556
             }
         }
+        function toggleDarkMode() {
+            if(isDarkMode == true){
+                gradientStart = "#0d1117"
+                gradientEnd = "#000000"
+                textColor = "#dcdcdc"
+                textColorSecondary = "#a1a1a1"
+                isDarkMode = false 
+            }else{
+                gradientStart = "#ffffff"
+                gradientEnd = "#d1d1d1"
+                textColor = "#111111"
+                textColorSecondary = "#323232"
+                isDarkMode = true 
+            }
+        }
     }
 
 
 
-ParallelAnimation {
-    id: animationToggleRptTextPassword
+    ParallelAnimation {
+        id: animationToggleRptTextPassword
 
-    PropertyAnimation{
-        target: background
-        property: "height"
-        to: signUp ? 550 : 610
-        duration: 450
-        easing.type: Easing.InOutCirc
+        PropertyAnimation{
+            target: background
+            property: "height"
+            to: signUp ? 550 : 610
+            duration: 450
+            easing.type: Easing.InOutCirc
+        }
+        
+        PropertyAnimation{
+            target: rptTextPassword
+            property: "height"
+            to: if(signUp == false) return 40; else return 00
+            duration: 450
+            easing.type: Easing.InOutCirc
+        }
+
+        PropertyAnimation {
+            target: rptTextPassword
+            property: "anchors.bottomMargin"
+            to: signUp ? 0 : 6
+            duration: 450
+            easing.type: Easing.InOutCirc
+        }
+
+        PropertyAnimation {
+            target: rptTextPassword
+            property: "opacity"
+            to: signUp ? 0 : 1
+            duration: 450
+            easing.type: Easing.InOutCirc
+        }
+
+        PropertyAnimation{
+            target: textEmail
+            property: "height"
+            to: if(signUp == false) return 40; else return 00
+            duration: 450
+            easing.type: Easing.InOutCirc
+        }
+
+        PropertyAnimation{
+            target: textEmail
+            property: "opacity"
+            to: signUp ? 0 : 1
+            duration: 450
+            easing.type: Easing.InOutCirc
+        }
+
+        PropertyAnimation {
+            target: textPassword
+            property: "anchors.bottomMargin"
+            to: signUp ? 0 : 6
+            duration: 450
+            easing.type: Easing.InOutCirc
+        }
+
     }
-    
-    PropertyAnimation{
-        target: rptTextPassword
-        property: "height"
-        to: if(signUp == false) return 40; else return 00
-        duration: 450
-        easing.type: Easing.InOutCirc
-    }
-
-     PropertyAnimation {
-        target: rptTextPassword
-        property: "anchors.bottomMargin"
-        to: signUp ? 0 : 6
-        duration: 450
-        easing.type: Easing.InOutCirc
-    }
-
-     PropertyAnimation {
-        target: rptTextPassword
-        property: "opacity"
-        to: signUp ? 0 : 1
-        duration: 450
-        easing.type: Easing.InOutCirc
-    }
-
-    PropertyAnimation{
-        target: textEmail
-        property: "height"
-        to: if(signUp == false) return 40; else return 00
-        duration: 450
-        easing.type: Easing.InOutCirc
-    }
-
-    PropertyAnimation{
-        target: textEmail
-        property: "opacity"
-        to: signUp ? 0 : 1
-        duration: 450
-        easing.type: Easing.InOutCirc
-    }
-
-     PropertyAnimation {
-        target: textPassword
-        property: "anchors.bottomMargin"
-        to: signUp ? 0 : 6
-        duration: 450
-        easing.type: Easing.InOutCirc
-    }
-
-}
-
-    
-
-
-
 
 
     Rectangle {
@@ -147,27 +192,24 @@ ParallelAnimation {
         width: 360 // Desplegado
         height: 550 // Desplegado
         opacity: 1
-        color: "#0d1117"
         radius: 9.9
         border.color: "#00000000"
         border.width: 1
         anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
         z: 1
         antialiasing: true
         gradient: Gradient {
             GradientStop {
                 position: 0
-                color: "#0d1117"
+                color: gradientStart
             }
 
             GradientStop {
                 position: 1
-                color: "#000000"
+                color: gradientEnd
             }
         }
-        anchors.verticalCenterOffset: 0
-        anchors.horizontalCenterOffset: 0
-        anchors.horizontalCenter: parent.horizontalCenter
 
         DragHandler {
             onActiveChanged: if(active){
@@ -181,15 +223,29 @@ ParallelAnimation {
             btnIconSource: "../images/svg_icons/unlock-rounded.svg"
             btnColorClicked: "#99f1ff"
             btnColorMouseOver: "#6dacb6"
-            anchors.left: parent.left
+            anchors.left: btnDayNight.right
             anchors.top: parent.top
             btnColorDefault: "#00000000"
-            anchors.leftMargin: 15
+            anchors.leftMargin: 0
             anchors.topMargin: 15
             onClicked: {
                 WindowManager.toggleAlwaysOnTop()
                 internal.collapseWindow()
             }
+        }
+
+        TopBarButton {
+            id: btnDayNight
+            width: 35
+            btnIconSource: isDarkMode ? toggleDarkModelogoSourceB : toggleDarkModelogoSourceW
+            btnColorClicked: "#99f1ff"
+            btnColorMouseOver: "#6dacb6"
+            anchors.left: parent.left
+            anchors.top: parent.top
+            btnColorDefault: "#00000000"
+            anchors.leftMargin: 15
+            anchors.topMargin: 15
+            onClicked: internal.toggleDarkMode()
         }
 
         CloseButton_login {
@@ -217,7 +273,7 @@ ParallelAnimation {
             height: 180
             opacity: 1
             anchors.bottom: lblSignIn.top
-            source: "../images/Anera Logo II.png"
+            source: isDarkMode ? logoSourceB : logoSourceW
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottomMargin: 15
             fillMode: Image.PreserveAspectFit
@@ -260,7 +316,7 @@ ParallelAnimation {
             width: 133
             height: 25
             opacity: 1
-            color: "#dcdcdc"
+            color: textColor
             text: qsTr("Inicia Sesión")
             anchors.bottom: lblCorpData.top
             horizontalAlignment: Text.AlignHCenter
@@ -278,7 +334,7 @@ ParallelAnimation {
             width: 300
             height: 18
             opacity: 1
-            color: "#dcdcdc"
+            color: textColor
             text: qsTr("Accede con tu usuario y contraseña")
             anchors.bottom: lblIncorrectLoginData.top
             font.pixelSize: 14
@@ -295,7 +351,10 @@ ParallelAnimation {
             y: 343
             opacity: 0
             anchors.bottom: textPassword.top
-            colorDefault: "#161b22"
+            placeholderTextColor: isDarkMode ? placeholderTextColorDay : placeholderTextColorNight
+            colorOnFocus: isDarkMode ? colorOnFocusDay : colorOnFocusNight
+            colorMouseOver: isDarkMode ? colorMouseOverDay: colorMouseOverNight
+            colorDefault: isDarkMode ? colorDefaultDay : colorDefaultNight
             font.family: "Titillium Web Light"
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
@@ -309,7 +368,10 @@ ParallelAnimation {
             y: 389
             opacity: 1
             anchors.bottom: rptTextPassword.top
-            colorDefault: "#161b22"
+            placeholderTextColor: isDarkMode ? placeholderTextColorDay : placeholderTextColorNight
+            colorOnFocus: isDarkMode ? colorOnFocusDay : colorOnFocusNight
+            colorMouseOver: isDarkMode ? colorMouseOverDay: colorMouseOverNight
+            colorDefault: isDarkMode ? colorDefaultDay : colorDefaultNight
             font.family: "Titillium Web Light"
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
@@ -328,7 +390,10 @@ ParallelAnimation {
             opacity: 1
             visible: true
             anchors.bottom: textEmail.top
-            colorDefault: "#161b22"
+            placeholderTextColor: isDarkMode ? placeholderTextColorDay : placeholderTextColorNight
+            colorOnFocus: isDarkMode ? colorOnFocusDay : colorOnFocusNight
+            colorMouseOver: isDarkMode ? colorMouseOverDay: colorMouseOverNight
+            colorDefault: isDarkMode ? colorDefaultDay : colorDefaultNight
             font.family: "Titillium Web Light"
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
@@ -345,7 +410,10 @@ ParallelAnimation {
             opacity: 1
             visible: true
             anchors.bottom: lblSignInUp.top
-            colorDefault: "#161b22"
+            placeholderTextColor: isDarkMode ? placeholderTextColorDay : placeholderTextColorNight
+            colorOnFocus: isDarkMode ? colorOnFocusDay : colorOnFocusNight
+            colorMouseOver: isDarkMode ? colorMouseOverDay: colorMouseOverNight
+            colorDefault: isDarkMode ? colorDefaultDay : colorDefaultNight
             font.family: "Titillium Web Light"
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
@@ -369,9 +437,10 @@ ParallelAnimation {
             font.bold: false
             font.pointSize: 10
             anchors.bottomMargin: 7
-            colorDefault: "#6dacb6"
-            colorPressed: "#99f1ff"
-            colorMouseOver: "#6198a1"
+            textBtnColor: isDarkMode ? textBtnColorNight : textBtnColorDay
+            colorDefault: isDarkMode ? colorDefaultBtnNight : colorDefaultBtnDay
+            colorPressed: isDarkMode ? colorPressedBtnNight : colorPressedBtnDay
+            colorMouseOver: isDarkMode ? colorMouseOverBtnNight : colorMouseOverBtnDay
             anchors.horizontalCenterOffset: 0
             anchors.horizontalCenter: parent.horizontalCenter
             onClicked: signupUser.create_user(textUsername.text, textEmail.text, textPassword.text, rptTextPassword.text)
@@ -414,9 +483,10 @@ ParallelAnimation {
             font.bold: true
             font.pointSize: 12
             anchors.bottomMargin: 7
-            colorDefault: "#6dacb6"
-            colorPressed: "#99f1ff"
-            colorMouseOver: "#6198a1"
+            textBtnColor: isDarkMode ? textBtnColorNight : textBtnColorDay
+            colorDefault: isDarkMode ? colorDefaultBtnNight : colorDefaultBtnDay
+            colorPressed: isDarkMode ? colorPressedBtnNight : colorPressedBtnDay
+            colorMouseOver: isDarkMode ? colorMouseOverBtnNight : colorMouseOverBtnDay
             anchors.horizontalCenterOffset: 0
             anchors.horizontalCenter: parent.horizontalCenter
             onClicked: loginUser.user_login(textUsername.text, null, textPassword.text) // En model.user este consta de 3 atributos, pero solo se usan dos aqui
@@ -455,11 +525,12 @@ ParallelAnimation {
 
         Label {
             id: lblSignInUp
+            property bool isMouseOver: false
+
             y: 606
             height: 15
             opacity: 1
             visible: true
-            color: "#F5F5F5"
             text: qsTr("No tienes cuenta? Crea una cuenta")
             anchors.left: parent.left
             anchors.right: parent.right
@@ -473,15 +544,20 @@ ParallelAnimation {
             anchors.rightMargin: 30
             font.family: "Titillium Web Light"
             font.pointSize: 10
+            color: if (isMouseOver) {
+                        return isDarkMode ? textNightTurquoise : textDayTurquoise
+                    } else {
+                        return isDarkMode ? textColorDay : textColorNight
+                    }
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked: internal.toogleSignIn_Up()
                 onEntered: {
-                    lblSignInUp.color = "#0492c9" // turquoise
+                    lblSignInUp.isMouseOver = true
                 }
                 onExited: {
-                    lblSignInUp.color = "#F5F5F5" // lightgrey
+                    lblSignInUp.isMouseOver = false
                 }
             }
 
@@ -516,7 +592,7 @@ ParallelAnimation {
             y: 522
             height: 13
             opacity: 1
-            color: "#a1a1a1"
+            color: textColorSecondary
             text: qsTr("v0.1.0 - David Castagneto - 2023 ©")
             anchors.right: parent.right
             anchors.bottom: parent.bottom
@@ -894,7 +970,26 @@ ParallelAnimation {
             target: btnColapse
             property: "opacity"
             Keyframe {
-                frame: 2600
+                frame: 3500
+                value: 1
+            }
+
+            Keyframe {
+                frame: 2100
+                value: 0
+            }
+
+            Keyframe {
+                frame: 0
+                value: 0
+            }
+        }
+
+        KeyframeGroup {
+            target: btnDayNight
+            property: "opacity"
+            Keyframe {
+                frame: 3500
                 value: 1
             }
 
@@ -968,6 +1063,8 @@ ParallelAnimation {
     }
 
 }
+
+
 
 
 

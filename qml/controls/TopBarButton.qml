@@ -40,7 +40,6 @@ Button {
             source: btnIconSource
             sourceSize.height: 35
             sourceSize.width: 35
-            mirror: false
             autoTransform: false
             asynchronous: false
             anchors.verticalCenter: parent.verticalCenter
@@ -53,9 +52,7 @@ Button {
         ColorOverlay {
             anchors.fill: iconBtn
             source: iconBtn
-            color: "#ffffff"
             antialiasing: true
-
         }
     }
 }
