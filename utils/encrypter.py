@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+
+load_dotenv()
 import os
 import platform
 import hashlib
@@ -46,7 +49,8 @@ def decryptedPassword(encrypted_message, key):
 
 
 # Ejecutamos la funcion de crear llave en caso de no existir
+# Cargamos la llave de encriptacion
 KEY = os.getenv("KEY")
-your_key_word = KEY if KEY else "Default_word"
+your_key_word = KEY
 if not os.path.exists(os.path.abspath("pylon.key")):
     generate_key(your_key_word)
