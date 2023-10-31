@@ -12,7 +12,7 @@ Window {
     color: "#00000000"
     title: qsTr("Reform Budget")
 
-    //Custom Properties
+    // Custom Properties
     property string username
     property alias mainWindow: mainWindow
 
@@ -25,6 +25,8 @@ Window {
     property int windowMargin: 10
     property bool previewCollapse: false
     property int buttonCount: 2
+    property int userID: (signupUser && signupUser.userId !== null) ? signupUser.userId : loginUser.userId
+
 
     Timer {
         id: hideWarningTimer
@@ -258,7 +260,6 @@ Window {
                         id: labelUsername
                         width: 350
                         color: "#ffffff"
-                        // text: loginUser.loggedUsername || signupUser.loggedUsername
                         text: (signupUser && signupUser.loggedUsername) ? signupUser.loggedUsername : loginUser.loggedUsername
                         anchors.left: labelWelcome.right
                         anchors.top: parent.top
@@ -689,7 +690,7 @@ Window {
                             colorPressed: "#99f1ff"
                             colorMouseOver: "#5f969e"
                             onClicked: {
-                                clientObj.createClient(textName.text, textAddress.text, textEmailCustomer.text, textCity.text, textZip.text, textPhone.text);
+                                clientObj.createClient(textName.text, textAddress.text, textEmailCustomer.text, textCity.text, textZip.text, textPhone.text, userID);
                             }
                             Connections {
                                 target: clientObj
@@ -705,13 +706,14 @@ Window {
 
                                     hideWarningTimer.restart()
                                 }
-                                function onClientCreated(name, address, mail, city, zip_code, phone) {
+                                function onClientCreated(name, address, mail, city, zip_code, phone, user_id) {
                                     console.log(name)
                                     console.log(address)
                                     console.log(mail)
                                     console.log(city)
                                     console.log(zip_code)
                                     console.log(phone)
+                                    console.log(user_id)
                                     Qt.callLater(function() {
                                         internal.createButton(name, address);
                                     });

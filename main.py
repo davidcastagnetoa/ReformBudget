@@ -6,9 +6,12 @@ import os
 from utils.encrypter import generate_key, load_key, encriptedPassword
 from PySide2.QtGui import QGuiApplication, QIcon
 from PySide2.QtQml import QQmlApplicationEngine
-from models.client import ClientManager
+
+# from models.client import ClientManager
 from data.user import UserData
+from data.client import ClientData
 from models.user import User
+from models.client import Client
 from connection import ConnectionDB
 from dotenv import load_dotenv
 
@@ -27,15 +30,6 @@ env_file = ".env"
 if not os.path.exists(env_file):
     createLocalEnv()
 
-
-# # Define tu llave para encriptar las contraseñas
-# KEY = os.getenv("KEY")
-# your_key_word = KEY if KEY else "Default_word"
-# if not os.path.exists(os.path.abspath("pylon.key")):
-#     generate_key(your_key_word)
-# assert os.path.exists("pylon.key"), "El archivo pylon.key no fue creado"
-
-
 # Carga la clave
 key = load_key()
 
@@ -51,14 +45,26 @@ if not os.path.exists("users.db"):
 class Login(QObject):
     userLoged = Signal(str, str)
     loggedUsernameChanged = Signal()
+    userIdChanged = Signal(int)  # Nueva señal para user_id
 
     def __init__(self, parent=None):
         super(Login, self).__init__(parent)
-        self._username = ""  # Esta es la variable con la que se compara, guardada en DB
-        self._password = ""  # Esta es la variable con la que se compara, guardada en DB
+        self._username = ""
+        self._password = ""
         self._loggedUsername = ""
+        self._userId = None  # Nueva variable para guardar el user_id
 
-    # Asigna el nombre de usuario a la señal loggedUsernameChanged
+    # Property para el user_id
+    @Property(int, notify=userIdChanged)
+    def userId(self):
+        return self._userId
+
+    @userId.setter
+    def userId(self, value):
+        if self._userId != value:
+            self._userId = value
+            self.userIdChanged.emit()
+
     @Property(str, notify=loggedUsernameChanged)
     def loggedUsername(self):
         return self._loggedUsername
@@ -69,43 +75,49 @@ class Login(QObject):
             self._loggedUsername = value
             self.loggedUsernameChanged.emit()
 
-    # Emita la señal userLoged
     @Slot(str, str)
-    # los argumentos username y password aqui son los que recibe de LoginPage.qml
     def user_login(self, username, password):
-        # Catch user and password from DB
-        user = User(
-            username, None, password
-        )  # Requiere 3 parametros username, email, password (ver en models.user.py), pero solo necesita dos
+        user = User(username, None, password)
         userData = UserData()
         response = userData.login(user)
 
         if response == "user_not_found":
-            print("No existe usuario o debe crear una cuenta")
             self.userLoged.emit("No existe usuario debe crear una cuenta", None)
             return
         elif response == "incorrect_password":
-            print("Incorrect password!")
             self.userLoged.emit("Contraseña incorrecta!", None)
             return
         elif isinstance(response, User):
-            print("user logged")
             self._username = username
+            self._userId = response._id  # Ahora sí, debería existir este atributo
             self.userLoged.emit("Acceso concedido", None)
             self.loggedUsername = self._username
+            self.userId = (
+                self._userId
+            )  # Actualizar y emitir la nueva señal userIdChanged
 
 
-# Clase para creacion de usuarios, en PRODUCCIÓN guardará credenciales de DB
+# Clase para creacion de usuarios
 class signUp(QObject):
-    # Esta señal se emitirá después de crear el usuario
     userCreated = Signal(str)
     loggedUsernameChanged = Signal()
+    userIdChanged = Signal(int)  # Nueva señal para user_id
 
     def __init__(self, parent=None):
         super(signUp, self).__init__(parent)
         self._loggedUsername = ""
+        self._userId = None  # Nueva variable para guardar el user_id
 
-    # Asigna el nombre de usuario a la señal loggedUsernameChanged
+    @Property(int, notify=userIdChanged)
+    def userId(self):
+        return self._userId
+
+    @userId.setter
+    def userId(self, value):
+        if self._userId != value:
+            self._userId = value
+            self.userIdChanged.emit()
+
     @Property(str, notify=loggedUsernameChanged)
     def loggedUsername(self):
         return self._loggedUsername
@@ -150,8 +162,52 @@ class signUp(QObject):
             print("Error al crear el usuario")
             return
 
+        self._userId = user._id  # Asigna el ID del usuario
+        self.userId = self._userId  # Actualizar y emitir la nueva señal userIdChanged
+
         # Finalmente, emites la señal userCreated correcta
         self.userCreated.emit("User created successfull")
+
+
+# Clase para la creacion de clientes
+class ClientManager(QObject):
+    # Señal que emite el nombre, direccion, email, ciudad, cp, y telefono del cliente
+    clientCreated = Signal(str, str, str, str, str, str, int)
+    clientValidated = Signal(str)
+
+    def __init__(self, parent=None):
+        super(ClientManager, self).__init__(parent)
+        self._client = Client()  # Instancia vacía de cliente.
+
+    # # Función para crear un nuevo cliente y emitir la señal
+    @Slot(str, str, str, str, str, str, int)
+    def createClient(self, name, address, email, city, zip_code, phone, user_id):
+        if (
+            not name
+            or not address
+            or not email
+            or not city
+            or not zip_code
+            or not phone
+        ):
+            self.clientValidated.emit("Rellene todos los campos")
+            return
+
+        clientData = ClientData()
+        client = clientData.create_Client(
+            Client(name, address, email, city, zip_code, phone, user_id), user_id
+        )
+
+        if client is None:
+            self.userCreated.emit("Error al crear el cliente")
+            print("Error al crear el cliente")
+            return
+
+        self._client.create_clients(
+            name, address, email, city, zip_code, phone, user_id
+        )
+        self.clientCreated.emit(name, address, email, city, zip_code, phone, user_id)
+        self.clientValidated.emit("Cliente creado")
 
 
 # Clase para control de ventanas

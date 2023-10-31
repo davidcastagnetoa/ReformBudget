@@ -2,7 +2,17 @@ from PySide2.QtCore import QObject, Signal, Slot
 
 
 class Client(QObject):
-    def __init__(self, name="", address="", email="", city="", zip_code="", phone="", parent=None):
+    def __init__(
+        self,
+        name="",
+        address="",
+        email="",
+        city="",
+        zip_code="",
+        phone="",
+        user_id=None,
+        parent=None,
+    ):
         super(Client, self).__init__(parent)  # Inicializa el QObject
         self._name = name
         self._address = address
@@ -10,35 +20,57 @@ class Client(QObject):
         self._city = city
         self._zip_code = zip_code
         self._phone = phone
+        self._user_id = user_id
 
     # Método para crear el cliente
-    def create_client(self, name, address, email, city, zip_code, phone):
+    def create_clients(self, name, address, email, city, zip_code, phone, user_id):
         self._name = name
         self._address = address
         self._email = email
         self._city = city
         self._zip_code = zip_code
         self._phone = phone
+        self._user_id = user_id
 
 
-class ClientManager(QObject):
-    # Señal que emite el nombre, direccion, email, ciudad, cp, y telefono del cliente
-    clientCreated = Signal(str, str, str, str, str, str)
-    clientValidated = Signal(str)
+# class ClientManager(QObject):
+#     # Señal que emite el nombre, direccion, email, ciudad, cp, y telefono del cliente
+#     clientCreated = Signal(str, str, str, str, str, str, int)
+#     clientValidated = Signal(str)
 
-    def __init__(self, parent=None):
-        super(ClientManager, self).__init__(parent)
-        self._client = Client()  # Instancia vacía de cliente.
+#     def __init__(self, parent=None):
+#         super(ClientManager, self).__init__(parent)
+#         self._client = Client()  # Instancia vacía de cliente.
 
-    # # Función para crear un nuevo cliente y emitir la señal
-    @Slot(str, str, str, str, str, str)
-    def createClient(self, name, address, email, city, zip_code, phone):
-        if not name or not address or not phone:
-            self.clientValidated.emit("Rellene todos los campos")
-            return
-        self._client.create_client(name, address, email, city, zip_code, phone)
-        self.clientCreated.emit(name, address, email, city, zip_code, phone)
-        self.clientValidated.emit("Cliente creado")
+#     # # Función para crear un nuevo cliente y emitir la señal
+#     @Slot(str, str, str, str, str, str, int)
+#     def createClient(self, name, address, email, city, zip_code, phone, user_id):
+#         if (
+#             not name
+#             or not address
+#             or not email
+#             or not city
+#             or not zip_code
+#             or not phone
+#         ):
+#             self.clientValidated.emit("Rellene todos los campos")
+#             return
+
+#         clientData = ClientData()
+#         client = clientData.create_Client(
+#             Client(name, address, email, city, zip_code, phone, user_id), user_id
+#         )
+
+#         if client is None:
+#             self.userCreated.emit("Error al crear el cliente")
+#             print("Error al crear el cliente")
+#             return
+
+#         self._client.create_clients(
+#             name, address, email, city, zip_code, phone, user_id
+#         )
+#         self.clientCreated.emit(name, address, email, city, zip_code, phone, user_id)
+#         self.clientValidated.emit("Cliente creado")
 
 
 # class Client:

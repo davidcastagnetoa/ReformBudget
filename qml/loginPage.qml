@@ -517,7 +517,7 @@ Window {
             colorMouseOver: isDarkMode ? colorMouseOverBtnNight : colorMouseOverBtnDay
             anchors.horizontalCenterOffset: 0
             anchors.horizontalCenter: parent.horizontalCenter
-            onClicked: loginUser.user_login(textUsername.text, null, textPassword.text) // En model.user este consta de 3 atributos, pero solo se usan dos aqui
+            onClicked: loginUser.user_login(textUsername.text, textPassword.text) // En model.user este consta de 3 atributos, pero solo se usan dos aqui
             Connections {
                 target: loginUser
                 // function onUserLogin(user, pass) {

@@ -129,3 +129,38 @@ Item {
         }
     }
 }
+property var userID = (signupUser && signupUser.userId) ? signupUser.userId : loginUser.userId
+
+CustomButton{
+    id: createCustomer
+    onClicked: {
+        clientObj.createClient(textName.text, textAddress.text, textEmailCustomer.text, textCity.text, textZip.text, textPhone.tex, userID);
+    }
+    Connections {
+        target: clientObj
+        function onClientValidated(message){
+            warningLabel.visible = true
+            if (message == "Rellene todos los campos"){
+                warningLabel.text = message;
+                warningLabel.color = "#ffa0a0"
+            } else {
+                warningLabel.text = message;
+                warningLabel.color = "#99f1ff"
+            }
+
+            hideWarningTimer.restart()
+        }
+        function onClientCreated(name, address, mail, city, zip_code, phone, user_id) {
+            console.log(name)
+            console.log(address)
+            console.log(mail)
+            console.log(city)
+            console.log(zip_code)
+            console.log(phone)
+            console.log(user_id)
+            Qt.callLater(function() {
+                internal.createButton(name, address);
+            });
+        }
+    }
+}

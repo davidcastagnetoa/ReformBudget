@@ -27,6 +27,7 @@ class ConnectionDB:
 
     def init_db(self):  # Nuevo método para inicializar la base de datos
         self.createTable()
+        self.createClientsTable()
 
     # Crea la tabla de la DB si no existe
     def createTable(self):
@@ -43,12 +44,30 @@ class ConnectionDB:
         cur.close()
         self.createAdmin()  # Crea el usuario adminnistrador
 
+    # Crea la tabla de clientes
+    def createClientsTable(self):
+        sql_create_clients_table = """
+        CREATE TABLE IF NOT EXISTS clients(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        address TEXT,
+        email TEXT,
+        city TEXT,
+        zip_code INTEGER,
+        phone INTEGER,
+        user_id INTEGER,
+        FOREIGN KEY(user_id) REFERENCES users(id)
+        )
+        """
+        cur = self.con.cursor()
+        cur.execute(sql_create_clients_table)
+        cur.close()
+
     # Crea el usuario administrador si ya existe lanza excepcion
     def createAdmin(self):
         cur = self.con.cursor()
         # Verifica si el usuario administrador ya existe
-        cur.execute("SELECT * FROM users WHERE username = ?",
-                    (ADMIN_USERNAME,))
+        cur.execute("SELECT * FROM users WHERE username = ?", (ADMIN_USERNAME,))
         if cur.fetchone():
             print(f"El usuario administrador {ADMIN_USERNAME} ya existe")
             cur.close()
@@ -58,8 +77,9 @@ class ConnectionDB:
             sql_insert = """
             INSERT INTO users(username, email, password) values(?, ?, ?)
             """
-            cur.execute(sql_insert, (ADMIN_USERNAME, ADMIN_EMAIL,
-                        encriptAdminPass))  # Pasa los valores aquí
+            cur.execute(
+                sql_insert, (ADMIN_USERNAME, ADMIN_EMAIL, encriptAdminPass)
+            )  # Pasa los valores aquí
             self.con.commit()
             print("Usuario creado")
             cur.close()
