@@ -83,7 +83,7 @@ main.pyproject.user
 main.pyproject
 
 # key
-pylon.key
+*.key
 
 .vscode
 *.db
