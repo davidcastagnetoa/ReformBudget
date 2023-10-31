@@ -25,12 +25,22 @@ Window {
     property int windowMargin: 10
     property bool previewCollapse: false
     property int buttonCount: 2
-    property int userID: (signupUser && signupUser.userId !== null) ? signupUser.userId : loginUser.userId
+
+    property int userID: {
+        console.log("loginUser.userId: ", loginUser && loginUser.userId);
+        console.log("signupUser.userId: ", signupUser && signupUser.userId);
+        if (loginUser && loginUser.userId > 0) {
+            return loginUser.userId;
+        }
+        if (signupUser && signupUser.userId > 0) {
+            return signupUser.userId;
+        }
+    }
 
 
     Timer {
         id: hideWarningTimer
-        interval: 2000  // 2 segundos
+        interval: 2500  // 2 segundos
         onTriggered: warningLabel.visible = false
     }
 
@@ -690,6 +700,7 @@ Window {
                             colorPressed: "#99f1ff"
                             colorMouseOver: "#5f969e"
                             onClicked: {
+                                console.log("userID es: ", userID)
                                 clientObj.createClient(textName.text, textAddress.text, textEmailCustomer.text, textCity.text, textZip.text, textPhone.text, userID);
                             }
                             Connections {

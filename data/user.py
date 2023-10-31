@@ -26,6 +26,7 @@ class UserData:
         user = User(
             username=row[1], email=row[2], password=stored_password, user_id=row[0]
         )
+        print("El userId en el objeto usuario UserData y metodo Login es: ", user._id)
         return user
 
     def user_Exists(self, username):
@@ -58,4 +59,8 @@ class UserData:
         self.cursor.close()
         self.db.close()
         user._id = user_id
+        print(
+            "El userId en el objeto usuario UserData y metodo create_User es: ",
+            user._id,
+        )
         return user

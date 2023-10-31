@@ -89,12 +89,14 @@ class Login(QObject):
             return
         elif isinstance(response, User):
             self._username = username
-            self._userId = response._id  # Ahora sí, debería existir este atributo
+            self._userId = response._id
+            print("El userId obtenido la clase Login es: ", self._userId)
             self.userLoged.emit("Acceso concedido", None)
             self.loggedUsername = self._username
             self.userId = (
                 self._userId
             )  # Actualizar y emitir la nueva señal userIdChanged
+            print("El userId obtenido la clase Login es: ", self.userId)
 
 
 # Clase para creacion de usuarios
@@ -163,7 +165,9 @@ class signUp(QObject):
             return
 
         self._userId = user._id  # Asigna el ID del usuario
+        print("El userId obtenido la clase signUp es: ", self._userId)
         self.userId = self._userId  # Actualizar y emitir la nueva señal userIdChanged
+        print("El userId obtenido la clase signUp es: ", self.userId)
 
         # Finalmente, emites la señal userCreated correcta
         self.userCreated.emit("User created successfull")

@@ -129,12 +129,13 @@ Item {
         }
     }
 }
-property var userID = (signupUser && signupUser.userId) ? signupUser.userId : loginUser.userId
+property int userID: (signupUser && signupUser.userId !== null) ? signupUser.userId : loginUser.userId
 
 CustomButton{
     id: createCustomer
     onClicked: {
-        clientObj.createClient(textName.text, textAddress.text, textEmailCustomer.text, textCity.text, textZip.text, textPhone.tex, userID);
+        console.log("userID es: ", userID)
+        clientObj.createClient(textName.text, textAddress.text, textEmailCustomer.text, textCity.text, textZip.text, textPhone.text, userID);
     }
     Connections {
         target: clientObj
