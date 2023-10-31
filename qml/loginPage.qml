@@ -28,6 +28,14 @@ Window {
     property url logoSourceB: "../images/Anera Solutions Logo B.png"
     property url toggleDarkModelogoSourceW: "../images/svg_icons/png_icons_wanderson/bluedaynight.png"
     property url toggleDarkModelogoSourceB: "../images/svg_icons/png_icons_wanderson/blackdaynight.png"
+    property url onTopButtonLogoB: "../images/svg_icons/png_icons_wanderson/forward-B.png"
+    property url onTopButtonLogoW: "../images/svg_icons/png_icons_wanderson/forward.png"
+    property url onDownButtonLogoB: "../images/svg_icons/png_icons_wanderson/backward.png"
+    property url onDownButtonLogoW: "../images/svg_icons/png_icons_wanderson/backward-W.png"
+    //Close button
+    property url closeBtnIconSourceW: "../images/svg_icons/png_icons_wanderson/close_icon.png"
+    property url closeBtnIconSourceB: "../images/svg_icons/png_icons_wanderson/close_icon-B.png"
+    // Bg
     property color gradientStart : "#0d1117"
     property color gradientEnd : "#000000"
     property color textColor: "#dcdcdc"
@@ -44,11 +52,17 @@ Window {
     property color colorMouseOverNight: "#293341"
     property color colorDefaultNight: "#161b22"
     property color placeholderTextColorNight: "#b1b4bf"
+    property color textColorInputNight: "#ffffff"
+    property color selectedTextColorInputNight: "#ffffff"
+    property color selectionColorInputNight: "#99f1ff"
     // InputField
     property color colorOnFocusDay: "#ccd1d3"
     property color colorMouseOverDay: "#d9d9d9" 
     property color colorDefaultDay: "#ececec"
     property color placeholderTextColorDay: "#111215"
+    property color textColorInputDay: "#000000"
+    property color selectedTextColorInputDay: "#000000"
+    property color selectionColorInputDay: "#161b22"
     //Button
      property color colorDefaultBtnNight: "#0c1122"
      property color colorPressedBtnNight: "#060810"
@@ -70,14 +84,15 @@ Window {
     // Internal Functions
     QtObject {
         id: internal
-        function collapseWindow(window){
-            if(windowCollapse == false){
-                btnColapse.btnIconSource = "../images/svg_icons/lock-rounded.svg"
-                windowCollapse = true
-            }else{
-                btnColapse.btnIconSource = "../images/svg_icons/unlock-rounded.svg"
-                windowCollapse = false
+        function getButtonIcon() {
+            if (windowCollapse) {
+                return isDarkMode ? onTopButtonLogoB : onTopButtonLogoW;
+            } else {
+                return isDarkMode ? onDownButtonLogoB : onDownButtonLogoW;
             }
+        }
+        function collapseWindow(){
+            windowCollapse = !windowCollapse;
         }
         function toogleSignIn_Up() {
             if(signUp == false){ // Modo Crear Cuenta
@@ -220,7 +235,7 @@ Window {
         TopBarButton {
             id: btnColapse
             width: 35
-            btnIconSource: "../images/svg_icons/unlock-rounded.svg"
+            btnIconSource: internal.getButtonIcon()
             btnColorClicked: "#99f1ff"
             btnColorMouseOver: "#6dacb6"
             anchors.left: btnDayNight.right
@@ -254,6 +269,7 @@ Window {
             y: 15
             opacity: 0
             text: "Button"
+            btnIconSource: isDarkMode ? closeBtnIconSourceB : closeBtnIconSourceW
             anchors.right: parent.right
             anchors.top: parent.top
             colorDefault: "#00000000"
@@ -351,10 +367,13 @@ Window {
             y: 343
             opacity: 0
             anchors.bottom: textPassword.top
+            color: isDarkMode ? textColorInputDay : textColorInputNight
             placeholderTextColor: isDarkMode ? placeholderTextColorDay : placeholderTextColorNight
             colorOnFocus: isDarkMode ? colorOnFocusDay : colorOnFocusNight
             colorMouseOver: isDarkMode ? colorMouseOverDay: colorMouseOverNight
             colorDefault: isDarkMode ? colorDefaultDay : colorDefaultNight
+            selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
+            selectionColor: isDarkMode ? selectionColorInputDay : selectionColorInputNight
             font.family: "Titillium Web Light"
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
@@ -368,10 +387,13 @@ Window {
             y: 389
             opacity: 1
             anchors.bottom: rptTextPassword.top
+            color: isDarkMode ? textColorInputDay : textColorInputNight
             placeholderTextColor: isDarkMode ? placeholderTextColorDay : placeholderTextColorNight
             colorOnFocus: isDarkMode ? colorOnFocusDay : colorOnFocusNight
             colorMouseOver: isDarkMode ? colorMouseOverDay: colorMouseOverNight
             colorDefault: isDarkMode ? colorDefaultDay : colorDefaultNight
+            selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
+            selectionColor: isDarkMode ? selectionColorInputDay : selectionColorInputNight
             font.family: "Titillium Web Light"
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
@@ -390,10 +412,13 @@ Window {
             opacity: 1
             visible: true
             anchors.bottom: textEmail.top
+            color: isDarkMode ? textColorInputDay : textColorInputNight
             placeholderTextColor: isDarkMode ? placeholderTextColorDay : placeholderTextColorNight
             colorOnFocus: isDarkMode ? colorOnFocusDay : colorOnFocusNight
             colorMouseOver: isDarkMode ? colorMouseOverDay: colorMouseOverNight
             colorDefault: isDarkMode ? colorDefaultDay : colorDefaultNight
+            selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
+            selectionColor: isDarkMode ? selectionColorInputDay : selectionColorInputNight
             font.family: "Titillium Web Light"
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
@@ -410,10 +435,13 @@ Window {
             opacity: 1
             visible: true
             anchors.bottom: lblSignInUp.top
+            color: isDarkMode ? textColorInputDay : textColorInputNight
             placeholderTextColor: isDarkMode ? placeholderTextColorDay : placeholderTextColorNight
             colorOnFocus: isDarkMode ? colorOnFocusDay : colorOnFocusNight
             colorMouseOver: isDarkMode ? colorMouseOverDay: colorMouseOverNight
             colorDefault: isDarkMode ? colorDefaultDay : colorDefaultNight
+            selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
+            selectionColor: isDarkMode ? selectionColorInputDay : selectionColorInputNight
             font.family: "Titillium Web Light"
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter

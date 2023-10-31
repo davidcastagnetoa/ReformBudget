@@ -9,6 +9,7 @@ Button {
     property color colorDefault: "#00C859"
     property color colorMouseOver: "#55FFA4"
     property color colorPressed: "#3FBD7E"
+    property url btnIconSource: "../../images/svg_icons/png_icons_wanderson/close_icon.png"
     width: 30
     height: 30
     text: "Button"
@@ -31,7 +32,7 @@ Button {
         width: 20
         height: 20
         anchors.verticalCenter: parent.verticalCenter
-        source: "../../images/svg_icons/png_icons_wanderson/close_icon.png"
+        source: btnIconSource
         anchors.horizontalCenter: parent.horizontalCenter
         fillMode: Image.PreserveAspectFit
     }
