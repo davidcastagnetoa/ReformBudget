@@ -3,13 +3,13 @@
 from PySide2.QtCore import QObject, Qt, Signal, Property, Slot
 import sys
 import os
-from connection import ConnectionDB
+from utils.encrypter import generate_key, load_key, encriptedPassword
 from PySide2.QtGui import QGuiApplication, QIcon
 from PySide2.QtQml import QQmlApplicationEngine
 from models.client import ClientManager
 from data.user import UserData
 from models.user import User
-from utils.encrypter import generate_key, load_key, encriptedPassword
+from connection import ConnectionDB
 from dotenv import load_dotenv
 
 
@@ -28,10 +28,12 @@ if not os.path.exists(env_file):
     createLocalEnv()
 
 
-# Define tu llave para encriptar las contraseñas
-KEY = os.getenv("KEY")
-your_key_word = KEY if KEY else "Default_word"
-generate_key(your_key_word)
+# # Define tu llave para encriptar las contraseñas
+# KEY = os.getenv("KEY")
+# your_key_word = KEY if KEY else "Default_word"
+# if not os.path.exists(os.path.abspath("pylon.key")):
+#     generate_key(your_key_word)
+# assert os.path.exists("pylon.key"), "El archivo pylon.key no fue creado"
 
 
 # Carga la clave
@@ -80,8 +82,7 @@ class Login(QObject):
 
         if response == "user_not_found":
             print("No existe usuario o debe crear una cuenta")
-            self.userLoged.emit(
-                "No existe usuario debe crear una cuenta", None)
+            self.userLoged.emit("No existe usuario debe crear una cuenta", None)
             return
         elif response == "incorrect_password":
             print("Incorrect password!")
