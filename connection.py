@@ -81,7 +81,7 @@ class ConnectionDB:
                 sql_insert, (ADMIN_USERNAME, ADMIN_EMAIL, encriptAdminPass)
             )  # Pasa los valores aquí
             self.con.commit()
-            print("Usuario creado")
+            print("Usuario administrador creado")
             cur.close()
         except Exception as error:
             print(f"El usuario {error} ya existe")

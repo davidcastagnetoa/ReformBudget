@@ -86,3 +86,4 @@ main.pyproject
 pylon.key
 
 .vscode
+*.db
