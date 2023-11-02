@@ -24,7 +24,114 @@ Window {
     property int windowStatus: 0
     property int windowMargin: 10
     property bool previewCollapse: false
+    property bool isDarkMode: false
     property int buttonCount: 2
+    
+    // IMAGES
+    property url toggleDarkModelogoSourceW: "../images/svg_icons/png_icons_wanderson/bluedaynight.png"
+    property url toggleDarkModelogoSourceB: "../images/svg_icons/png_icons_wanderson/blackdaynight.png"
+    property url resizeImageSourceNight: "../images/svg_icons/png_icons_wanderson/resize_icon_Dark.png"
+    property url resizeImageSourceDay: "../images/svg_icons/png_icons_wanderson/resize_icon_Light.png"
+    property url leftImageSourceNight: "../images/ReformBudgetLogoNight.png"
+    property url leftImageSourceDay: "../images/ReformBudgetLogoDay.png"
+    property url iconAppNight: "../images/LogoNight.png"
+    property url iconAppDay: "../images/LogoDay.png"
+
+    // COLORS9
+    // mouse_area
+    property color gradientStartNight : "#00000000"
+    property color gradientEndNight : "#070a0d"
+    property color gradientStartDay : "#ffffff"
+    property color gradientEndDay : "#d1d1d1"
+
+    // topBar
+    property color topBarBgNight : "#161b22"
+    property color topBarBgDay : "#d1d1d1"
+
+    // contentArea
+    property color contentAreaNight : "#0d1117"
+    property color contentAreaDay : "#dbdcdf"
+
+    // contentPages
+    property color contentPagesNight : "#0d1117"
+    property color contentPagesDay : "#dbdcdf"
+
+    // separator
+    property color separatorNight : "#bf2c333a"
+    property color separatorDay : "#66657686"
+
+    // topBarDescription
+    property color topBarDescriptionBgNight: "#0d1117"
+    property color topBarDescriptionBgDay: "#dbdcdf"
+    property color topBarDescriptionLineNight: "#f2000000"
+    property color topBarDescriptionLineDay: "#b9b7b7b7"
+
+    // bottomArea
+    property color bottomAreaBgNight: "#0d1117"
+    property color bottomAreaBgDay: "#dbdcdf"
+    property color bottomAreaLineNight: "#f2000000"
+    property color bottomAreaLineDay: "#b9b7b7b7"
+
+    // rightSide
+    property color rightSideBgNight: "#161b22"
+    property color rightSideLineNight: "#59000000"
+    property color rightSideBgDay: "#d0d1d5"
+    property color rightSideLineDay: "#bf242424"
+
+    // ToggleBtnHamburger
+    property color toggleBtnHamburgerColorDefaultNight: "#161b22"
+    property color toggleBtnHamburgerColorMouseOverNight: "#0d1117"
+    property color toggleBtnHamburgerColorClickedNight: "#99f1ff"
+    property color toggleBtnHamburgerColorDefaultDay: "#d0d1d5"
+    property color toggleBtnHamburgerColorMouseOverDay: "#aeb3b4"
+    property color toggleBtnHamburgerColorClickedDay: "#5f969e"
+
+    // minimizeButton, restoreButton, closeButton
+    property color btnColorDefaultNight: "#161b22"
+    property color btnColorMouseOverNight: "#0d1117"
+    property color btnColorClickedNight: "#6dacb6"
+    property color closeBtnColorClickedNight: "#ff5555"
+
+    property color btnColorDefaultDay: "#d0d1d5"
+    property color btnColorMouseOverDay: "#aeb3b4"
+    property color btnColorClickedDay: "#3a5b61"
+    property color closeBtnColorClickedDay: "#ad2424"
+
+    // leftMenu
+    property color leftMenuBgNight : "#161b22"
+    property color leftMenuBgDay : "#d0d1d5"
+
+    // bgBudgetCol
+    property color bgBudgetColBgNight : "#161b22"
+    property color bgBudgetColBgDay : "#d0d1d5"
+
+    // InputField Dark
+    property color colorOnFocusNight: "#202833"
+    property color colorMouseOverNight: "#293341"
+    property color colorDefaultNight: "#161b22"
+    property color placeholderTextColorNight: "#b1b4bf"
+    property color textColorInputNight: "#ffffff"
+    property color selectionColorInputNight: "#99f1ff"
+    property color selectedTextColorInputNight: "#ffffff"
+    
+    // InputField Light
+    property color colorOnFocusDay: "#ccd1d3"
+    property color colorMouseOverDay: "#d9d9d9" 
+    property color colorDefaultDay: "#ececec"
+    property color placeholderTextColorDay: "#111215"
+    property color textColorInputDay: "#000000"
+    property color selectionColorInputDay: "#161b22"
+    property color selectedTextColorInputDay: "#000000"
+    //Button
+     property color colorDefaultBtnDay: "#0c1122"
+     property color colorPressedBtnDay: "#060810"
+     property color colorMouseOverBtnDay: "#111831"
+     property color textBtnColorDay: "#ffffff"
+    //Button
+     property color colorDefaultBtnNight: "#6dacb6"
+     property color colorPressedBtnNight: "#99f1ff"
+     property color colorMouseOverBtnNight: "#6198a1"
+     property color textBtnColorNight: "#000000"
 
     property int userID: {
         console.log("loginUser.userId: ", loginUser && loginUser.userId);
@@ -119,6 +226,22 @@ Window {
                 console.error("Error al crear el botón desde leftMenuBtnComponent");
             }
         }
+        // Toggle Dark and Light Mode
+        function toggleDarkMode() {
+            if(isDarkMode == true){
+                // gradientStart = "#0d1117"
+                // gradientEnd = "#000000"
+                // textColor = "#dcdcdc"
+                // textColorSecondary = "#a1a1a1"
+                isDarkMode = false 
+            }else{
+                // gradientStart = "#ffffff"
+                // gradientEnd = "#d1d1d1"
+                // textColor = "#111111"
+                // textColorSecondary = "#323232"
+                isDarkMode = true 
+            }
+        }
 
     }
 
@@ -149,7 +272,7 @@ Window {
             Rectangle {
                 id: topBar
                 height: 60
-                color: "#161b22"
+                color: isDarkMode ? topBarBgNight : topBarBgDay
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top
@@ -158,7 +281,10 @@ Window {
                 anchors.leftMargin: 0
 
                 ToggleBtnHamburger {
-                    btnColorClicked: "#99f1ff"
+                    btnColorMouseOver: isDarkMode ? toggleBtnHamburgerColorMouseOverNight : toggleBtnHamburgerColorMouseOverDay
+                    btnColorDefault: isDarkMode ? toggleBtnHamburgerColorDefaultNight : toggleBtnHamburgerColorDefaultDay
+                    btnColorClicked: isDarkMode ? toggleBtnHamburgerColorClickedNight : toggleBtnHamburgerColorClickedDay
+                    btnIconColor: isDarkMode? "#FFFFFF" : "#000000"
                     onClicked: animationMenu.running = true
                 }
 
@@ -168,9 +294,9 @@ Window {
                     height: 35
                     color: "#00000000"
                     anchors.left: parent.left
-                    anchors.right: parent.right
+                    anchors.right: rowMaxMinBtn.left
                     anchors.top: parent.top
-                    anchors.rightMargin: 105
+                    anchors.rightMargin: 0
                     anchors.leftMargin: 70
                     anchors.topMargin: 0
 
@@ -179,26 +305,19 @@ Window {
                         opacity: 1
                         border.color: "#00000000"
                         border.width: 1
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
+                        anchors.fill: parent
                         z: 0
                         gradient: Gradient {
                             GradientStop {
                                 position: 0
-                                color: "#00000000"
+                                color: isDarkMode ? gradientStartNight : gradientStartDay
                             }
 
                             GradientStop {
                                 position: 1
-                                color: "#070a0d"
+                                color: isDarkMode ? gradientEndNight : gradientEndDay
                             }
                         }
-                        anchors.bottomMargin: 0
-                        anchors.rightMargin: 0
-                        anchors.topMargin: 0
-                        anchors.leftMargin: 0
 
                         MouseArea{
                             id: mouseArea
@@ -221,7 +340,7 @@ Window {
                         anchors.left: parent.left
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
-                        source: "../images/Logo.png"
+                        source: isDarkMode ? iconAppNight : iconAppDay
                         smooth: true
                         sourceSize.height: 30
                         sourceSize.width: 46
@@ -235,7 +354,7 @@ Window {
                         id: labelTitle
                         width: 110
                         height: 35
-                        color: "#ffffff"
+                        color: isDarkMode ? "#ffffff" : "#000000"
                         text: qsTr("Reform Budget -")
                         anchors.left: iconApp.right
                         anchors.top: parent.top
@@ -252,7 +371,7 @@ Window {
                     Label {
                         id: labelWelcome
                         width: 65
-                        color: "#ffffff"
+                        color: isDarkMode ? "#ffffff" : "#000000"
                         text: qsTr("Welcome: ")
                         anchors.left: labelTitle.right
                         anchors.top: parent.top
@@ -269,7 +388,7 @@ Window {
                     Label {
                         id: labelUsername
                         width: 350
-                        color: "#ffffff"
+                        color: isDarkMode ? "#ffffff" : "#000000"
                         text: (signupUser && signupUser.loggedUsername) ? signupUser.loggedUsername : loginUser.loggedUsername
                         anchors.left: labelWelcome.right
                         anchors.top: parent.top
@@ -289,18 +408,30 @@ Window {
                 Row {
                     id: rowMaxMinBtn
                     x: 906
-                    width: 105
+                    width: 140
                     height: 35
                     anchors.right: parent.right
                     anchors.top: parent.top
                     anchors.topMargin: 0
                     anchors.rightMargin: 0
 
+                    TopBarButton {
+                        id: btnDayNight
+                        btnIconSource: isDarkMode ? toggleDarkModelogoSourceW : toggleDarkModelogoSourceB
+                        btnColorClicked: "#99f1ff"
+                        btnColorMouseOver: "#6dacb6"
+                        btnColorDefault: "#00000000"
+                        onClicked: internal.toggleDarkMode()
+                    }
+
                     MinimizeButton {
                         id: minimizeButton
                         height: 35
-                        btnColorClicked: "#6dacb6"
+                        btnColorMouseOver: isDarkMode ? btnColorMouseOverNight : btnColorMouseOverDay
+                        btnColorDefault: isDarkMode ? btnColorDefaultNight : btnColorDefaultDay
+                        btnColorClicked: isDarkMode ? btnColorClickedNight : btnColorClickedDay
                         btnIconSource: "../images/svg_icons/minimize_icon.svg"
+                        btnIconColor: isDarkMode? "#FFFFFF" : "#000000"
                         onClicked: {
                             mainWindow.showMinimized()
                             internal.restoreMargins()
@@ -310,8 +441,11 @@ Window {
                     RestoreButton {
                         id: restoreButton
                         height: 35
-                        btnColorClicked: "#6dacb6"
+                        btnColorMouseOver: isDarkMode ? btnColorMouseOverNight : btnColorMouseOverDay
+                        btnColorDefault: isDarkMode ? btnColorDefaultNight : btnColorDefaultDay
+                        btnColorClicked: isDarkMode ? btnColorClickedNight : btnColorClickedDay
                         btnIconSource: "../images/svg_icons/maximize_icon.svg"
+                        btnIconColor: isDarkMode? "#FFFFFF" : "#000000"
                         onClicked: {
                             internal.maximizeRestore()
                         }
@@ -320,8 +454,11 @@ Window {
                     CloseButton {
                         id: closeButton
                         height: 35
-                        btnColorClicked: "#ff5555"
+                        btnColorMouseOver: isDarkMode ? btnColorMouseOverNight : btnColorMouseOverDay
+                        btnColorDefault: isDarkMode ? btnColorDefaultNight : btnColorDefaultDay
+                        btnColorClicked: isDarkMode ? closeBtnColorClickedNight : closeBtnColorClickedDay
                         btnIconSource: "../images/svg_icons/close_icon.svg"
+                        btnIconColor: isDarkMode? "#FFFFFF" : "#000000"
                         onClicked: {
                             mainWindow.close()
                         }
@@ -334,8 +471,8 @@ Window {
 
                 Rectangle {
                     id: topBarDescription
-                    color: "#0d1117"
-                    border.color: "#f2000000"
+                    color: isDarkMode ? topBarDescriptionBgNight : topBarDescriptionBgDay
+                    border.color: isDarkMode ? topBarDescriptionLineNight : topBarDescriptionLineDay
                     border.width: 1
                     anchors.left: parent.left
                     anchors.right: parent.right
@@ -348,7 +485,7 @@ Window {
 
                     Label {
                         id: labelTopInfoLeft
-                        color: "#a1a1a1"
+                        color: isDarkMode ? "#a1a1a1" : "#3d3d3d"
                         text: qsTr("Create budgets for your enterprise")
                         anchors.left: parent.left
                         anchors.right: parent.right
@@ -365,7 +502,7 @@ Window {
 
                     Label {
                         id: labelTopInfoRight
-                        color: "#a1a1a1"
+                        color: isDarkMode ? "#a1a1a1" : "#3d3d3d"
                         text: qsTr("v.0.1.0")
                         anchors.left: labelTopInfoLeft.right
                         anchors.right: parent.right
@@ -399,7 +536,7 @@ Window {
                 Rectangle {
                     id: leftMenu
                     width: 70
-                    color: "#161b22"
+                    color: isDarkMode ? leftMenuBgNight : leftMenuBgDay
                     border.width: 0
                     anchors.left: parent.left
                     anchors.top: parent.top
@@ -442,7 +579,7 @@ Window {
                             height: 50
                             horizontalAlignment: Image.AlignHCenter
                             verticalAlignment: Image.AlignVCenter
-                            source: "../images/ReformBudget_Logo.png"
+                            source: isDarkMode ? leftImageSourceNight : leftImageSourceDay
                             z: 0
                             mirror: false
                             sourceSize.height: 50
@@ -457,7 +594,7 @@ Window {
                         Label {
                             id: labelClients
                             width: clientCol.width
-                            color: "#efefef"
+                            color: isDarkMode ? "#efefef" : "#0c0c0c"
                             text: qsTr("Clients")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
@@ -519,7 +656,7 @@ Window {
                         id: bgBudgetCol
                         x: 0
                         y: 520
-                        color: "#161b22"
+                        color: isDarkMode ? bgBudgetColBgNight : bgBudgetColBgDay
                         border.color: "#00000000"
                         border.width: 0
                         anchors.left: parent.left
@@ -545,7 +682,7 @@ Window {
                         Label {
                             id: labelBudgets
                             width: clientCol.width
-                            color: "#efefef"
+                            color: isDarkMode ? "#efefef" : "#0c0c0c"
                             text: qsTr("Budgets")
                             anchors.top: parent.top
                             horizontalAlignment: Text.AlignHCenter
@@ -572,7 +709,7 @@ Window {
 
                 Rectangle {
                     id: contentArea
-                    color: "#0d1117"
+                    color: isDarkMode ? contentAreaNight : contentAreaDay
                     border.width: 0
                     anchors.left: leftMenu.right
                     anchors.right: parent.right
@@ -597,7 +734,7 @@ Window {
 
                         Label {
                             id: customerDataLbl
-                            color: "#ededed"
+                            color: isDarkMode ? "#ededed" : "#0c1122"
                             text: qsTr("Customer Data")
                             anchors.left: parent.left
                             anchors.top: parent.top
@@ -626,6 +763,13 @@ Window {
                                 x: 0
                                 y: 0
                                 width: (customerData.width * 1/3) - 5
+                                color: isDarkMode ? textColorInputNight : textColorInputDay
+                                placeholderTextColor: isDarkMode ? placeholderTextColorNight : placeholderTextColorDay
+                                colorOnFocus: isDarkMode ? colorOnFocusNight : colorOnFocusDay
+                                colorMouseOver: isDarkMode ? colorMouseOverNight : colorMouseOverDay
+                                colorDefault: isDarkMode ? colorDefaultNight : colorDefaultDay
+                                selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
+                                selectionColor: isDarkMode ? selectionColorInputNight : selectionColorInputDay
                                 font.family: "Titillium Web Light"
                                 font.pointSize: 9
                                 placeholderText: "Name"
@@ -636,6 +780,13 @@ Window {
                                 x: 246
                                 y: 0
                                 width: (customerData.width * 1/3) - 5
+                                color: isDarkMode ? textColorInputNight : textColorInputDay
+                                placeholderTextColor: isDarkMode ? placeholderTextColorNight : placeholderTextColorDay
+                                colorOnFocus: isDarkMode ? colorOnFocusNight : colorOnFocusDay
+                                colorMouseOver: isDarkMode ? colorMouseOverNight : colorMouseOverDay
+                                colorDefault: isDarkMode ? colorDefaultNight : colorDefaultDay
+                                selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
+                                selectionColor: isDarkMode ? selectionColorInputNight : selectionColorInputDay
                                 font.family: "Titillium Web Light"
                                 font.pointSize: 9
                                 placeholderText: "Address"
@@ -646,6 +797,13 @@ Window {
                                 x: 492
                                 y: 0
                                 width: (customerData.width * 1/3) - 5
+                                color: isDarkMode ? textColorInputNight : textColorInputDay
+                                placeholderTextColor: isDarkMode ? placeholderTextColorNight : placeholderTextColorDay
+                                colorOnFocus: isDarkMode ? colorOnFocusNight : colorOnFocusDay
+                                colorMouseOver: isDarkMode ? colorMouseOverNight : colorMouseOverDay
+                                colorDefault: isDarkMode ? colorDefaultNight : colorDefaultDay
+                                selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
+                                selectionColor: isDarkMode ? selectionColorInputNight : selectionColorInputDay
                                 font.family: "Titillium Web Light"
                                 font.pointSize: 9
                                 placeholderText: "Phone number"
@@ -656,6 +814,13 @@ Window {
                                 x: 0
                                 y: 47
                                 width: (customerData.width * 1/3) - 5
+                                color: isDarkMode ? textColorInputNight : textColorInputDay
+                                placeholderTextColor: isDarkMode ? placeholderTextColorNight : placeholderTextColorDay
+                                colorOnFocus: isDarkMode ? colorOnFocusNight : colorOnFocusDay
+                                colorMouseOver: isDarkMode ? colorMouseOverNight : colorMouseOverDay
+                                colorDefault: isDarkMode ? colorDefaultNight : colorDefaultDay
+                                selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
+                                selectionColor: isDarkMode ? selectionColorInputNight : selectionColorInputDay
                                 font.family: "Titillium Web Light"
                                 font.pointSize: 9
                                 placeholderText: "Email"
@@ -666,6 +831,13 @@ Window {
                                 x: 246
                                 y: 47
                                 width: (customerData.width * 1/3) - 5
+                                color: isDarkMode ? textColorInputNight : textColorInputDay
+                                placeholderTextColor: isDarkMode ? placeholderTextColorNight : placeholderTextColorDay
+                                colorOnFocus: isDarkMode ? colorOnFocusNight : colorOnFocusDay
+                                colorMouseOver: isDarkMode ? colorMouseOverNight : colorMouseOverDay
+                                colorDefault: isDarkMode ? colorDefaultNight : colorDefaultDay
+                                selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
+                                selectionColor: isDarkMode ? selectionColorInputNight : selectionColorInputDay
                                 font.family: "Titillium Web Light"
                                 font.pointSize: 9
                                 placeholderText: "City"
@@ -676,6 +848,13 @@ Window {
                                 x: 492
                                 y: 47
                                 width: (customerData.width * 1/3) - 5
+                                color: isDarkMode ? textColorInputNight : textColorInputDay
+                                placeholderTextColor: isDarkMode ? placeholderTextColorNight : placeholderTextColorDay
+                                colorOnFocus: isDarkMode ? colorOnFocusNight : colorOnFocusDay
+                                colorMouseOver: isDarkMode ? colorMouseOverNight : colorMouseOverDay
+                                colorDefault: isDarkMode ? colorDefaultNight : colorDefaultDay
+                                selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
+                                selectionColor: isDarkMode ? selectionColorInputNight : selectionColorInputDay
                                 font.family: "Titillium Web Light"
                                 font.pointSize: 9
                                 placeholderText: "Zip"
@@ -696,9 +875,10 @@ Window {
                             anchors.bottomMargin: 10
                             font.weight: Font.Light
                             font.pointSize: 9
-                            colorDefault: "#6dacb6"
-                            colorPressed: "#99f1ff"
-                            colorMouseOver: "#5f969e"
+                            textBtnColor: isDarkMode ? textBtnColorNight : textBtnColorDay
+                            colorDefault: isDarkMode ? colorDefaultBtnNight : colorDefaultBtnDay
+                            colorPressed: isDarkMode ? colorPressedBtnNight : colorPressedBtnDay
+                            colorMouseOver: isDarkMode ? colorMouseOverBtnNight : colorMouseOverBtnDay
                             onClicked: {
                                 console.log("userID es: ", userID)
                                 clientObj.createClient(textName.text, textAddress.text, textEmailCustomer.text, textCity.text, textZip.text, textPhone.text, userID);
@@ -760,7 +940,7 @@ Window {
                     Rectangle{
                         id: separator
                         height: 1
-                        color: "#bf2c333a"
+                        color: isDarkMode ? separatorNight : separatorDay
                         anchors.left: parent.left
                         anchors.right: contentPreview.left
                         anchors.top: customerDataContent.bottom
@@ -771,7 +951,7 @@ Window {
 
                     Rectangle {
                         id: contentPages
-                        color: "#00000000"
+                        color: isDarkMode ? contentPagesNight : contentPagesDay
                         border.width: 0
                         anchors.left: parent.left
                         anchors.right: contentPreview.left
@@ -839,9 +1019,9 @@ Window {
                         Rectangle {
                             id: rightSide
                             y: 5
-                            color: "#161b22"
+                            color: isDarkMode ? rightSideBgNight : rightSideBgDay
                             radius: 5
-                            border.color: "#59000000"
+                            border.color: isDarkMode ? rightSideLineNight : rightSideLineDay
                             border.width: 1
                             anchors.left: parent.left
                             anchors.right: parent.right
@@ -860,7 +1040,7 @@ Window {
                             Label {
                                 id: previewLbl
                                 width: 65
-                                color: "#ffffff"
+                                color: isDarkMode ? "#ffffff" : "#000000"
                                 text: qsTr("Preview")
                                 anchors.left: parent.left
                                 anchors.top: parent.top
@@ -876,18 +1056,12 @@ Window {
 
 
                     }
-
-
-
-
-
-
                 }
 
                 Rectangle {
                     id: bottomArea
-                    color: "#0d1117"
-                    border.color: "#f2000000"
+                    color: isDarkMode ? bottomAreaBgNight : bottomAreaBgDay
+                    border.color: isDarkMode ? bottomAreaLineNight : bottomAreaLineDay
                     anchors.left: leftMenu.right
                     anchors.right: parent.right
                     anchors.top: contentArea.bottom
@@ -897,7 +1071,7 @@ Window {
 
                     Label {
                         id: labelTopInfoLeft1
-                        color: "#a1a1a1"
+                        color: isDarkMode ? "#a1a1a1" : "#3d3d3d"
                         text: qsTr("Developed by David Castagneto - 2023")
                         anchors.left: parent.left
                         anchors.right: parent.right
@@ -938,12 +1112,10 @@ Window {
                             height: 16
                             anchors.fill: parent
                             source: "../images/svg_icons/resize_icon.svg"
+                            fillMode: Image.PreserveAspectCrop
+                            smooth: true
                             anchors.leftMargin: 5
                             anchors.topMargin: 5
-                            sourceSize.height: 16
-                            sourceSize.width: 16
-                            fillMode: Image.PreserveAspectFit
-                            antialiasing: false
                         }
                     }
                 }
@@ -1011,6 +1183,10 @@ Window {
     }
 
 }
+
+
+
+
 
 
 

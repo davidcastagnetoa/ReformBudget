@@ -82,7 +82,8 @@ class Login(QObject):
         response = userData.login(user)
 
         if response == "user_not_found":
-            self.userLoged.emit("No existe usuario debe crear una cuenta", None)
+            self.userLoged.emit(
+                "No existe usuario debe crear una cuenta", None)
             return
         elif response == "incorrect_password":
             self.userLoged.emit("Contraseña incorrecta!", None)
@@ -134,7 +135,7 @@ class signUp(QObject):
     def create_user(self, username, email, password, rptPassword):
         # Aquí implementas la lógica para crear un usuario.
 
-        if username == "" or password == "":
+        if username == "" or password == "" or email == "":
             self.userCreated.emit("Rellene todos los campos")
             return
 
@@ -199,7 +200,8 @@ class ClientManager(QObject):
 
         clientData = ClientData()
         client = clientData.create_Client(
-            Client(name, address, email, city, zip_code, phone, user_id), user_id
+            Client(name, address, email, city,
+                   zip_code, phone, user_id), user_id
         )
 
         if client is None:
@@ -210,7 +212,8 @@ class ClientManager(QObject):
         self._client.create_clients(
             name, address, email, city, zip_code, phone, user_id
         )
-        self.clientCreated.emit(name, address, email, city, zip_code, phone, user_id)
+        self.clientCreated.emit(name, address, email,
+                                city, zip_code, phone, user_id)
         self.clientValidated.emit("Cliente creado")
 
 

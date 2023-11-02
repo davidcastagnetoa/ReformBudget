@@ -23,7 +23,7 @@ Item {
 
     Rectangle {
         id: bgPage
-        color: "#0d1117"
+        color: "#00000000"
         anchors.fill: parent
 
     }

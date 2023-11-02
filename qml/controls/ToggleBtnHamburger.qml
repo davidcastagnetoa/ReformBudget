@@ -9,6 +9,7 @@ Button {
     property color btnColorDefault: "#161b22"
     property color btnColorMouseOver: "#0d1117"
     property color btnColorClicked: "#00C859"
+    property color btnIconColor: "#FFFFFF"
 
     QtObject {
         id: internal
@@ -44,7 +45,7 @@ Button {
         ColorOverlay {
             anchors.fill: iconBtn
             source: iconBtn
-            color: "#FFFFFF"
+            color: btnIconColor
             antialiasing: false
         }
     }
