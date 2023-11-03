@@ -1,145 +1,177 @@
-import connection as con
-from PySide2.QtCore import QObject, Qt, Signal, Property, Slot
+from PySide2.QtCore import QObject, Signal, Slot
+import sqlite3
 import os
-import platform
-import hashlib
-import base64
-from cryptography.fernet import Fernet
 from dotenv import load_dotenv
+from utils.encrypter import encriptedPassword, load_key
 
 
-# Generamos la llave de encriptacion y la guardamos en un archivo .key
-def generate_key(key):
-    hashed_key = hashlib.sha256(key.encode("utf-8")).digest()
-    key_hashed_encoded = base64.urlsafe_b64encode(hashed_key)
-    filename = "pylon.key"
+class ConnectionDB:
+    def __init__(self):
+        try:
+            self.con = sqlite3.connect("users.db")
+        except Exception as error:
+            print(error)
 
-    if os.path.exists("pylon.key") and platform.system() == "Windows":
-        os.system(f"attrib -s -h {filename}")
+    def init_db(self):  # Nuevo método para inicializar la base de datos
+        self.createTable()
+        self.createClientsTable()
 
-    with open(filename, "wb") as file:
-        file.write(key_hashed_encoded)
-        if platform.system() == "Windows":
-            os.system(f"attrib +s +h {filename}")
-        else:
-            filename = "." + filename
-
-
-# Cargamos la llave
-def load_key():
-    filename = "pylon.key"
-    return open(filename, "rb").read()
-
-
-# Encriptar contraseña para su almacenamiento
-def encriptedPassword(message, key):
-    f = Fernet(key)
-    encrypted_message = f.encrypt(message.encode())
-    return encrypted_message
-
-
-# Desencriptamos la contraseña para su uso
-def decryptedPassword(encrypted_message, key):
-    f = Fernet(key)
-    decrypted_message = f.decrypt(encrypted_message).decode()
-    return decrypted_message
-
-
-load_dotenv()
-env_file = ".env"
-
-# Define tu llave para encriptar las contraseñas
-KEY = os.getenv("KEY")
-your_key_word = KEY if KEY else "Default_word"
-generate_key(your_key_word)
-
-# Carga la clave
-key = load_key()
-
-
-# model/user
-class User:
-    def __init__(
-        self,
-        username,
-        email,
-        password,
-    ):
-        self._username = username
-        self._email = email
-        self._password = password
-
-
-class UserData:
-    def login(self, user: User):
-        self.db = con.ConnectionDB().connect()
-        self.cursor = self.db.cursor()
-
-        res = self.cursor.execute(
-            "SELECT * FROM users WHERE username = ?", (user._username,)
+    # Crea la tabla de la DB si no existe
+    def createTable(self):
+        sql_create_table = """
+        CREATE TABLE IF NOT EXISTS users(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT,
+        email TEXT,
+        password TEXT
         )
-        row = res.fetchone()
+        """
+        cur = self.con.cursor()
+        cur.execute(sql_create_table)
+        cur.close()
+        self.createAdmin()  # Crea el usuario adminnistrador
 
-        # Cerrar el cursor.
-        self.cursor.close()
+    # Crea la tabla de clientes
+    def createClientsTable(self):
+        sql_create_clients_table = """
+        CREATE TABLE IF NOT EXISTS clients(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        address TEXT,
+        email TEXT,
+        city TEXT,
+        zip_code INTEGER,
+        phone INTEGER,
+        user_id INTEGER,
+        FOREIGN KEY(user_id) REFERENCES users(id)
+        )
+        """
+        cur = self.con.cursor()
+        cur.execute(sql_create_clients_table)
+        cur.close()
 
-        # Cerrar la conexión a la base de datos.
-        self.db.close()
-
-        if row:
-            stored_password = decryptedPassword(row[3], key)
-            if stored_password == user._password:
-                user = User(username=row[1], email=row[2],
-                            password=stored_password)
-                print(user)
-                return user
-
-
-# Clase para logarse
-class Login(QObject):
-    userLoged = Signal(str, str)
-    loggedUsernameChanged = Signal()
-
-    def __init__(self, parent=None):
-        super(Login, self).__init__(parent)
-        self._username = ""  # Esta es la variable con la que se compara, guardada en DB
-        self._password = ""  # Esta es la variable con la que se compara, guardada en DB
-        self._loggedUsername = ""
-
-    # Asigna el nombre de usuario a la señal loggedUsernameChanged
-    @Property(str, notify=loggedUsernameChanged)
-    def loggedUsername(self):
-        return self._loggedUsername
-
-    @loggedUsername.setter
-    def loggedUsername(self, value):
-        if self._loggedUsername != value:
-            self._loggedUsername = value
-            self.loggedUsernameChanged.emit()
-
-    # Emita la señal userLoged
-    @Slot(str, str)
-    # los argumentos username y password aqui son los que recibe de LoginPage.qml
-    def user_login(self, username, password):
-        # Catch user and password from DB
-        user = User(
-            username, None, password
-        )  # Requiere 3 parametros username, email, password (ver en models.user.py), pero solo necesita dos
-        userData = UserData()
-        response = userData.login(user)
-
-        # Primero, comprobar si el nombre de usuario existe.
-        if self._username is None:
-            print("No existe usuario debe crear una cuenta")
-            self.userLoged.emit(
-                "No existe usuario debe crear una cuenta", None)
+    # Crea el usuario administrador si ya existe lanza excepcion
+    def createAdmin(self):
+        cur = self.con.cursor()
+        # Verifica si el usuario administrador ya existe
+        cur.execute("SELECT * FROM users WHERE username = ?",
+                    (ADMIN_USERNAME,))
+        if cur.fetchone():
+            print(f"El usuario administrador {ADMIN_USERNAME} ya existe")
+            cur.close()
             return
 
-        if response:
-            self._username = username
-            # self._password = password
-            self.userLoged.emit("Access granted", None)
-            self.loggedUsername = self._username
-        else:
-            print("Incorrect data!")
-            self.userLoged.emit("Incorrect data!", None)
+        try:
+            sql_insert = """
+            INSERT INTO users(username, email, password) values(?, ?, ?)
+            """
+            cur.execute(
+                sql_insert, (ADMIN_USERNAME, ADMIN_EMAIL, encriptAdminPass)
+            )  # Pasa los valores aquí
+            self.con.commit()
+            print("Usuario administrador creado")
+            cur.close()
+        except Exception as error:
+            print(f"El usuario {error} ya existe")
+
+    def connect(self):
+        return self.con
+
+
+class Client(QObject):
+    def __init__(
+        self,
+        name="",
+        address="",
+        email="",
+        city="",
+        zip_code="",
+        phone="",
+        user_id=None,
+        parent=None,
+    ):
+        super(Client, self).__init__(parent)  # Inicializa el QObject
+        self._name = name
+        self._address = address
+        self._email = email
+        self._city = city
+        self._zip_code = zip_code
+        self._phone = phone
+        self._user_id = user_id
+
+    # Método para crear el cliente
+    def create_clients(self, name, address, email, city, zip_code, phone, user_id):
+        self._name = name
+        self._address = address
+        self._email = email
+        self._city = city
+        self._zip_code = zip_code
+        self._phone = phone
+        self._user_id = user_id
+
+
+class ClientData:
+    def create_Client(self, client: Client, user_id: int):
+        print("user_id recibido es: ", user_id)
+
+        self.db = con.ConnectionDB().connect()
+        self.cursor = self.db.cursor()
+        self.cursor.execute(
+            "INSERT INTO clients (name, address, email, city, zip_code, phone, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (
+                client._name,
+                client._address,
+                client._email,
+                client._city,
+                client._zip_code,
+                client._phone,
+                user_id,
+            ),
+        )
+        self.db.commit()
+        self.cursor.close()
+        self.db.close()
+        return client
+
+
+# Clase para la creacion de clientes
+class ClientManager(QObject):
+    # Señal que emite el nombre, direccion, email, ciudad, cp, y telefono del cliente
+    clientCreated = Signal(str, str, str, str, str, str, int)
+    clientValidated = Signal(str)
+
+    def __init__(self, parent=None):
+        super(ClientManager, self).__init__(parent)
+        self._client = Client()  # Instancia vacía de cliente.
+
+    # # Función para crear un nuevo cliente y emitir la señal
+    @Slot(str, str, str, str, str, str, int)
+    def createClient(self, name, address, email, city, zip_code, phone, user_id):
+        if (
+            not name
+            or not address
+            or not email
+            or not city
+            or not zip_code
+            or not phone
+        ):
+            self.clientValidated.emit("Rellene todos los campos")
+            return
+
+        clientData = ClientData()
+        client = clientData.create_Client(
+            Client(name, address, email, city,
+                   zip_code, phone, user_id), user_id
+        )
+
+        if client is None:
+            self.userCreated.emit("Error al crear el cliente")
+            print("Error al crear el cliente")
+            return
+
+        self._client.create_clients(
+            name, address, email, city, zip_code, phone, user_id
+        )
+        self.clientCreated.emit(name, address, email,
+                                city, zip_code, phone, user_id)
+        self.clientValidated.emit("Cliente creado")

@@ -24,7 +24,7 @@ Window {
     property int windowStatus: 0
     property int windowMargin: 10
     property bool previewCollapse: false
-    property bool isDarkMode: false
+    property bool isDarkMode: true
     property int buttonCount: 2
     
     // IMAGES
@@ -157,7 +157,7 @@ Window {
 
         // Maximize Restore
         function maximizeRestore(){
-            if(windowStatus == 0){
+            if(windowStatus === 0){
                 mainWindow.showMaximized()
                 windowStatus = 1
                 windowMargin = 0
@@ -178,7 +178,7 @@ Window {
         }
         // If Maximized Restore
         function ifMaximizedRestore(){
-            if(windowStatus == 1){
+            if(windowStatus === 1){
                 mainWindow.showNormal()
                 windowStatus = 0
                 windowMargin = 10
@@ -193,7 +193,7 @@ Window {
         }
         // Toggle Preview right screen
         function collapsePreview(){
-            if(previewCollapse == false){
+            if(previewCollapse === false){
                 tooglePreviewBtn.btnIconMirror = true
                 animationPreview.running = true
                 previewCollapse = true
@@ -203,9 +203,22 @@ Window {
                 previewCollapse = false
             }
         }
+        // Toggle Dark and Light Mode
+        function toggleDarkMode() {
+            if(isDarkMode === true){
+                isDarkMode = false 
+            }else{
+                isDarkMode = true 
+            }
+        }
         // Create Client LeftMenuButtons
         function createButton(name, address) {
-            var newButton = leftMenuBtnComponent.createObject(columnBtnClients);
+            if (leftMenuBtnComponent.status === Component.Ready) {
+                var newButton = leftMenuBtnComponent.createObject(columnBtnClients);
+            } else {
+                console.error("Componente no listo:", leftMenuBtnComponent.errorString());
+            }
+            // var newButton = leftMenuBtnComponent.createObject(columnBtnClients);
             if (newButton) {
                 newButton.text = name;
                 newButton.secondaryTextContent = address
@@ -226,23 +239,6 @@ Window {
                 console.error("Error al crear el botón desde leftMenuBtnComponent");
             }
         }
-        // Toggle Dark and Light Mode
-        function toggleDarkMode() {
-            if(isDarkMode == true){
-                // gradientStart = "#0d1117"
-                // gradientEnd = "#000000"
-                // textColor = "#dcdcdc"
-                // textColorSecondary = "#a1a1a1"
-                isDarkMode = false 
-            }else{
-                // gradientStart = "#ffffff"
-                // gradientEnd = "#d1d1d1"
-                // textColor = "#111111"
-                // textColorSecondary = "#323232"
-                isDarkMode = true 
-            }
-        }
-
     }
 
     Rectangle {
@@ -638,7 +634,7 @@ Window {
                                         property string tag: ""
                                         font.weight: Font.Light
                                         font.family: "Titillium Web Light"
-                                        isActiveMenu: false
+                                        // isActiveMenu: false
                                         z: 0
                                         font.pointSize: 10
                                         btnIconSource: "../images/svg_icons/icon_users.svg"
@@ -887,7 +883,7 @@ Window {
                                 target: clientObj
                                 function onClientValidated(message){
                                     warningLabel.visible = true
-                                    if (message == "Rellene todos los campos"){
+                                    if (message === "Rellene todos los campos"){
                                         warningLabel.text = message;
                                         warningLabel.color = "#ffa0a0"
                                     } else {
@@ -997,7 +993,7 @@ Window {
                             target: contentPreview
                             property: "width"
                             // to: if(contentPreview.width == contentArea.width * 2/5) return 35; else return contentArea.width * 2/5
-                            to: if(previewCollapse == false) return 5; else return (contentArea.width * 2/5)
+                            to: if(previewCollapse === false) return 5; else return (contentArea.width * 2/5)
                             duration: 450
                             easing.type: Easing.InOutCirc
                         }
@@ -1127,7 +1123,6 @@ Window {
         }
     }
 
-
     MouseArea {
         id: resizeLeft
         x: 990
@@ -1182,6 +1177,24 @@ Window {
         }
     }
 
+    // Definición de la función que se ejecutará cuando se emita la señal
+    function onClientsReceived(clients) {
+        for (var i = 0; i < clients.length; i++) {
+            var clientName = clients[i].name;
+            var clientAddress = clients[i].address;
+            internal.createButton(clientName, clientAddress);
+        }
+    }
+    Component.onCompleted: {
+        // Conexión de la señal clientsRetrieved a la función onClientsReceived
+        loginUser.clientsRetrieved.connect(onClientsReceived);
+    }
+
+    Component.onDestruction: {
+        // Es una buena práctica desconectar las señales cuando el objeto se destruye
+        loginUser.clientsRetrieved.disconnect(onClientsReceived);
+    }
+
 }
 
 
@@ -1209,3 +1222,9 @@ Window {
 
 
 
+
+/*##^##
+Designer {
+    D{i:0;formeditorZoom:0.66}
+}
+##^##*/

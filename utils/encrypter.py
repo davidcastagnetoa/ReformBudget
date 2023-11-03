@@ -1,11 +1,11 @@
+from cryptography.fernet import Fernet
+import base64
+import hashlib
+import platform
+import os
 from dotenv import load_dotenv
 
 load_dotenv()
-import os
-import platform
-import hashlib
-import base64
-from cryptography.fernet import Fernet
 
 
 # Generamos la llave de encriptacion y la guardamos en un archivo .key
@@ -30,7 +30,7 @@ def generate_key(key):
 # Cargamos la llave
 def load_key():
     filename = os.path.abspath("pylon.key")
-    print(f"Intentando cargar pylon.key desde: {filename}")
+    print(f"ICargando pylon.key desde: {filename}")
     return open(filename, "rb").read()
 
 

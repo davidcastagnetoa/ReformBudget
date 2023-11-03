@@ -14,6 +14,7 @@ from models.user import User
 from models.client import Client
 from connection import ConnectionDB
 from dotenv import load_dotenv
+from data.database import Database
 
 
 def createLocalEnv():
@@ -43,9 +44,10 @@ if not os.path.exists("users.db"):
 
 # Clase para logarse
 class Login(QObject):
-    userLoged = Signal(str, str)
-    loggedUsernameChanged = Signal()
-    userIdChanged = Signal(int)  # Nueva señal para user_id
+    userLoged = Signal(str, str)  # Señal de usuario logado
+    loggedUsernameChanged = Signal()  # Señal de nombre de usuario
+    userIdChanged = Signal(int)  # Señal para user_id de usuario
+    clientsRetrieved = Signal(list)  # Señal para clientes del usuario
 
     def __init__(self, parent=None):
         super(Login, self).__init__(parent)
@@ -65,6 +67,7 @@ class Login(QObject):
             self._userId = value
             self.userIdChanged.emit()
 
+    # Property para el username
     @Property(str, notify=loggedUsernameChanged)
     def loggedUsername(self):
         return self._loggedUsername
@@ -75,6 +78,18 @@ class Login(QObject):
             self._loggedUsername = value
             self.loggedUsernameChanged.emit()
 
+    # Metodo para la consulta de clientes
+    def getClientsForUser(self):
+        db = Database()
+        clients = db.getClientsForUserId(self._userId)
+        clients_list = [{"name": client._name, "address": client._address, "email": client._email,
+                         "city": client._city, "zip_code": client._zip_code, "phone": client._phone,
+                         "user_id": client._user_id} for client in clients]
+        print(clients_list)
+        self.clientsRetrieved.emit(clients_list)
+        db.close()
+
+    # Metodo para logarse
     @Slot(str, str)
     def user_login(self, username, password):
         user = User(username, None, password)
@@ -98,6 +113,8 @@ class Login(QObject):
                 self._userId
             )  # Actualizar y emitir la nueva señal userIdChanged
             print("El userId obtenido la clase Login es: ", self.userId)
+            # Obtener e imprimir clientes del usuario
+            self.getClientsForUser()
 
 
 # Clase para creacion de usuarios
@@ -216,6 +233,17 @@ class ClientManager(QObject):
                                 city, zip_code, phone, user_id)
         self.clientValidated.emit("Cliente creado")
 
+
+# # Funcion para la consulta de TODOS los clientes
+# db = Database()
+# clients = db.getAllClients()
+
+# for client in clients:
+#     # O cualquier otra propiedad del cliente.
+#     print(client._name, client._address, client._email, client._city,
+#           client._zip_code, client._phone, client._user_id)
+
+# db.close()
 
 # Clase para control de ventanas
 class WindowManager(QObject):
