@@ -100,7 +100,7 @@ class Client(QObject):
         self._user_id = user_id
 
     # Método para crear el cliente
-    def create_clients(self, name, address, email, city, zip_code, phone, user_id):
+    def update_info(self, name, address, email, city, zip_code, phone, user_id):
         self._name = name
         self._address = address
         self._email = email
@@ -169,7 +169,7 @@ class ClientManager(QObject):
             print("Error al crear el cliente")
             return
 
-        self._client.create_clients(
+        self._client.update_info(
             name, address, email, city, zip_code, phone, user_id
         )
         self.clientCreated.emit(name, address, email,

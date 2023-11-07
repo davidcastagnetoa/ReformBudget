@@ -28,6 +28,7 @@ class ConnectionDB:
     def init_db(self):  # Nuevo método para inicializar la base de datos
         self.createTable()
         self.createClientsTable()
+        self.createBudgetsTable()
 
     # Crea la tabla de la DB si no existe
     def createTable(self):
@@ -59,9 +60,43 @@ class ConnectionDB:
         FOREIGN KEY(user_id) REFERENCES users(id)
         )
         """
-        cur = self.con.cursor()
-        cur.execute(sql_create_clients_table)
-        cur.close()
+        try:
+            cur = self.con.cursor()
+            cur.execute(sql_create_clients_table)
+            self.con.commit()
+        except sqlite3.Error as e:
+            print(f"An error occurred: {e.args[0]}")
+        finally:
+            cur.close()
+
+    # Crea la tabla de budgets ne la DB si no existe
+    def createBudgetsTable(self):
+        sql_create_budgets_table = """
+        CREATE TABLE IF NOT EXISTS budgets(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        budgetId TEXT,
+        budgetName TEXT,
+        budgetAmountSubtotal TEXT,
+        budgetAmountTaxes TEXT,
+        budgetAmountTotal TEXT,
+        budgetDate TEXT,
+        budgetDescription TEXT,
+        budgetStatus TEXT,
+        budgetType TEXT,
+        budgetCategory TEXT,
+        budgetNotes TEXT,
+        client_id INTEGER,
+        FOREIGN KEY(client_id) REFERENCES clients(id)
+        )
+        """
+        try:
+            cur = self.con.cursor()
+            cur.execute(sql_create_budgets_table)
+            self.con.commit()
+        except sqlite3.Error as e:
+            print(f"An error occurred: {e.args[0]}")
+        finally:
+            cur.close()
 
     # Crea el usuario administrador si ya existe lanza excepcion
     def createAdmin(self):

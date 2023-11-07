@@ -1,17 +1,17 @@
 # This Python file uses the following encoding: utf-8
 # from PySide2.QtCore import QUrl, QTimer
-from PySide2.QtCore import QObject, Qt, Signal, Property, Slot
 import sys
 import os
+from PySide2.QtCore import QObject, Qt, Signal, Property, Slot
 from utils.encrypter import generate_key, load_key, encriptedPassword
 from PySide2.QtGui import QGuiApplication, QIcon
 from PySide2.QtQml import QQmlApplicationEngine
-
-# from models.client import ClientManager
 from data.user import UserData
 from data.client import ClientData
+from data.budget import BudgetData
 from models.user import User
 from models.client import Client
+from models.budget import Budget
 from connection import ConnectionDB
 from dotenv import load_dotenv
 from data.database import Database
@@ -40,6 +40,8 @@ if not os.path.exists("users.db"):
     # Si no existe, crea la conexión y llama al método para inicializar la DB y crear el usuario administrador
     db_connection = ConnectionDB()
     db_connection.init_db()
+
+# ConnectionDB().init_db()  # Para Pruebas , crear y actualizar tablas de DB. borrar linea en produccion
 
 
 # Clase para logarse
@@ -223,21 +225,26 @@ class ClientManager(QObject):
             self.clientValidated.emit("Rellene todos los campos")
             return
 
-        clientData = ClientData()
+        clientData = ClientData()  # Metodo Data que crea el cliente en la DB
         client = clientData.create_Client(
             Client(name, address, email, city, zip_code, phone, user_id), user_id
         )
 
         if client is None:
-            self.userCreated.emit("Error al crear el cliente")
+            self.clientCreated.emit("Error al crear el cliente")
             print("Error al crear el cliente")
             return
 
-        self._client.create_clients(
-            name, address, email, city, zip_code, phone, user_id
-        )
+        # self._client.update_info(name, address, email, city, zip_code, phone, user_id)  # For update client
+
+        # Aquí se debería emitir la señal clientCreated
         self.clientCreated.emit(name, address, email, city, zip_code, phone, user_id)
         self.clientValidated.emit("Cliente creado")
+
+
+class BudgetManager(QObject):
+    print("class for budgets")
+    pass
 
 
 # # Funcion para la consulta de TODOS los clientes
@@ -284,6 +291,10 @@ if __name__ == "__main__":
     engine = QQmlApplicationEngine()
 
     # CARGA DE CLASES:
+    # Carga la clase para crear presupuestos
+    budget_manager = BudgetManager()
+    engine.rootContext().setContextProperty("budgetObj", budget_manager)
+
     # Carga la clase para crear clientes
     client_manager = ClientManager()
     engine.rootContext().setContextProperty("clientObj", client_manager)
@@ -308,7 +319,6 @@ if __name__ == "__main__":
     engine.rootContext().setContextProperty("WindowManager", window_manager)
 
     # FUNCION PARA CERRAR VENTANA
-
     def close_login():
         login_window.close()
 
