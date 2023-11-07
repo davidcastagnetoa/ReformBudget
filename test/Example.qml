@@ -18,10 +18,6 @@ Window {
         function createButton(name, address) {
             if (leftMenuBtnComponent.status === Component.Ready) {
                 var newButton = leftMenuBtnComponent.createObject(columnBtnClients);
-            } else {
-                console.error("Componente no listo:", leftMenuBtnComponent.errorString());
-            }
-            if (newButton) {
                 newButton.text = name;
                 newButton.secondaryTextContent = address
                 buttonCount++;
@@ -37,17 +33,11 @@ Window {
                     // Agrega el nuevo botón a la lista buttonList
                     buttonList.push(newButton);
                 });
+            } else if (leftMenuBtnComponent.status === Component.Error) {
+                console.error("Error al cargar LeftMenuBtn:", leftMenuBtnComponent.errorString());
             } else {
-                console.error("Error al crear el botón desde leftMenuBtnComponent");
+                console.log("Componente está cargando...");
             }
-        }
-    }
-
-    onClientsRetrieved: {
-        for (var i = 0; i < clientsList.length; i++) {
-            var clientName = clientsList[i].name;
-            var clientAddress = clientsList[i].address;
-            createButton(clientName, clientAddress);
         }
     }
 
@@ -59,7 +49,11 @@ Window {
             id: leftMenuBtnComponent
             LeftMenuBtn {
                 property string tag: ""
-                isActiveMenu: false
+                font.weight: Font.Light
+                font.family: "Titillium Web Light"
+                z: 0
+                font.pointSize: 10
+                btnIconSource: "../images/svg_icons/icon_users.svg"
             }
         }
     }
@@ -85,63 +79,35 @@ Window {
                 hideWarningTimer.restart()
             }
             function onClientCreated(name, address, mail, city, zip_code, phone, user_id) {
+                console.log(name)
+                console.log(address)
+                console.log(mail)
+                console.log(city)
+                console.log(zip_code)
+                console.log(phone)
+                console.log(user_id)
                 Qt.callLater(function() {
                     internal.createButton(name, address);
                 });
             }
         }
     }
-}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Supongamos que 'loginInstance' es una instancia de tu clase 'Login'
-loginUser.clientsRetrieved.connect(self.processClients) //instancia del contexto Login.Señal del metodo.connect(self.funcionEjecutora)
-
-def processClients(self, clients):
-    for client in clients:
-        # Aquí puedes crear botones u otros elementos gráficos usando los datos del cliente.
-
-
-
-
-
-
-
-
-
-onClientsRetrieved: {
-    for (var i = 0; i < clientsList.length; i++) {
-        var clientName = clientsList[i].name;
-        var clientAddress = clientsList[i].address;
-        createButton(clientName, clientAddress);
+    // Definición de la función que se ejecutará cuando se emita la señal
+    function onClientsReceived(clients) {
+        for (var i = 0; i < clients.length; i++) {
+            var clientName = clients[i].name;
+            var clientAddress = clients[i].address;
+            internal.createButton(clientName, clientAddress);
+        }
     }
-}
-
-
-Component.onCompleted: {
-    initializeButtons();
-}
-
-function initializeButtons() {
-    // Asumiendo que tienes un objeto 'database' que te permite hacer consultas a la DB
-    var clients = database.getAllClients();
-    for (var i = 0; i < clients.length; i++) {
-        createButton(clients[i].name, clients[i].address);
+    Component.onCompleted: {
+        // Conexión de la señal clientsRetrieved a la función onClientsReceived
+        loginUser.clientsRetrieved.connect(onClientsReceived);
     }
+
+    Component.onDestruction: {
+        // Es una buena práctica desconectar las señales cuando el objeto se destruye
+        loginUser.clientsRetrieved.disconnect(onClientsReceived);
+    }  
 }

@@ -30,7 +30,7 @@ def generate_key(key):
 # Cargamos la llave
 def load_key():
     filename = os.path.abspath("pylon.key")
-    print(f"ICargando pylon.key desde: {filename}")
+    print(f"Cargando llave desde: {filename}")
     return open(filename, "rb").read()
 
 

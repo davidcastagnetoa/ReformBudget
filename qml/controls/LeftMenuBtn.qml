@@ -7,7 +7,9 @@ Button{
     text: qsTr("Left Menu Text")
 
     // CUSTOM PROPERTIES
-    property url btnIconSource: "../../images/svg_icons/home_icon.svg"
+    property string tag: ""
+    
+    property url btnIconSource: "../../images/svg_icons/icon_users.svg"
     property color btnColorDefault: "#0d1117"
     property color btnColorMouseOver: "#161b22"
     property color btnColorClicked: "#6dacb6"
@@ -35,7 +37,6 @@ Button{
     background: Rectangle{
         id: bgBtn
         color: internal.dynamicColor
-//        border.color: "#99757575"
 
         Canvas {
             anchors.fill: parent
@@ -136,8 +137,9 @@ Button{
                 anchors.bottom: parent.bottom
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
-                font.weight: Font.Thin
-                font.pointSize: 8
+                font.weight: Font.Light
+                font.family: "Titillium Web Light"
+                font.pointSize: 10
                 anchors.rightMargin: 15
                 anchors.bottomMargin: 12
                 anchors.leftMargin: 0
@@ -146,4 +148,10 @@ Button{
 
 
     }
+
+    Component.onCompleted: {
+        console.log("LeftMenuBtn componente cargado correctamente.")
+    }
+
+
 }

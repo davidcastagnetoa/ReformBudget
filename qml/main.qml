@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import "controls"
+import "./controls"
 
 Window {
     id: mainWindow
@@ -37,7 +37,7 @@ Window {
     property url iconAppNight: "../images/LogoNight.png"
     property url iconAppDay: "../images/LogoDay.png"
 
-    // COLORS9
+    // COLORS
     // mouse_area
     property color gradientStartNight : "#00000000"
     property color gradientEndNight : "#070a0d"
@@ -144,7 +144,6 @@ Window {
         }
     }
 
-
     Timer {
         id: hideWarningTimer
         interval: 2500  // 2 segundos
@@ -215,11 +214,6 @@ Window {
         function createButton(name, address) {
             if (leftMenuBtnComponent.status === Component.Ready) {
                 var newButton = leftMenuBtnComponent.createObject(columnBtnClients);
-            } else {
-                console.error("Componente no listo:", leftMenuBtnComponent.errorString());
-            }
-            // var newButton = leftMenuBtnComponent.createObject(columnBtnClients);
-            if (newButton) {
                 newButton.text = name;
                 newButton.secondaryTextContent = address
                 buttonCount++;
@@ -235,8 +229,10 @@ Window {
                     // Agrega el nuevo botón a la lista buttonList
                     buttonList.push(newButton);
                 });
+            } else if (leftMenuBtnComponent.status === Component.Error) {
+                console.error("Error al cargar LeftMenuBtn:", leftMenuBtnComponent.errorString());
             } else {
-                console.error("Error al crear el botón desde leftMenuBtnComponent");
+                console.log("Componente está cargando...");
             }
         }
     }
@@ -634,14 +630,11 @@ Window {
                                         property string tag: ""
                                         font.weight: Font.Light
                                         font.family: "Titillium Web Light"
-                                        // isActiveMenu: false
-                                        z: 0
                                         font.pointSize: 10
                                         btnIconSource: "../images/svg_icons/icon_users.svg"
                                     }
                                 }
                             }
-
                         }
 
 
@@ -992,7 +985,6 @@ Window {
                             id: animationPreview
                             target: contentPreview
                             property: "width"
-                            // to: if(contentPreview.width == contentArea.width * 2/5) return 35; else return contentArea.width * 2/5
                             to: if(previewCollapse === false) return 5; else return (contentArea.width * 2/5)
                             duration: 450
                             easing.type: Easing.InOutCirc
@@ -1194,7 +1186,6 @@ Window {
         // Es una buena práctica desconectar las señales cuando el objeto se destruye
         loginUser.clientsRetrieved.disconnect(onClientsReceived);
     }
-
 }
 
 

@@ -82,9 +82,18 @@ class Login(QObject):
     def getClientsForUser(self):
         db = Database()
         clients = db.getClientsForUserId(self._userId)
-        clients_list = [{"name": client._name, "address": client._address, "email": client._email,
-                         "city": client._city, "zip_code": client._zip_code, "phone": client._phone,
-                         "user_id": client._user_id} for client in clients]
+        clients_list = [
+            {
+                "name": client._name,
+                "address": client._address,
+                "email": client._email,
+                "city": client._city,
+                "zip_code": client._zip_code,
+                "phone": client._phone,
+                "user_id": client._user_id,
+            }
+            for client in clients
+        ]
         print(clients_list)
         self.clientsRetrieved.emit(clients_list)
         db.close()
@@ -97,8 +106,7 @@ class Login(QObject):
         response = userData.login(user)
 
         if response == "user_not_found":
-            self.userLoged.emit(
-                "No existe usuario debe crear una cuenta", None)
+            self.userLoged.emit("No existe usuario debe crear una cuenta", None)
             return
         elif response == "incorrect_password":
             self.userLoged.emit("Contraseña incorrecta!", None)
@@ -217,8 +225,7 @@ class ClientManager(QObject):
 
         clientData = ClientData()
         client = clientData.create_Client(
-            Client(name, address, email, city,
-                   zip_code, phone, user_id), user_id
+            Client(name, address, email, city, zip_code, phone, user_id), user_id
         )
 
         if client is None:
@@ -229,8 +236,7 @@ class ClientManager(QObject):
         self._client.create_clients(
             name, address, email, city, zip_code, phone, user_id
         )
-        self.clientCreated.emit(name, address, email,
-                                city, zip_code, phone, user_id)
+        self.clientCreated.emit(name, address, email, city, zip_code, phone, user_id)
         self.clientValidated.emit("Cliente creado")
 
 
@@ -244,6 +250,7 @@ class ClientManager(QObject):
 #           client._zip_code, client._phone, client._user_id)
 
 # db.close()
+
 
 # Clase para control de ventanas
 class WindowManager(QObject):
@@ -290,7 +297,7 @@ if __name__ == "__main__":
     engine.rootContext().setContextProperty("signupUser", signup_userdata)
 
     # ARRANCANDO MOTORES DE VENTANA
-    # engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))   # Borrar en Producccion
+    # engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))  # Borrar en Producccion
     engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
 
     # ASIGNANDO a primera posicion VENTANA loginPage
