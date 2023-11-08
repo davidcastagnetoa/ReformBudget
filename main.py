@@ -13,6 +13,7 @@ from models.user import User
 from models.client import Client
 from models.budget import Budget
 from connection import ConnectionDB
+from utils.helpers import eurs_to_cents
 from dotenv import load_dotenv
 from data.database import Database
 
@@ -226,6 +227,7 @@ class ClientManager(QObject):
             return
 
         clientData = ClientData()  # Metodo Data que crea el cliente en la DB
+
         client = clientData.create_Client(
             Client(name, address, email, city, zip_code, phone, user_id), user_id
         )
@@ -237,14 +239,113 @@ class ClientManager(QObject):
 
         # self._client.update_info(name, address, email, city, zip_code, phone, user_id)  # For update client
 
-        # Aquí se debería emitir la señal clientCreated
+        # Aquí se debería emitir la señal clientCreated para su uso en el lado del cliente
         self.clientCreated.emit(name, address, email, city, zip_code, phone, user_id)
         self.clientValidated.emit("Cliente creado")
 
 
+# Clase para la creacion de
 class BudgetManager(QObject):
-    print("class for budgets")
-    pass
+    # Señal que se usa en el cliente para mostrar datos del presupuesto
+    budgetCreated = Signal(str, str, int, int, int, str, str, str, str, str, str, int)
+    budgetValidated = Signal(str)
+
+    def __init__(self, parent=None):
+        super(BudgetManager, self).__init__(parent)
+        self._budget = Budget()  # Instancia vacía de cliente.
+
+    # Funcion para crear presupuesto (aqui recibe los datos desde el cliente)
+    @Slot(str, str, float, float, float, str, str, str, str, str, str, int)
+    def createBudget(
+        self,
+        budgetId,
+        budgetName,
+        budgetAmountSubtotal,
+        budgetAmountTaxes,
+        budgetAmountTotal,
+        budgetDate,
+        budgetDescription,
+        budgetStatus,
+        budgetType,
+        budgetCategory,
+        budgetNotes,
+        client_id,
+    ):
+        if (
+            not budgetId
+            or not budgetName
+            or not budgetAmountSubtotal
+            or not budgetAmountTaxes
+            or not budgetAmountTotal
+            or not budgetDate
+            or not budgetDescription
+            or not budgetStatus
+            or not budgetType
+            or not budgetCategory
+            or not budgetNotes
+        ):
+            self.budgetValidated.emit("Rellene todos los campos")
+            return
+
+        # Pasamos las cantidades desde el cliente a centimos
+        budgetAmountSubtotal_inCents = eurs_to_cents(budgetAmountSubtotal)
+        budgetAmountTaxes_inCents = eurs_to_cents(budgetAmountTaxes)
+        budgetAmountTotal_inCents = eurs_to_cents(budgetAmountTotal)
+
+        # # Pasamos la fecha desde el cliente a formato datetime
+        # budgetDate = datetime.strptime(budgetDate, "%d/%m/%Y")
+        # # Pasamos el status desde el cliente a formato booleano
+        # budgetStatus = budgetStatus == "Activo"
+        # # Pasamos el tipo desde el cliente a formato booleano
+        # budgetType = budgetType == "Fijo"
+        # # Pasamos la categoria desde el cliente a formato booleano
+        # budgetCategory = budgetCategory == "Personal"
+        # # Pasamos los notas desde el cliente a formato booleano
+        # budgetNotes = budgetNotes == "Sin notas"
+
+        budgetData = BudgetData()  # Metodo Data que crea el presupuesto en la DB
+
+        # Creamos el presupuesto (Lo que guarda en DB)
+        budget = budgetData.create_Budget(
+            Budget(
+                budgetId,
+                budgetName,
+                budgetAmountSubtotal_inCents,
+                budgetAmountTaxes_inCents,
+                budgetAmountTotal_inCents,
+                budgetDate,
+                budgetDescription,
+                budgetStatus,
+                budgetType,
+                budgetCategory,
+                budgetNotes,
+                client_id,
+            ),
+            client_id,
+        )
+
+        if budget is None:
+            self.budgetCreated.emit("Error al crear el presupuesto")
+            print("Error al crear el presupuesto")
+            return
+
+        # self._budget.update_info(budgetId, budgetName, budgetAmountSubtotal, budgetAmountTaxes, budgetAmountTotal, budgetDate, budgetDescription, budgetStatus, budgetType, budgetCategory, budgetNotes, client_id)  # For update budget
+
+        # Aquí se debería emitir la señal budgetCreated (Lo que se envia al cliente)
+        self.budgetCreated.emit(
+            budgetId,
+            budgetName,
+            budgetAmountSubtotal,
+            budgetAmountTaxes,
+            budgetAmountTotal,
+            budgetDate,
+            budgetDescription,
+            budgetStatus,
+            budgetType,
+            budgetCategory,
+            budgetNotes,
+            client_id,
+        )
 
 
 # # Funcion para la consulta de TODOS los clientes
