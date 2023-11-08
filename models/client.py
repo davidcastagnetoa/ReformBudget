@@ -31,7 +31,7 @@ class Client(QObject):
         city,
         zip_code,
         phone,
-        user_id,
+        # user_id,
     ):
         self._name = name
         self._address = address
@@ -39,7 +39,7 @@ class Client(QObject):
         self._city = city
         self._zip_code = zip_code
         self._phone = phone
-        self._user_id = user_id  # Usuario al que pertenece
+        # self._user_id = user_id  # Usuario al que pertenece
 
 
 # class Client:

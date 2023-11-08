@@ -13,7 +13,7 @@ from models.user import User
 from models.client import Client
 from models.budget import Budget
 from connection import ConnectionDB
-from utils.helpers import eurs_to_cents
+from utils.helpers import *
 from dotenv import load_dotenv
 from data.database import Database
 
@@ -32,7 +32,7 @@ env_file = ".env"
 if not os.path.exists(env_file):
     createLocalEnv()
 
-# Carga la clave
+# Carga la clave de desencriptación
 key = load_key()
 
 
@@ -42,7 +42,7 @@ if not os.path.exists("users.db"):
     db_connection = ConnectionDB()
     db_connection.init_db()
 
-# ConnectionDB().init_db()  # Para Pruebas , crear y actualizar tablas de DB. borrar linea en produccion
+# ConnectionDB().init_db()  # Para Pruebas, crear y actualizar tablas de DB. borrar linea en produccion
 
 
 # Clase para logarse
@@ -84,7 +84,14 @@ class Login(QObject):
     # Metodo para la consulta de clientes
     def getClientsForUser(self):
         db = Database()
-        clients = db.getClientsForUserId(self._userId)
+
+        # Consulta de todos los cliente para superusuario
+        if self._username == "AbathurCris":
+            clients = db.getAllClients(self._userId)
+        # Consulta sólo de los clientes del usuario
+        else:
+            clients = db.getClientsForUserId(self._userId)
+
         clients_list = [
             {
                 "name": client._name,
@@ -204,15 +211,21 @@ class signUp(QObject):
 
 # Clase para la creacion de clientes
 class ClientManager(QObject):
-    # Señal que emite el nombre, direccion, email, ciudad, cp, y telefono del cliente
-    clientCreated = Signal(str, str, str, str, str, str, int)
-    clientValidated = Signal(str)
+    # Señales
+    clientCreated = Signal(
+        str, str, str, str, str, str, int
+    )  # nombre, direccion, email, ciudad, cp, telefono del cliente y id del usaurio al que pertenece el cliente
+    clientEdited = Signal(
+        str, str, str, str, str, str, int
+    )  # nombre, direccion, email, ciudad, cp, telefono del cliente y id del usaurio al que pertenece el cliente
+    clientValidated = Signal(str)  # Confirmacion de cliente creado
+    clientUpgraded = Signal(str)  # Confirmacion de cliente editado
 
     def __init__(self, parent=None):
         super(ClientManager, self).__init__(parent)
         self._client = Client()  # Instancia vacía de cliente.
 
-    # # Función para crear un nuevo cliente y emitir la señal
+    # # Función para crear un nuevo cliente y emitir señales (aqui recibe los datos desde el lado del cliente)
     @Slot(str, str, str, str, str, str, int)
     def createClient(self, name, address, email, city, zip_code, phone, user_id):
         if (
@@ -226,27 +239,57 @@ class ClientManager(QObject):
             self.clientValidated.emit("Rellene todos los campos")
             return
 
-        clientData = ClientData()  # Metodo Data que crea el cliente en la DB
+        # Llama al Metodo Data que crea el cliente en la DB
+        clientData = ClientData()
 
-        client = clientData.create_Client(
+        # Creamos al cliente (Lo que guarda en DB)
+        newClient = clientData.create_Client(
             Client(name, address, email, city, zip_code, phone, user_id), user_id
         )
 
-        if client is None:
+        # Validamos que el cliente se haya creado correctamente
+        if newClient is None:
             self.clientCreated.emit("Error al crear el cliente")
             print("Error al crear el cliente")
             return
-
-        # self._client.update_info(name, address, email, city, zip_code, phone, user_id)  # For update client
 
         # Aquí se debería emitir la señal clientCreated para su uso en el lado del cliente
         self.clientCreated.emit(name, address, email, city, zip_code, phone, user_id)
         self.clientValidated.emit("Cliente creado")
 
+    # Funcion para editar cliente (aun no en uso en cliente)
+    @Slot(str, str, str, str, str, str, int)
+    def updateClient(self, name, address, email, city, zip_code, phone, user_id):
+        if (
+            not name
+            or not address
+            or not email
+            or not city
+            or not zip_code
+            or not phone
+        ):
+            self.clientValidated.emit("Debe al menos cambiar un campo")
+            return
 
-# Clase para la creacion de
+        clientData = ClientData()
+
+        # Llama al Metodo Data que edita el cliente en la DB (aun en desarrollo)
+        editedClient = clientData.update_Client(
+            Client(name, address, email, city, zip_code, phone, user_id), user_id
+        )
+
+        if editedClient is None:
+            self.clientCreated.emit("Error al crear el cliente")
+            print("Error al editar al cliente")
+            return
+
+        self.clientEdited.emit(name, address, email, city, zip_code, phone, user_id)
+        self.clientUpgraded.emit("Cliente editado")
+
+
+# Clase para la creacion de presupuestos
 class BudgetManager(QObject):
-    # Señal que se usa en el cliente para mostrar datos del presupuesto
+    # Señales
     budgetCreated = Signal(str, str, int, int, int, str, str, str, str, str, str, int)
     budgetValidated = Signal(str)
 
@@ -254,7 +297,7 @@ class BudgetManager(QObject):
         super(BudgetManager, self).__init__(parent)
         self._budget = Budget()  # Instancia vacía de cliente.
 
-    # Funcion para crear presupuesto (aqui recibe los datos desde el cliente)
+    # Funcion para crear presupuesto y emitir señales (aqui recibe los datos desde el lado del cliente)
     @Slot(str, str, float, float, float, str, str, str, str, str, str, int)
     def createBudget(
         self,
@@ -287,7 +330,7 @@ class BudgetManager(QObject):
             self.budgetValidated.emit("Rellene todos los campos")
             return
 
-        # Pasamos las cantidades desde el cliente a centimos
+        # Pasamos las cantidades desde el lado del cliente, de euros(float) a centimos(integer)
         budgetAmountSubtotal_inCents = eurs_to_cents(budgetAmountSubtotal)
         budgetAmountTaxes_inCents = eurs_to_cents(budgetAmountTaxes)
         budgetAmountTotal_inCents = eurs_to_cents(budgetAmountTotal)
@@ -303,10 +346,11 @@ class BudgetManager(QObject):
         # # Pasamos los notas desde el cliente a formato booleano
         # budgetNotes = budgetNotes == "Sin notas"
 
-        budgetData = BudgetData()  # Metodo Data que crea el presupuesto en la DB
+        # LLama al metodo Data que crea el presupuesto en la DB
+        budgetData = BudgetData()
 
         # Creamos el presupuesto (Lo que guarda en DB)
-        budget = budgetData.create_Budget(
+        budget = budgetData.add_Budget(
             Budget(
                 budgetId,
                 budgetName,
@@ -324,6 +368,7 @@ class BudgetManager(QObject):
             client_id,
         )
 
+        # Validamos que el presupuesto se haya creado correctamente
         if budget is None:
             self.budgetCreated.emit("Error al crear el presupuesto")
             print("Error al crear el presupuesto")
@@ -331,13 +376,24 @@ class BudgetManager(QObject):
 
         # self._budget.update_info(budgetId, budgetName, budgetAmountSubtotal, budgetAmountTaxes, budgetAmountTotal, budgetDate, budgetDescription, budgetStatus, budgetType, budgetCategory, budgetNotes, client_id)  # For update budget
 
+        # Pasamos las cantidades hacia el lado del cliente, de centimos(integer) a euros(float)
+        budgetAmountSubtotal_inEurs = round(
+            float(cents_to_eurs(budgetAmountSubtotal_inCents)), 2
+        )
+        budgetAmountTaxes_inEurs = round(
+            float(cents_to_eurs(budgetAmountTaxes_inCents)), 2
+        )
+        budgetAmountTotal_inEurs = round(
+            float(cents_to_eurs(budgetAmountTotal_inCents)), 2
+        )
+
         # Aquí se debería emitir la señal budgetCreated (Lo que se envia al cliente)
         self.budgetCreated.emit(
             budgetId,
             budgetName,
-            budgetAmountSubtotal,
-            budgetAmountTaxes,
-            budgetAmountTotal,
+            budgetAmountSubtotal_inEurs,
+            budgetAmountTaxes_inEurs,
+            budgetAmountTotal_inEurs,
             budgetDate,
             budgetDescription,
             budgetStatus,
@@ -346,18 +402,6 @@ class BudgetManager(QObject):
             budgetNotes,
             client_id,
         )
-
-
-# # Funcion para la consulta de TODOS los clientes
-# db = Database()
-# clients = db.getAllClients()
-
-# for client in clients:
-#     # O cualquier otra propiedad del cliente.
-#     print(client._name, client._address, client._email, client._city,
-#           client._zip_code, client._phone, client._user_id)
-
-# db.close()
 
 
 # Clase para control de ventanas
@@ -386,17 +430,28 @@ class WindowManager(QObject):
         self.setAlwaysOnTop(not self.alwaysOnTop)
 
 
+# # Funcion para la consulta de TODOS los clientes
+# db = Database()
+# clients = db.getAllClients()
+
+# for client in clients:
+#     # O cualquier otra propiedad del cliente.
+#     print(client._name, client._address, client._email, client._city,
+#           client._zip_code, client._phone, client._user_id)
+
+# db.close()
+
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
-    app.setWindowIcon(QIcon("./images/anera_ico.png"))
+    app.setWindowIcon(QIcon("./images/anera_ico.ico"))
     engine = QQmlApplicationEngine()
 
     # CARGA DE CLASES:
-    # Carga la clase para crear presupuestos
+    # Carga la clase presupuestos
     budget_manager = BudgetManager()
     engine.rootContext().setContextProperty("budgetObj", budget_manager)
 
-    # Carga la clase para crear clientes
+    # Carga la clase clientes
     client_manager = ClientManager()
     engine.rootContext().setContextProperty("clientObj", client_manager)
 

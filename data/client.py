@@ -24,3 +24,7 @@ class ClientData:
         self.cursor.close()
         self.db.close()
         return client
+
+    def update_Client(self, client: Client, user_id: int):
+        print("user_id recibido es: ", user_id)
+        pass
