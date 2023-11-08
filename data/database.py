@@ -13,25 +13,28 @@ class Database:
         query = (
             "SELECT name, address, email, city, zip_code, phone, user_id FROM clients"
         )
-        if limit:
-            query += " LIMIT ?"
-            self.cur.execute(query, (limit,))
-        else:
-            self.cur.execute(query)
 
+        # if limit:
+        #     query += " LIMIT ?"
+        #     self.cur.execute(query, (limit,))
+        # else:
+        #     self.cur.execute(query)
+
+        self.cur.execute(query)
         rows = self.cur.fetchall()
-        clients = []
-        for row in rows:
-            client = Client(
+        # Convertir cada fila en un objeto Cliente y añadirlo a la lista 'clients'
+        clients = [
+            Client(
                 name=row[0],
                 address=row[1],
                 email=row[2],
                 city=row[3],
                 zip_code=row[4],
                 phone=row[5],
-                user_id=row[6],
+                user_id=row[6],  # Feature Key = PRIMARY KEY OF USERS
             )
-            clients.append(client)
+            for row in rows
+        ]
         return clients
 
     def getClientsForUserId(self, userId):
@@ -53,7 +56,7 @@ class Database:
         ]
         return clients
 
-    def getBudgetsForClient(self, clientId):
+    def getBudgetsForClientId(self, clientId):
         query = "SELECT budgetId, budgetName, budgetAmountSubtotal, budgetAmountTaxes, budgetAmountTotal, budgetDate, budgetDescription, budgetStatus, budgetType, budgetCategory, budgetSubcategory, budgetNotes, budgetCreatedDate, client_id FROM budgets WHERE client_id = ?"
         self.cur.execute(query, (clientId,))
         rows = self.cur.fetchall()
