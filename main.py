@@ -28,6 +28,8 @@ def createLocalEnv():
 load_dotenv()
 env_file = ".env"
 
+DEFAULT_ADMIN_USERNAME = "default_username"
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", DEFAULT_ADMIN_USERNAME)
 
 if not os.path.exists(env_file):
     createLocalEnv()
@@ -87,7 +89,7 @@ class Login(QObject):
         print(self._username)
 
         # Consulta de todos los cliente para el superusuario
-        if self._username == "AbathurCris":
+        if self._username == ADMIN_USERNAME:
             clients = db.getAllClients(self._userId)
         # Consulta sólo de los clientes del usuario
         else:
@@ -116,7 +118,8 @@ class Login(QObject):
         response = userData.login(user)
 
         if response == "user_not_found":
-            self.userLoged.emit("No existe usuario debe crear una cuenta", None)
+            self.userLoged.emit(
+                "No existe usuario debe crear una cuenta", None)
             return
         elif response == "incorrect_password":
             self.userLoged.emit("Contraseña incorrecta!", None)
@@ -244,7 +247,8 @@ class ClientManager(QObject):
 
         # Creamos al cliente (Lo que guarda en DB)
         newClient = clientData.create_Client(
-            Client(name, address, email, city, zip_code, phone, user_id), user_id
+            Client(name, address, email, city,
+                   zip_code, phone, user_id), user_id
         )
 
         # Validamos que el cliente se haya creado correctamente
@@ -254,7 +258,8 @@ class ClientManager(QObject):
             return
 
         # Aquí se debería emitir la señal clientCreated para su uso en el lado del cliente
-        self.clientCreated.emit(name, address, email, city, zip_code, phone, user_id)
+        self.clientCreated.emit(name, address, email,
+                                city, zip_code, phone, user_id)
         self.clientValidated.emit("Cliente creado")
 
     # Funcion para editar cliente (aun no en uso en cliente)
@@ -275,7 +280,8 @@ class ClientManager(QObject):
 
         # Llama al Metodo Data que edita el cliente en la DB (aun en desarrollo)
         editedClient = clientData.update_Client(
-            Client(name, address, email, city, zip_code, phone, user_id), user_id
+            Client(name, address, email, city,
+                   zip_code, phone, user_id), user_id
         )
 
         if editedClient is None:
@@ -283,14 +289,16 @@ class ClientManager(QObject):
             print("Error al editar al cliente")
             return
 
-        self.clientEdited.emit(name, address, email, city, zip_code, phone, user_id)
+        self.clientEdited.emit(name, address, email,
+                               city, zip_code, phone, user_id)
         self.clientUpgraded.emit("Cliente editado")
 
 
 # Clase para la creacion de presupuestos
 class BudgetManager(QObject):
     # Señales
-    budgetCreated = Signal(str, str, int, int, int, str, str, str, str, str, str, int)
+    budgetCreated = Signal(str, str, int, int, int, str,
+                           str, str, str, str, str, int)
     budgetValidated = Signal(str)
 
     def __init__(self, parent=None):
@@ -429,17 +437,6 @@ class WindowManager(QObject):
     def toggleAlwaysOnTop(self):
         self.setAlwaysOnTop(not self.alwaysOnTop)
 
-
-# # Funcion para la consulta de TODOS los clientes
-# db = Database()
-# clients = db.getAllClients()
-
-# for client in clients:
-#     # O cualquier otra propiedad del cliente.
-#     print(client._name, client._address, client._email, client._city,
-#           client._zip_code, client._phone, client._user_id)
-
-# db.close()
 
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)

@@ -11,6 +11,10 @@ Button {
         property color btnColorDefault: "#161b22"
         property color btnColorMouseOver: "#0d1117"
         property color btnColorClicked: "#00C859"
+
+        property color btnColorIconDefault: "#b0b0b0"
+        property color btnColorIconMouseOver: "#FFFFFF"
+        property color btnColorIconClicked: "#000000"
     width: 30
     height: 40
 
@@ -58,7 +62,7 @@ Button {
                 anchors.bottomMargin: 0
                 anchors.leftMargin: 0
                 anchors.topMargin: 0
-                color: "#FFFFFF"
+                color: expandBtnToggle.down ? btnColorIconClicked : expandBtnToggle.hovered ? btnColorIconMouseOver : btnColorIconDefault
                 antialiasing: false
             }
         }

@@ -24,6 +24,7 @@ Window {
     property int windowStatus: 0
     property int windowMargin: 10
     property bool previewCollapse: false
+    property bool budgetBarCollapse: false
     property bool isDarkMode: true
     property int buttonCount: 2
     
@@ -200,6 +201,18 @@ Window {
                 tooglePreviewBtn.btnIconMirror = false
                 animationPreview.running = true
                 previewCollapse = false
+            }
+        }
+        // Toggle Budget Bar
+        function collapseBudgetPreview(){
+            if(budgetBarCollapse === false){
+                toogleBudgetPreviewBtn.btnIconSource = "../images/svg_icons/up_icon.svg"
+                animationbgBudgetCol.running = true
+                budgetBarCollapse = true
+            }else{
+                toogleBudgetPreviewBtn.btnIconSource = "../images/svg_icons/down_icon.svg"
+                animationbgBudgetCol.running = true
+                budgetBarCollapse = false
             }
         }
         // Toggle Dark and Light Mode
@@ -527,7 +540,8 @@ Window {
 
                 Rectangle {
                     id: leftMenu
-                    width: 70
+//                    width: 70
+                    width: 200
                     color: isDarkMode ? leftMenuBgNight : leftMenuBgDay
                     border.width: 0
                     anchors.left: parent.left
@@ -550,10 +564,11 @@ Window {
 
                     Column {
                         id: clientCol
-                        height: leftMenu.height * 0.65
                         anchors.left: parent.left
                         anchors.right: parent.right
                         anchors.top: parent.top
+                        anchors.bottom: bgBudgetCol.top
+                        anchors.bottomMargin: 0
                         anchors.rightMargin: 0
                         z: 0
                         spacing: -1
@@ -644,30 +659,48 @@ Window {
                     Rectangle {
                         id: bgBudgetCol
                         x: 0
-                        y: 520
+                        y: 800
+                        height: 300
                         color: isDarkMode ? bgBudgetColBgNight : bgBudgetColBgDay
                         border.color: "#00000000"
                         border.width: 0
                         anchors.left: parent.left
                         anchors.right: parent.right
-                        anchors.top: clientCol.bottom
                         anchors.bottom: parent.bottom
-                        anchors.topMargin: 0
+                        z: 0
+                        anchors.bottomMargin: 0
 
-                        Canvas {
-                            anchors.fill: parent
-                            onPaint: {
-                                var ctx = getContext('2d');
-                                ctx.strokeStyle = "#99757575"; // Color del borde
-                                ctx.lineWidth = 1; // Grosor del borde
-                                ctx.beginPath();
+                        PropertyAnimation{
+                            id: animationbgBudgetCol
+                            target: bgBudgetCol
+                            property: "height"
+                            to: if(bgBudgetCol.height == 300) return 30; else return 300
+                            duration: 250
+                            easing.type: Easing.InOutQuint
+                        }
 
-                                // Dibuja el borde superior
-                                ctx.moveTo(0, 0);
-                                ctx.lineTo(parent.width, 0);
-                                ctx.stroke();
+                        ExpandBudgetButton{
+                            id: toogleBudgetPreviewBtn
+                            anchors.bottom: parent.top
+                            z: -1
+                            clip: true
+                            btnColorClicked: "#99f1ff"
+                            btnColorMouseOver: "#0f141b"
+                            anchors.bottomMargin: -5
+                            btnIconSource: "../images/svg_icons/down_icon.svg"
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            onClicked: {
+                                internal.collapseBudgetPreview()
                             }
                         }
+                        Rectangle {
+                            id: separatorBudget
+                            width: clientCol.width
+                            height: 1
+                            color: isDarkMode ? separatorNight : separatorDay
+                            border.color: "#00000000"
+                        }
+
                         Label {
                             id: labelBudgets
                             width: clientCol.width
@@ -691,6 +724,7 @@ Window {
                             anchors.bottom: parent.bottom
                             anchors.topMargin: 5
                         }
+
                     }
 
 
@@ -1214,8 +1248,10 @@ Window {
 
 
 
+
+
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.66}
+    D{i:0;formeditorZoom:0.75}
 }
 ##^##*/
