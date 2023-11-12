@@ -40,6 +40,8 @@ Window {
     property url leftImageSourceDay: "../images/ReformBudgetLogoDay.png"
     property url iconAppNight: "../images/LogoNight.png"
     property url iconAppDay: "../images/LogoDay.png"
+    property color warningLabelNight: "#ffa0a0"
+    property color warningLabelDay: "#A60000"
 
     // COLORS
     // mouse_area
@@ -152,16 +154,28 @@ Window {
     property color selectedTextColorInputDay: "#000000"
 
     //Button
-     property color colorDefaultBtnDay: "#0c1122"
-     property color colorPressedBtnDay: "#060810"
-     property color colorMouseOverBtnDay: "#111831"
-     property color textBtnColorDay: "#ffffff"
+    property color colorDefaultBtnDay: "#0c1122"
+    property color colorMouseOverBtnDay: "#111831"
+    property color colorPressedBtnDay: "#ec733a"
+
+    property color textBtnColorDefaultDay: "#FFFFFF"
+    property color textBtnColorMouseOverDay: "#FFFFFF"
+    property color textBtnColorClickedDay: "#000000"
 
     //Button
-     property color colorDefaultBtnNight: "#6dacb6"
-     property color colorPressedBtnNight: "#99f1ff"
-     property color colorMouseOverBtnNight: "#6198a1"
-     property color textBtnColorNight: "#000000"
+    property color colorDefaultBtnNight: "#6dacb6"
+    property color colorMouseOverBtnNight: "#6198a1"
+    property color colorPressedBtnNight: "#99f1ff"
+
+    property color textBtnColorDefaultNight: "#000000"
+    property color textBtnColorMouseOverNight: "#000000"
+    property color textBtnColorClickedNight: "#1F2328"
+
+    //Client Page
+    property color textBgBorderRectangleNight : "#161b22"
+    property color textBgColorRectangleNight : "#21262d"
+    property color textBgBorderRectangleDay : "#161b22"
+    property color textBgColorRectangleDay : "#21262d"
 
     property int userID: {
         console.log("loginUser.userId: ", loginUser && loginUser.userId);
@@ -246,14 +260,25 @@ Window {
         }
         // Toggle Dark and Light Mode
         function toggleDarkMode() {
+            var clientPage = stackView.item;
             if(isDarkMode === true){
+                // Light
+                clientPage.textBgColorRectangle = "#ececec";
+                clientPage.textBgBorderRectangle = "#66657686";
+                clientPage.textLblColor = "#656D76";
+                clientPage.textResTxtColor = "#1f2328";
                 isDarkMode = false 
             }else{
+                // Dark
+                clientPage.textBgColorRectangle = "#161b22";
+                clientPage.textBgBorderRectangle = "#21262d";
+                clientPage.textLblColor = "#818995";
+                clientPage.textResTxtColor = "#FFFFFF";
                 isDarkMode = true 
             }
         }
         // Create Client LeftMenuButtons
-        function createButton(user_id, name, address, mail, city, zip_code, phone) {
+        function createButton(name, address, mail, city, zip_code, phone) {
             if (leftMenuBtnComponent.status === Component.Ready) {
                 // Genera los botones con los datos de los clientes DB
                 var newButton = leftMenuBtnComponent.createObject(columnBtnClients);
@@ -268,7 +293,7 @@ Window {
                     // Itera sobre todos los botones y establece su propiedad isActiveMenu en false
                     for (var i = 0; i < buttonList.length; i++) {
                         buttonList[i].isActiveMenu = false;
-                        console.log(user_id)
+                        // console.log(user_id)
                         console.log(name)
                         console.log(address)
                         console.log(mail)
@@ -287,7 +312,7 @@ Window {
                         city: city,
                         zip_code: zip_code,
                         phone: phone,
-                        user_id: user_id
+                        // user_id: user_id
                     };
                     clientButtonClicked(clientData); // Emitir la señal
                     
@@ -839,8 +864,8 @@ Window {
                             text: qsTr("Customer Data")
                             anchors.left: parent.left
                             anchors.top: parent.top
-                            font.family: "Titillium Web Extralight"
-                            font.pointSize: 16
+                            font.family: "Titillium Web Light"
+                            font.pointSize: 14
                             anchors.leftMargin: 15
                             anchors.topMargin: 10
                         }
@@ -976,38 +1001,48 @@ Window {
                             anchors.bottomMargin: 10
                             font.weight: Font.Light
                             font.pointSize: 9
-                            textBtnColor: isDarkMode ? textBtnColorNight : textBtnColorDay
+                            textBtnColorDefault: isDarkMode ? textBtnColorDefaultNight : textBtnColorDefaultDay
+                            textBtnColorMouseOver: isDarkMode ? textBtnColorMouseOverNight : textBtnColorMouseOverDay
+                            textBtnColorClicked: isDarkMode ? textBtnColorClickedNight : textBtnColorClickedDay
                             colorDefault: isDarkMode ? colorDefaultBtnNight : colorDefaultBtnDay
                             colorPressed: isDarkMode ? colorPressedBtnNight : colorPressedBtnDay
                             colorMouseOver: isDarkMode ? colorMouseOverBtnNight : colorMouseOverBtnDay
                             onClicked: {
                                 console.log("userID es: ", userID)
                                 clientObj.createClient(textName.text, textAddress.text, textEmailCustomer.text, textCity.text, textZip.text, textPhone.text, userID);
+                                cleanInputText()
                             }
+
+                            function cleanInputText() {
+                                textName.text = "";
+                                textAddress.text = "";
+                                textEmailCustomer.text = "";
+                                textCity.text = "";
+                                textZip.text = "";
+                                textPhone.text = "";
+                            }
+                            
                             Connections {
                                 target: clientObj
                                 function onClientValidated(message){
                                     warningLabel.visible = true
                                     if (message === "Rellene todos los campos"){
                                         warningLabel.text = message;
-                                        warningLabel.color = "#ffa0a0"
                                     } else {
                                         warningLabel.text = message;
-                                        warningLabel.color = "#99f1ff"
                                     }
 
                                     hideWarningTimer.restart()
                                 }
-                                function onClientCreated(name, address, mail, city, zip_code, phone, user_id) {
+                                function onClientCreated(name, address, mail, city, zip_code, phone, userID) {
                                     console.log(name)
                                     console.log(address)
                                     console.log(mail)
                                     console.log(city)
                                     console.log(zip_code)
                                     console.log(phone)
-                                    console.log(user_id)
                                     Qt.callLater(function() {
-                                        internal.createButton(name, address, mail, city, zip_code, phone, user_id);
+                                        internal.createButton(name, address, mail, city, zip_code, phone);
                                     });
                                 }
                             }
@@ -1015,7 +1050,7 @@ Window {
 
                         Label {
                             id: warningLabel
-                            color: "#ffa0a0"
+                            color: isDarkMode ? warningLabelNight : warningLabelDay
                             text: qsTr("mensaje de advertencia")
                             anchors.left: createCustomer.right
                             anchors.top: createCustomer.top
@@ -1030,11 +1065,6 @@ Window {
                             font.pointSize: 11
                             visible: false
                         }
-
-
-
-
-
                     }
 
                     // Separator
@@ -1279,14 +1309,13 @@ Window {
     // Definición de la función que se ejecutará cuando se emita la señal
     function onClientsReceived(clients) {
         for (var i = 0; i < clients.length; i++) {
-            var clientUserID = clients[i].user_id;
             var clientName = clients[i].name;
             var clientAddress = clients[i].address;
             var clientEmail = clients[i].email;
             var clientCity = clients[i].city;
             var clientZipCode = clients[i].zip_code;
             var clientPhone = clients[i].phone;
-            internal.createButton(clientUserID, clientName, clientAddress, clientEmail, clientCity, clientZipCode, clientPhone);
+            internal.createButton(clientName, clientAddress, clientEmail, clientCity, clientZipCode, clientPhone);
         }
     }
     
@@ -1320,32 +1349,8 @@ Window {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*##^##
+Designer {
+    D{i:0;formeditorZoom:0.75}
+}
+##^##*/

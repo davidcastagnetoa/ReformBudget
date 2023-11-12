@@ -6,19 +6,21 @@ import "../controls"
 
 Item {
     //PROPERTIES
-    property var currentClient: ({name: "", address: "", mail: "", city: "", zip_code: "", phone: "", user_id: 0})
+    property var currentClient: ({user_id: 0, name: "", address: "", mail: "", city: "", zip_code: "", phone: ""})
     property color textLblColor: "#818995"
     property color textResTxtColor: "#FFFFFF"
+    property color textBgColorRectangle: "#161b22"
+    property color textBgBorderRectangle: "#21262d"
 
     onCurrentClientChanged: {
         if (currentClient !== null) {
+            // Actualizar otros elementos de la UI con los datos del cliente
             textResponseName.text = currentClient.name;
             textResponseAddress.text = currentClient.address;
             textResponseMail.text = currentClient.mail;
             textResponseCity.text = currentClient.city;
             textResponseZip_code.text = currentClient.zip_code;
             textResponsePhone.text = currentClient.phone;
-            // Actualizar otros elementos de la UI con los datos del cliente
         }
     }
 
@@ -42,17 +44,17 @@ Item {
         anchors.fill: parent
 
         Rectangle {
-            id: rectangle
-            width: 368
+            id: textBgClientData
+            width: 350
             height: 141
-            color: "#161b22"
+            color: textBgColorRectangle
             radius: 10
-            border.color: "#21262d"
+            border.color: textBgBorderRectangle
             border.width: 1
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.leftMargin: 10
-            anchors.topMargin: 10
+            anchors.topMargin: 15
 
             Column {
                 id: nameBlockBg
@@ -65,7 +67,7 @@ Item {
 
                 Item{
                     id: nameClientData
-                    width: 300
+                    width: 330
                     height: 20
                     Label {
                         id: labelName
@@ -74,6 +76,7 @@ Item {
                         text: qsTr("Nombre Completo:")
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
+                        font.letterSpacing: 0.2
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         font.styleName: "Regular"
@@ -91,6 +94,7 @@ Item {
                         elide: Text.ElideNone
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: labelName.right
+                        font.letterSpacing: 0.25
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         font.styleName: "Light"
@@ -99,13 +103,13 @@ Item {
                         font.pointSize: 10
                         font.weight: Font.Light
                         font.family: "Titillium Web"
-                        anchors.leftMargin: 7
+                        anchors.leftMargin: 10
                     }
                 }
 
                 Item {
                     id: mailClientData
-                    width: 300
+                    width: 330
                     height: 20
                     visible: true
                     Label {
@@ -115,6 +119,7 @@ Item {
                         text: qsTr("Email:")
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
+                        font.letterSpacing: 0.2
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         font.styleName: "Regular"
@@ -130,6 +135,7 @@ Item {
                         text: currentClient.address
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: labelMail.right
+                        font.letterSpacing: 0.25
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         font.styleName: "Light"
@@ -137,13 +143,13 @@ Item {
                         font.weight: Font.Light
                         font.pointSize: 10
                         font.family: "Titillium Web"
-                        anchors.leftMargin: 7
+                        anchors.leftMargin: 10
                     }
                 }
 
                 Item {
                     id: phoneClientData
-                    width: 300
+                    width: 330
                     height: 20
                     visible: true
                     Label {
@@ -153,6 +159,7 @@ Item {
                         text: qsTr("Teléfono:")
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
+                        font.letterSpacing: 0.2
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         font.styleName: "Regular"
@@ -168,6 +175,7 @@ Item {
                         text: currentClient.phone
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: labelPhone.right
+                        font.letterSpacing: 0.25
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         anchors.verticalCenterOffset: 0
@@ -176,13 +184,13 @@ Item {
                         font.weight: Font.Light
                         font.pointSize: 10
                         font.family: "Titillium Web"
-                        anchors.leftMargin: 6
+                        anchors.leftMargin: 10
                     }
                 }
 
                 Item {
                     id: addressClientData
-                    width: 300
+                    width: 330
                     height: 20
                     visible: true
                     Label {
@@ -192,6 +200,7 @@ Item {
                         text: qsTr("Dirección:")
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
+                        font.letterSpacing: 0.2
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         font.styleName: "Regular"
@@ -207,6 +216,7 @@ Item {
                         text: currentClient.address
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: labelAddress.right
+                        font.letterSpacing: 0.25
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         font.styleName: "Light"
@@ -214,13 +224,13 @@ Item {
                         font.pointSize: 10
                         font.family: "Titillium Web"
                         font.weight: Font.Light
-                        anchors.leftMargin: 7
+                        anchors.leftMargin: 10
                     }
                 }
 
                 Item {
                     id: zip_codeClientData
-                    width: 300
+                    width: 330
                     height: 20
                     visible: true
                     Label {
@@ -230,6 +240,7 @@ Item {
                         text: qsTr("Código Postal:")
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
+                        font.letterSpacing: 0.2
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         font.styleName: "Regular"
@@ -245,6 +256,7 @@ Item {
                         text: currentClient.zip_code
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: labelZip_code.right
+                        font.letterSpacing: 0.25
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         font.styleName: "Light"
@@ -252,13 +264,13 @@ Item {
                         font.weight: Font.Light
                         font.pointSize: 10
                         font.family: "Titillium Web"
-                        anchors.leftMargin: 7
+                        anchors.leftMargin: 10
                     }
                 }
 
                 Item {
                     id: cityClientData
-                    width: 300
+                    width: 330
                     height: 20
                     visible: true
                     Label {
@@ -268,6 +280,7 @@ Item {
                         text: qsTr("Ciudad:")
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
+                        font.letterSpacing: 0.2
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         font.styleName: "Regular"
@@ -283,6 +296,7 @@ Item {
                         text: currentClient.city
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: labelCity.right
+                        font.letterSpacing: 0.25
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         font.styleName: "Light"
@@ -290,7 +304,7 @@ Item {
                         font.weight: Font.Light
                         font.pointSize: 10
                         font.family: "Titillium Web"
-                        anchors.leftMargin: 7
+                        anchors.leftMargin: 10
                     }
                 }
 

@@ -63,16 +63,24 @@ Window {
     property color textColorInputDay: "#000000"
     property color selectedTextColorInputDay: "#000000"
     property color selectionColorInputDay: "#161b22"
+    
     //Button
-     property color colorDefaultBtnNight: "#0c1122"
-     property color colorPressedBtnNight: "#060810"
-     property color colorMouseOverBtnNight: "#111831"
-     property color textBtnColorNight: "#ffffff"
+    property color colorDefaultBtnNight: "#0c1122"
+    property color colorMouseOverBtnNight: "#111831"
+    property color colorPressedBtnNight: "#ec733a"
+
+    property color textBtnColorDefaultNight: "#FFFFFF"
+    property color textBtnColorMouseOverNight: "#FFFFFF"
+    property color textBtnColorClickedNight: "#000000"
+
     //Button
-     property color colorDefaultBtnDay: "#6dacb6"
-     property color colorPressedBtnDay: "#99f1ff"
-     property color colorMouseOverBtnDay: "#6198a1"
-     property color textBtnColorDay: "#000000"
+    property color colorDefaultBtnDay: "#6dacb6"
+    property color colorPressedBtnDay: "#99f1ff"
+    property color colorMouseOverBtnDay: "#6198a1"
+
+    property color textBtnColorDefaultDay: "#FFFFFF"
+    property color textBtnColorMouseOverDay: "#FFFFFF"
+    property color textBtnColorClickedDay: "#000000"
 
     //TIMER
     Timer {
@@ -465,7 +473,11 @@ Window {
             font.bold: false
             font.pointSize: 10
             anchors.bottomMargin: 7
-            textBtnColor: isDarkMode ? textBtnColorNight : textBtnColorDay
+
+            textBtnColorDefault: isDarkMode ? textBtnColorDefaultNight : textBtnColorDefaultDay
+            textBtnColorMouseOver: isDarkMode ? textBtnColorMouseOverNight : textBtnColorMouseOverDay
+            textBtnColorClicked: isDarkMode ? textBtnColorClickedNight : textBtnColorClickedDay
+
             colorDefault: isDarkMode ? colorDefaultBtnNight : colorDefaultBtnDay
             colorPressed: isDarkMode ? colorPressedBtnNight : colorPressedBtnDay
             colorMouseOver: isDarkMode ? colorMouseOverBtnNight : colorMouseOverBtnDay
@@ -511,7 +523,11 @@ Window {
             font.bold: true
             font.pointSize: 12
             anchors.bottomMargin: 7
-            textBtnColor: isDarkMode ? textBtnColorNight : textBtnColorDay
+            
+            textBtnColorDefault: isDarkMode ? textBtnColorDefaultNight : textBtnColorDefaultDay
+            textBtnColorMouseOver: isDarkMode ? textBtnColorMouseOverNight : textBtnColorMouseOverDay
+            textBtnColorClicked: isDarkMode ? textBtnColorClickedNight : textBtnColorClickedDay
+
             colorDefault: isDarkMode ? colorDefaultBtnNight : colorDefaultBtnDay
             colorPressed: isDarkMode ? colorPressedBtnNight : colorPressedBtnDay
             colorMouseOver: isDarkMode ? colorMouseOverBtnNight : colorMouseOverBtnDay
