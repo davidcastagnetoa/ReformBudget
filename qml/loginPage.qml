@@ -529,9 +529,9 @@ Window {
                         hideLabelTimer.start()
                         var component = Qt.createComponent("main.qml")
                         var win = component.createObject()
-                        // win.username = textUsername.text
+                        win.username = textUsername.text
                         win.show()
-                        // loginSuccessful()
+                        loginSuccessful()
                         visible = false
                     }
                     else if (user === "No existe usuario o debe crear una cuenta"){
