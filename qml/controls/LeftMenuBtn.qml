@@ -15,10 +15,17 @@ Button{
     property color btnColorClicked: "#6dacb6"
     property int iconWidth: 18
     property int iconHeight: 18
-    property color activeMenuColor: "#99f1ff"
+    property color activeMenuColorLeft: "#99f1ff"
     property color activeMenuColorRight: "#99f1ff"
     property bool isActiveMenu: false
     property string secondaryTextContent: "Texto Secundario"
+    property color textAndOverlayColorDefault: "#1F2328"
+    property color textAndOverlayColorMouseOver: "#000000"
+    property color textAndOverlayColorClicked: "#FFFFFF"
+    property color textSecondaryColorDefault: "#C9D1D9"
+    property color textSecondaryColorMouseOver: "#6E7681"
+    property color textSecondaryColorClicked: "#a1a1a1"
+
     QtObject{
         id: internal
 
@@ -36,7 +43,7 @@ Button{
 
     background: Rectangle{
         id: bgBtn
-        color: internal.dynamicColor
+        color: isActiveMenu ? btnColorClicked : internal.dynamicColor
 
         Canvas {
             anchors.fill: parent
@@ -66,7 +73,7 @@ Button{
             }
             width: 2
             visible: isActiveMenu
-            color: "#99f1ff"
+            color: activeMenuColorLeft
         }
 
         Rectangle{
@@ -103,7 +110,7 @@ Button{
         ColorOverlay{
             anchors.fill: iconBtn
             source: iconBtn
-            color: "#ffffff"
+            color: isActiveMenu ? textAndOverlayColorClicked : btnLeftMenu.down ? textAndOverlayColorClicked : btnLeftMenu.hovered ? textAndOverlayColorMouseOver : textAndOverlayColorDefault
             anchors.verticalCenter: parent.verticalCenter
             antialiasing: true
             width: iconWidth
@@ -117,7 +124,7 @@ Button{
             anchors.left: parent.left
             anchors.leftMargin: 75
             Text{
-                color: "#ffffff"
+                color: isActiveMenu ? textAndOverlayColorClicked : btnLeftMenu.down ? textAndOverlayColorClicked : btnLeftMenu.hovered ? textAndOverlayColorMouseOver : textAndOverlayColorDefault
                 text: btnLeftMenu.text
                 font: btnLeftMenu.font
                 anchors.left: parent.left
@@ -130,7 +137,7 @@ Button{
             }
             Text{
                 y: 8
-                color: "#a1a1a1"
+                color: isActiveMenu ? textSecondaryColorClicked : btnLeftMenu.down ? textSecondaryColorClicked : btnLeftMenu.hovered ? textSecondaryColorMouseOver : textSecondaryColorDefault
                 text: secondaryTextContent
                 anchors.left: parent.left
                 anchors.right: parent.right

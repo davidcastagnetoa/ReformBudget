@@ -88,7 +88,7 @@ class Login(QObject):
         db = Database()
         print(self._username)
 
-        # Consulta de todos los cliente para el superusuario
+        # Consulta de todos los cliente para el superusuario XD
         if self._username == ADMIN_USERNAME:
             clients = db.getAllClients(self._userId)
         # Consulta sólo de los clientes del usuario

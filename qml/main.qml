@@ -102,6 +102,30 @@ Window {
     property color leftMenuBgNight : "#161b22"
     property color leftMenuBgDay : "#d0d1d5"
 
+    //leftMenuBtn
+    property color leftMenuBtnColorDefaultNight: "#0d1117"
+    property color leftMenuBtnColorMouseOverNight: "#161b22"
+    property color leftMenuBtnColorClickedNight: "#6dacb6"
+    property color textAndOverlayColorDefaultNight: "#C9D1D9"
+    property color textAndOverlayColorMouseOverNight: "#FFFFFF"
+    property color textAndOverlayColorClickedNight: "#000000"
+    property color textSecondaryColorDefaultNight: "#6E7681"
+    property color textSecondaryColorMouseOverNight: "#C9D1D9"
+    property color textSecondaryColorClickedNight: "#1F2328"
+    property color leftMenuBtnColorDefaultDay: "#dbdcdf"
+    property color leftMenuBtnColorMouseOverDay: "#bcbdc1"
+    property color leftMenuBtnColorClickedDay: "#000000"
+    property color textAndOverlayColorDefaultDay: "#1F2328"
+    property color textAndOverlayColorMouseOverDay: "#000000"
+    property color textAndOverlayColorClickedDay: "#FFFFFF"
+    property color textSecondaryColorDefaultDay: "#656D76"
+    property color textSecondaryColorMouseOverDay: "#1F2328"
+    property color textSecondaryColorClickedDay: "#a1a1a1"
+    property color activeMenuColorLeftNight: "#99f1ff"
+    property color activeMenuColorRightNight: "#99f1ff"
+    property color activeMenuColorLeftDay: "#ec733a"
+    property color activeMenuColorRightDay: "#ec733a"
+
     // bgBudgetCol
     property color bgBudgetColBgNight : "#161b22"
     property color bgBudgetColBgDay : "#d0d1d5"
@@ -123,11 +147,13 @@ Window {
     property color textColorInputDay: "#000000"
     property color selectionColorInputDay: "#161b22"
     property color selectedTextColorInputDay: "#000000"
+
     //Button
      property color colorDefaultBtnDay: "#0c1122"
      property color colorPressedBtnDay: "#060810"
      property color colorMouseOverBtnDay: "#111831"
      property color textBtnColorDay: "#ffffff"
+
     //Button
      property color colorDefaultBtnNight: "#6dacb6"
      property color colorPressedBtnNight: "#99f1ff"
@@ -639,6 +665,19 @@ Window {
                                 anchors.top: parent.top
                                 spacing: -1
 
+                                // LeftMenuBtn{
+                                //     id: leftMenuExample
+                                //     btnColorDefault: isDarkMode ? leftMenuBtnColorDefaultNight : leftMenuBtnColorDefaultDay
+                                //     btnColorMouseOver: isDarkMode ? leftMenuBtnColorMouseOverNight : leftMenuBtnColorMouseOverDay
+                                //     btnColorClicked: isDarkMode ? leftMenuBtnColorClickedNight : leftMenuBtnColorClickedDay
+                                //     textAndOverlayColorDefault: isDarkMode ? textAndOverlayColorDefaultNight : textAndOverlayColorDefaultDay
+                                //     textAndOverlayColorMouseOver: isDarkMode ? textAndOverlayColorMouseOverNight : textAndOverlayColorMouseOverDay
+                                //     textAndOverlayColorClicked: isDarkMode ? textAndOverlayColorClickedNight : textAndOverlayColorClickedDay
+                                //     textSecondaryColorDefault: isDarkMode ? textSecondaryColorDefaultNight : textSecondaryColorDefaultDay
+                                //     textSecondaryColorMouseOver: isDarkMode ? textSecondaryColorMouseOverNight : textSecondaryColorMouseOverDay
+                                //     textSecondaryColorClicked: isDarkMode ? textSecondaryColorClickedNight : textSecondaryColorClickedDay
+                                // }
+
                                 Component {
                                     id: leftMenuBtnComponent
                                     LeftMenuBtn {
@@ -647,6 +686,17 @@ Window {
                                         font.family: "Titillium Web Light"
                                         font.pointSize: 10
                                         btnIconSource: "../images/svg_icons/icon_users.svg"
+                                        btnColorDefault: isDarkMode ? leftMenuBtnColorDefaultNight : leftMenuBtnColorDefaultDay
+                                        btnColorMouseOver: isDarkMode ? leftMenuBtnColorMouseOverNight : leftMenuBtnColorMouseOverDay
+                                        btnColorClicked: isDarkMode ? leftMenuBtnColorClickedNight : leftMenuBtnColorClickedDay
+                                        textAndOverlayColorDefault: isDarkMode ? textAndOverlayColorDefaultNight : textAndOverlayColorDefaultDay
+                                        textAndOverlayColorMouseOver: isDarkMode ? textAndOverlayColorMouseOverNight : textAndOverlayColorMouseOverDay
+                                        textAndOverlayColorClicked: isDarkMode ? textAndOverlayColorClickedNight : textAndOverlayColorClickedDay
+                                        textSecondaryColorDefault: isDarkMode ? textSecondaryColorDefaultNight : textSecondaryColorDefaultDay
+                                        textSecondaryColorMouseOver: isDarkMode ? textSecondaryColorMouseOverNight : textSecondaryColorMouseOverDay
+                                        textSecondaryColorClicked: isDarkMode ? textSecondaryColorClickedNight : textSecondaryColorClickedDay
+                                        activeMenuColorRight: isDarkMode ? activeMenuColorRightNight : activeMenuColorRightDay
+                                        activeMenuColorLeft: isDarkMode ? activeMenuColorLeftNight : activeMenuColorLeftDay
                                     }
                                 }
                             }
