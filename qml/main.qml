@@ -178,8 +178,8 @@ Window {
     property color textBgColorRectangleDay : "#21262d"
 
     property int userID: {
-        console.log("loginUser.userId: ", loginUser && loginUser.userId);
-        console.log("signupUser.userId: ", signupUser && signupUser.userId);
+        // console.log("loginUser.userId: ", loginUser && loginUser.userId);
+        // console.log("signupUser.userId: ", signupUser && signupUser.userId);
         if (loginUser && loginUser.userId > 0) {
             return loginUser.userId;
         }
