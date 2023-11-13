@@ -60,15 +60,15 @@ class Budget(QObject):
         self._budgetNotes = budgetNotes
         self._client_id = client_id  # Cliente al que pertenece
 
-    # def calculateAmountTaxes(self, budgetAmountSubtotal, iva, ice):
-    #     self._budgetAmountSubtotal = budgetAmountSubtotal
-    #     percentage_iva = iva
-    #     percentage_ice = ice
-    #     budgetAmountTaxes = (percentage_ice * budgetAmountSubtotal / 100) + (
-    #         percentage_iva * budgetAmountSubtotal / 100
-    #     )
-    #     return budgetAmountTaxes
+    def calculateAmountTaxes(self, budgetAmountSubtotal, iva, ice):
+        self._budgetAmountSubtotal = budgetAmountSubtotal
+        percentage_iva = iva
+        percentage_ice = ice
+        budgetAmountTaxes = (percentage_ice * budgetAmountSubtotal / 100) + (
+            percentage_iva * budgetAmountSubtotal / 100
+        )
+        return budgetAmountTaxes
 
-    # def calculateAmountTotal(self, budgetAmountSubtotal, budgetAmountTaxes):
-    #     budgetAmountTotal = budgetAmountSubtotal + budgetAmountTaxes
-    #     return budgetAmountTotal
+    def calculateAmountTotal(self, budgetAmountSubtotal, budgetAmountTaxes):
+        budgetAmountTotal = budgetAmountSubtotal + budgetAmountTaxes
+        return budgetAmountTotal
