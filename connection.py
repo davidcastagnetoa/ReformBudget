@@ -54,8 +54,8 @@ class ConnectionDB:
         address TEXT,
         email TEXT,
         city TEXT,
-        zip_code INTEGER,
-        phone INTEGER,
+        zip_code TEXT,
+        phone TEXT,
         user_id INTEGER,
         FOREIGN KEY(user_id) REFERENCES users(id)
         )
