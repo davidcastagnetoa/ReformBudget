@@ -17,7 +17,7 @@ Window {
     QtObject{
         id: internal
         // Create Client LeftMenuButtons
-        function createButton(user_id, name, address, mail, city, zip_code, phone) {
+        function createButton(name, address, mail, city, zip_code, phone) {
             if (leftMenuBtnComponent.status === Component.Ready) {
                 // Genera los botones con los datos de los clientes DB
                 var newButton = leftMenuBtnComponent.createObject(columnBtnClients);
@@ -32,7 +32,7 @@ Window {
                     // Itera sobre todos los botones y establece su propiedad isActiveMenu en false
                     for (var i = 0; i < buttonList.length; i++) {
                         buttonList[i].isActiveMenu = false;
-                        console.log(user_id)
+                        // console.log(user_id)
                         console.log(name)
                         console.log(address)
                         console.log(mail)
@@ -51,7 +51,7 @@ Window {
                         city: city,
                         zip_code: zip_code,
                         phone: phone,
-                        user_id: user_id
+                        // user_id: user_id
                     };
                     clientButtonClicked(clientData); // Emitir la señal
                     
@@ -109,16 +109,15 @@ Window {
 
                 hideWarningTimer.restart()
             }
-            function onClientCreated(name, address, mail, city, zip_code, phone, user_id) {
+            function onClientCreated(name, address, mail, city, zip_code, phone, userID) {
                 console.log(name)
                 console.log(address)
                 console.log(mail)
                 console.log(city)
                 console.log(zip_code)
                 console.log(phone)
-                console.log(user_id)
                 Qt.callLater(function() {
-                    internal.createButton(name, address);
+                    internal.createButton(name, address, mail, city, zip_code, phone);
                 });
             }
         }
@@ -127,16 +126,16 @@ Window {
     // Definición de la función que se ejecutará cuando se emita la señal
     function onClientsReceived(clients) {
         for (var i = 0; i < clients.length; i++) {
-            var clientUserID = clients[i].user_id;
             var clientName = clients[i].name;
             var clientAddress = clients[i].address;
             var clientEmail = clients[i].email;
             var clientCity = clients[i].city;
             var clientZipCode = clients[i].zip_code;
             var clientPhone = clients[i].phone;
-            internal.createButton(clientUserID, clientName, clientAddress, clientEmail, clientCity, clientZipCode, clientPhone);
+            internal.createButton(clientName, clientAddress, clientEmail, clientCity, clientZipCode, clientPhone);
         }
     }
+
     Component.onCompleted: {
         // Conexión de la señal clientsRetrieved a la función onClientsReceived
         loginUser.clientsRetrieved.connect(onClientsReceived);

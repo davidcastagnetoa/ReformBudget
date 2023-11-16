@@ -6,7 +6,33 @@ import "../controls"
 
 Item {
     //PROPERTIES
-    property var currentClient: ({user_id: 0, name: "", address: "", mail: "", city: "", zip_code: "", phone: ""})
+    // Client selected data
+    property var currentClient: ({
+        user_id: 0,
+        name: "",
+        address: "",
+        mail: "",
+        city: "",
+        zip_code: "",
+        phone: ""
+    })
+
+    property var budgetsClient: ({
+        client_id: 0,
+        budgetId: "",
+        budgetName: "",
+        budgetAmountSubtotal: 0,
+        budgetAmountTaxes: 0,
+        budgetAmountTotal: 0,
+        budgetDate: "",
+        budgetDescription: "",
+        budgetStatus: "",
+        budgetType: "",
+        budgetCategory: "",
+        budgetNotes: "",
+    })
+
+    // Budgets's client selected data
     property color textLblColor: "#818995"
     property color textResTxtColor: "#FFFFFF"
     property color textBgColorRectangle: "#161b22"

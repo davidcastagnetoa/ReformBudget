@@ -3,7 +3,7 @@
 import sys
 import os
 from PySide2.QtCore import QObject, Qt, Signal, Property, Slot
-from utils.encrypter import generate_key, load_key, encriptedPassword
+from utils.encrypter import generate_key, load_key, encriptedPassword, createLocalEnv
 from PySide2.QtGui import QGuiApplication, QIcon
 from PySide2.QtQml import QQmlApplicationEngine
 from data.user import UserData
@@ -17,22 +17,13 @@ from utils.helpers import *
 from dotenv import load_dotenv
 from data.database import Database
 
-
-def createLocalEnv():
-    env_contain = ""
-    with open(env_file, "w") as key_file:
-        key_file.write(env_contain)
-    os.system(f"attrib +s +h {env_file}")
-
-
 load_dotenv()
 env_file = ".env"
+
 
 DEFAULT_ADMIN_USERNAME = "default_username"
 ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", DEFAULT_ADMIN_USERNAME)
 
-if not os.path.exists(env_file):
-    createLocalEnv()
 
 # Carga la clave de desencriptación
 key = load_key()
@@ -40,7 +31,7 @@ key = load_key()
 
 # Verifica si el archivo users.db existe
 if not os.path.exists("users.db"):
-    # Si no existe, crea la conexión y llama al método para inicializar la DB y crear el usuario administrador
+    # Si no existe, crea la conexión y llama al método para inicializar la DB y crear las tablas
     db_connection = ConnectionDB()
     db_connection.init_db()
 
@@ -118,8 +109,7 @@ class Login(QObject):
         response = userData.login(user)
 
         if response == "user_not_found":
-            self.userLoged.emit(
-                "No existe usuario debe crear una cuenta", None)
+            self.userLoged.emit("No existe usuario debe crear una cuenta", None)
             return
         elif response == "incorrect_password":
             self.userLoged.emit("Contraseña incorrecta!", None)
@@ -247,8 +237,7 @@ class ClientManager(QObject):
 
         # Creamos al cliente (Lo que guarda en DB)
         newClient = clientData.create_Client(
-            Client(name, address, email, city,
-                   zip_code, phone, user_id), user_id
+            Client(name, address, email, city, zip_code, phone, user_id), user_id
         )
 
         # Validamos que el cliente se haya creado correctamente
@@ -258,8 +247,7 @@ class ClientManager(QObject):
             return
 
         # Aquí se debería emitir la señal clientCreated para su uso en el lado del cliente
-        self.clientCreated.emit(name, address, email,
-                                city, zip_code, phone, user_id)
+        self.clientCreated.emit(name, address, email, city, zip_code, phone, user_id)
         self.clientValidated.emit("Cliente creado")
 
     # Funcion para editar cliente (aun no en uso en cliente)
@@ -280,8 +268,7 @@ class ClientManager(QObject):
 
         # Llama al Metodo Data que edita el cliente en la DB (aun en desarrollo)
         editedClient = clientData.update_Client(
-            Client(name, address, email, city,
-                   zip_code, phone, user_id), user_id
+            Client(name, address, email, city, zip_code, phone, user_id), user_id
         )
 
         if editedClient is None:
@@ -289,16 +276,14 @@ class ClientManager(QObject):
             print("Error al editar al cliente")
             return
 
-        self.clientEdited.emit(name, address, email,
-                               city, zip_code, phone, user_id)
+        self.clientEdited.emit(name, address, email, city, zip_code, phone, user_id)
         self.clientUpgraded.emit("Cliente editado")
 
 
 # Clase para la creacion de presupuestos
 class BudgetManager(QObject):
     # Señales
-    budgetCreated = Signal(str, str, int, int, int, str,
-                           str, str, str, str, str, int)
+    budgetCreated = Signal(str, str, int, int, int, str, str, str, str, str, str, int)
     budgetValidated = Signal(str)
 
     def __init__(self, parent=None):
