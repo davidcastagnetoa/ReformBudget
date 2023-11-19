@@ -14,6 +14,7 @@ Window {
 
     // REMOVE TITLE BAR
     flags: Qt.Window | Qt.FramelessWindowHint
+    property var buttonList: []
 
     // Signals
     signal clientButtonClicked(var clientData)
@@ -23,7 +24,6 @@ Window {
     property alias mainWindow: mainWindow
 
     // // PROPERTIES
-    property var buttonList: []
     property int windowStatus: 0
     property int windowMargin: 10
     property bool previewCollapse: false
@@ -190,9 +190,35 @@ Window {
 
     Timer {
         id: hideWarningTimer
-        interval: 2500  // 2 segundos
+        interval: 2500  // 2.5 segundos
         onTriggered: warningLabel.visible = false
     }
+
+    Timer {
+        id: retryTimer
+        interval: 200  // 200 ms
+        running: false
+
+        onTriggered: {
+            // Intenta crear los botones nuevamente.
+            loginUser.clientsRetrieved.connect(onClientsReceived);
+            // internal.createButton();
+        }
+    }
+
+    // Loader {
+    //     id: leftMenuBtnLoader
+    //     source: "./controls/LeftMenuBtn.qml"  // Ruta al archivo QML del botón.
+    //     asynchronous: true  // Cargar el componente de forma asíncrona.
+
+    //     onLoaded: {
+    //         // Lógica a ejecutar una vez que el componente se haya cargado.
+    //         if (status == Loader.Ready) {
+    //             console.log("LeftMenuBtn cargado correctamente.");
+    //             // Aquí puedes llamar a funciones o establecer propiedades en el componente cargado.
+    //         }
+    //     }
+    // }
 
     // INTERNAL FUNCTIONS
     QtObject{
@@ -279,11 +305,18 @@ Window {
         }
         // Create Client LeftMenuButtons
         function createButton(name, address, mail, city, zip_code, phone) {
-            if (leftMenuBtnComponent.status === Component.Ready) {
+            console.log("El estado del componente a crear es: " + leftMenuBtnComponent.status)
+            if (leftMenuBtnComponent.status === 1) {
+                console.log("componente listo")
                 // Genera los botones con los datos de los clientes DB
                 var newButton = leftMenuBtnComponent.createObject(columnBtnClients);
+
+                // var qml = "import QtQuick 2.15; import './controls'; LeftMenuBtn {}";
+                // var newButton = Qt.createQmlObject(qml, columnBtnClients);
+
                 newButton.text = name;
                 newButton.secondaryTextContent = address
+
                 buttonCount++;
                 newButton.tag = "leftMenuBtn" + buttonCount;
                 newButton.width = newButton.tag.width
@@ -319,10 +352,9 @@ Window {
                     // Agrega el nuevo botón a la lista buttonList
                     buttonList.push(newButton);
                 });
-            } else if (leftMenuBtnComponent.status === Component.Error) {
-                console.error("Error al cargar LeftMenuBtn:", leftMenuBtnComponent.errorString());
-            } else {
-                console.log("Componente está cargando...");
+            }  else {
+                console.log("Componente aun no cargado, reintentar...");
+                retryTimer.start();
             }
         }
     }
