@@ -8,7 +8,6 @@ Button{
 
     // CUSTOM PROPERTIES
     property string tag: ""
-    
     property url btnIconSource: "../../images/svg_icons/icon_users.svg"
     property color btnColorDefault: "#0d1117"
     property color btnColorMouseOver: "#161b22"
@@ -154,6 +153,7 @@ Button{
         }
 
     }
+    
     Component.onCompleted: {
         console.log("LeftMenuBtn componente cargado correctamente.")
     }

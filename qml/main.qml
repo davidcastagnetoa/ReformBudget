@@ -2,12 +2,16 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import QtGraphicalEffects 1.15
 import "./controls"
+
 
 Window {
     id: mainWindow
     width: 1420
     height: 870
+    minimumWidth: 1380
+    minimumHeight: 730
     visible: true
     color: "#00000000"
     title: qsTr("Reform Budget")
@@ -15,6 +19,16 @@ Window {
     // REMOVE TITLE BAR
     flags: Qt.Window | Qt.FramelessWindowHint
     property var buttonList: []
+
+    // //Borrar en Produccion
+    // property var buttonList: [leftMenuExample01, leftMenuExample02, leftMenuExample03] 
+    // //Borrar en Produccion
+    // function updateButtonStates(clickedButton) {
+    //     for (var i = 0; i < buttonList.length; i++) {
+    //         buttonList[i].isActiveMenu = (buttonList[i] === clickedButton);
+    //     }
+    // }
+
 
     // Signals
     signal clientButtonClicked(var clientData)
@@ -24,11 +38,11 @@ Window {
     property alias mainWindow: mainWindow
 
     // // PROPERTIES
+    property bool isDarkMode: true
     property int windowStatus: 0
     property int windowMargin: 10
     property bool previewCollapse: false
     property bool budgetBarCollapse: false
-    property bool isDarkMode: true
     property int buttonCount: 2
     
     // IMAGES
@@ -749,7 +763,7 @@ Window {
                                 spacing: -1
 
                                 // LeftMenuBtn{
-                                //     id: leftMenuExample
+                                //     id: leftMenuExample01
                                 //     btnColorDefault: isDarkMode ? leftMenuBtnColorDefaultNight : leftMenuBtnColorDefaultDay
                                 //     btnColorMouseOver: isDarkMode ? leftMenuBtnColorMouseOverNight : leftMenuBtnColorMouseOverDay
                                 //     btnColorClicked: isDarkMode ? leftMenuBtnColorClickedNight : leftMenuBtnColorClickedDay
@@ -761,6 +775,37 @@ Window {
                                 //     textSecondaryColorClicked: isDarkMode ? textSecondaryColorClickedNight : textSecondaryColorClickedDay
                                 //     activeMenuColorRight: isDarkMode ? activeMenuColorRightNight : activeMenuColorRightDay
                                 //     activeMenuColorLeft: isDarkMode ? activeMenuColorLeftNight : activeMenuColorLeftDay
+                                //     onClicked: updateButtonStates(leftMenuExample01)
+                                // }
+                                // LeftMenuBtn{
+                                //     id: leftMenuExample02
+                                //     btnColorDefault: isDarkMode ? leftMenuBtnColorDefaultNight : leftMenuBtnColorDefaultDay
+                                //     btnColorMouseOver: isDarkMode ? leftMenuBtnColorMouseOverNight : leftMenuBtnColorMouseOverDay
+                                //     btnColorClicked: isDarkMode ? leftMenuBtnColorClickedNight : leftMenuBtnColorClickedDay
+                                //     textAndOverlayColorDefault: isDarkMode ? textAndOverlayColorDefaultNight : textAndOverlayColorDefaultDay
+                                //     textAndOverlayColorMouseOver: isDarkMode ? textAndOverlayColorMouseOverNight : textAndOverlayColorMouseOverDay
+                                //     textAndOverlayColorClicked: isDarkMode ? textAndOverlayColorClickedNight : textAndOverlayColorClickedDay
+                                //     textSecondaryColorDefault: isDarkMode ? textSecondaryColorDefaultNight : textSecondaryColorDefaultDay
+                                //     textSecondaryColorMouseOver: isDarkMode ? textSecondaryColorMouseOverNight : textSecondaryColorMouseOverDay
+                                //     textSecondaryColorClicked: isDarkMode ? textSecondaryColorClickedNight : textSecondaryColorClickedDay
+                                //     activeMenuColorRight: isDarkMode ? activeMenuColorRightNight : activeMenuColorRightDay
+                                //     activeMenuColorLeft: isDarkMode ? activeMenuColorLeftNight : activeMenuColorLeftDay
+                                //     onClicked: updateButtonStates(leftMenuExample02)
+                                // }
+                                // LeftMenuBtn{
+                                //     id: leftMenuExample03
+                                //     btnColorDefault: isDarkMode ? leftMenuBtnColorDefaultNight : leftMenuBtnColorDefaultDay
+                                //     btnColorMouseOver: isDarkMode ? leftMenuBtnColorMouseOverNight : leftMenuBtnColorMouseOverDay
+                                //     btnColorClicked: isDarkMode ? leftMenuBtnColorClickedNight : leftMenuBtnColorClickedDay
+                                //     textAndOverlayColorDefault: isDarkMode ? textAndOverlayColorDefaultNight : textAndOverlayColorDefaultDay
+                                //     textAndOverlayColorMouseOver: isDarkMode ? textAndOverlayColorMouseOverNight : textAndOverlayColorMouseOverDay
+                                //     textAndOverlayColorClicked: isDarkMode ? textAndOverlayColorClickedNight : textAndOverlayColorClickedDay
+                                //     textSecondaryColorDefault: isDarkMode ? textSecondaryColorDefaultNight : textSecondaryColorDefaultDay
+                                //     textSecondaryColorMouseOver: isDarkMode ? textSecondaryColorMouseOverNight : textSecondaryColorMouseOverDay
+                                //     textSecondaryColorClicked: isDarkMode ? textSecondaryColorClickedNight : textSecondaryColorClickedDay
+                                //     activeMenuColorRight: isDarkMode ? activeMenuColorRightNight : activeMenuColorRightDay
+                                //     activeMenuColorLeft: isDarkMode ? activeMenuColorLeftNight : activeMenuColorLeftDay
+                                //     onClicked: updateButtonStates(leftMenuExample03)
                                 // }
 
                                 Component {
@@ -1260,6 +1305,7 @@ Window {
                             target: null
                             onActiveChanged: if(active){
                                                  mainWindow.startSystemResize(Qt.RightEdge | Qt.BottomEdge)
+                                                 console.log(mainWindow.width + " " + mainWindow.height)
                                              }
                         }
 
@@ -1350,18 +1396,6 @@ Window {
             internal.createButton(clientName, clientAddress, clientEmail, clientCity, clientZipCode, clientPhone);
         }
     }
-    
-    Component.onCompleted: {
-        // Conexión de la señal clientsRetrieved a la función onClientsReceived
-        loginUser.clientsRetrieved.connect(onClientsReceived);
-        // Conexión de la señal a la función onClientButtonClicked
-        clientButtonClicked.connect(onClientButtonClicked)
-    }
-
-    Component.onDestruction: {
-        // Es una buena práctica desconectar las señales cuando el objeto se destruye
-        loginUser.clientsRetrieved.disconnect(onClientsReceived);
-    }
 
     // Definición de la función que se ejecutará cuando se emita la señal clientButtonClicked
     function onClientButtonClicked(clientData) {
@@ -1378,6 +1412,18 @@ Window {
         } else {
             console.error("clientPage aún no está listo.");
         }
+    }
+
+    Component.onCompleted: {
+        // Conexión de la señal clientsRetrieved a la función onClientsReceived
+        loginUser.clientsRetrieved.connect(onClientsReceived);
+        // Conexión de la señal a la función onClientButtonClicked
+        clientButtonClicked.connect(onClientButtonClicked)
+    }
+
+    Component.onDestruction: {
+        // Es una buena práctica desconectar las señales cuando el objeto se destruye
+        loginUser.clientsRetrieved.disconnect(onClientsReceived);
     }
 }
 
