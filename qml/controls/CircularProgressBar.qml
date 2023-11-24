@@ -32,6 +32,25 @@ Item {
     property int textSize: 12
     property color textColor: "#979aa0"
 
+    //PROPERTY FONTS
+    property string currentFont : gepesteVFont.name
+    property string currentFontThin : titillium_Web_Extralight_VFont.name
+
+    FontLoader {
+        id: gepesteVFont
+        source: "../../myfonts/GepesteV.ttf"
+    }
+
+    FontLoader {
+        id: titillium_Web_Light_VFont
+        source: "../../myfonts/TitilliumWeb-Light.ttf"
+    }
+
+    FontLoader {
+        id: titillium_Web_Extralight_VFont
+        source: "../../myfonts/TitilliumWeb-ExtraLight.ttf"
+    }
+
     // Internal Properties/Functions
     QtObject{
         id: internal
@@ -63,7 +82,7 @@ Item {
             verticalAlignment: Text.AlignVCenter
             anchors.bottomMargin: 80
             font.pointSize: 25
-            font.family: "Titillium Web Extralight"
+            font.family: currentFontThin
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
@@ -88,7 +107,7 @@ Item {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.family: "Titillium Web Light"
+                font.family: currentFont
             }
         }
 

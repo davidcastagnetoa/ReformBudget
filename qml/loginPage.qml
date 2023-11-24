@@ -148,28 +148,39 @@ Window {
     // LOAD LOCAL FONTS FROM ROOT FOLDER INSTEAD SYSTEM FONTS
 
     //PROPERTY FONTS
-    property string currentFont : titilliumWebLightVFont.name
+    property string currentFont : gepesteVFont.name
+    property string currentFontThin : titillium_Web_Extralight_VFont.name
 
     FontLoader {
         id: gepesteVFont
         source: "../myfonts/GepesteV.ttf"
-        Component.onCompleted: {
-            console.log("Nombre de la fuente: GepesteV")
-            console.log("Ruta de la fuente: " + gepesteVFont.source)
-            console.log("Estado de la fuente: " + (gepesteVFont.status == FontLoader.Ready ? "Cargada" : "No cargada"))
-        }
-        
+        // Component.onCompleted: {
+        //     console.log("Nombre de la fuente: GepesteV")
+        //     console.log("Ruta de la fuente: " + gepesteVFont.source)
+        //     console.log("Estado de la fuente: " + (gepesteVFont.status == FontLoader.Ready ? "Cargada" : "No cargada"))
+        // }
     }
 
     FontLoader {
-        id: titilliumWebLightVFont
+        id: titillium_Web_Light_VFont
         source: "../myfonts/TitilliumWeb-Light.ttf"
-        Component.onCompleted: {
-            console.log("Nombre de la fuente: Titillium Web Light")
-            console.log("Ruta de la fuente: " + titilliumWebLightVFont.source)
-            console.log("Estado de la fuente: " + (titilliumWebLightVFont.status == FontLoader.Ready ? "Cargada" : "No cargada"))
-        }
+        // Component.onCompleted: {
+        //     console.log("Nombre de la fuente: Titillium Web Light")
+        //     console.log("Ruta de la fuente: " + titillium_Web_Light_VFont.source)
+        //     console.log("Estado de la fuente: " + (titillium_Web_Light_VFont.status == FontLoader.Ready ? "Cargada" : "No cargada"))
+        // }
     }
+
+    FontLoader {
+        id: titillium_Web_Extralight_VFont
+        source: "../myfonts/TitilliumWeb-ExtraLight.ttf"
+        // Component.onCompleted: {
+        //     console.log("Nombre de la fuente: Titillium Web Light")
+        //     console.log("Ruta de la fuente: " + titillium_Web_Extralight_VFont.source)
+        //     console.log("Estado de la fuente: " + (titillium_Web_Extralight_VFont.status == FontLoader.Ready ? "Cargada" : "No cargada"))
+        // }
+    }
+
 
 
 
@@ -338,7 +349,7 @@ Window {
             visible: true
             text: "%"
             anchors.verticalCenter: parent.verticalCenter
-            textFontFamily: "Titillium Web Light"
+            textFontFamily: currentFontThin
             enabled: false
             z: 0
             textSize: 18

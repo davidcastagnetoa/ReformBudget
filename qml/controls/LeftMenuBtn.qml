@@ -25,6 +25,25 @@ Button{
     property color textSecondaryColorMouseOver: "#6E7681"
     property color textSecondaryColorClicked: "#a1a1a1"
 
+    //PROPERTY FONTS
+    property string currentFont : gepesteVFont.name
+    property string currentFontThin : titillium_Web_Extralight_VFont.name
+
+    FontLoader {
+        id: gepesteVFont
+        source: "../../myfonts/GepesteV.ttf"
+    }
+
+    FontLoader {
+        id: titillium_Web_Light_VFont
+        source: "../../myfonts/TitilliumWeb-Light.ttf"
+    }
+
+    FontLoader {
+        id: titillium_Web_Extralight_VFont
+        source: "../../myfonts/TitilliumWeb-ExtraLight.ttf"
+    }
+
     QtObject{
         id: internal
 
@@ -144,7 +163,7 @@ Button{
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
                 font.weight: Font.Light
-                font.family: "Titillium Web Light"
+                font.family: currentFontThin
                 font.pointSize: 10
                 anchors.rightMargin: 15
                 anchors.bottomMargin: 12
