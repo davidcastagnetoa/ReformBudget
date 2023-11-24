@@ -22,7 +22,7 @@ Window {
     property variant buttonList: []
 
     // Signals
-    signal clientButtonClicked(var clientData) //probar a eliminar var
+    signal clientButtonClicked(list clientData) //probar a eliminar var
 
     // Custom Properties
     property string username
