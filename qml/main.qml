@@ -10,8 +10,8 @@ Window {
     id: mainWindow
     width: 1420
     height: 870
-    minimumWidth: 1380
-    minimumHeight: 730
+    minimumWidth: 1383
+    minimumHeight: 736
     visible: true
     color: "#00000000"
     title: qsTr("Reform Budget")
@@ -19,16 +19,6 @@ Window {
     // REMOVE TITLE BAR
     flags: Qt.Window | Qt.FramelessWindowHint
     property var buttonList: []
-
-    // //Borrar en Produccion
-    // property var buttonList: [leftMenuExample01, leftMenuExample02, leftMenuExample03] 
-    // //Borrar en Produccion
-    // function updateButtonStates(clickedButton) {
-    //     for (var i = 0; i < buttonList.length; i++) {
-    //         buttonList[i].isActiveMenu = (buttonList[i] === clickedButton);
-    //     }
-    // }
-
 
     // Signals
     signal clientButtonClicked(var clientData)
@@ -220,19 +210,43 @@ Window {
         }
     }
 
-    // Loader {
-    //     id: leftMenuBtnLoader
-    //     source: "./controls/LeftMenuBtn.qml"  // Ruta al archivo QML del botón.
-    //     asynchronous: true  // Cargar el componente de forma asíncrona.
+    
+    // LOAD LOCAL FONTS FROM ROOT FOLDER INSTEAD SYSTEM FONTS
 
-    //     onLoaded: {
-    //         // Lógica a ejecutar una vez que el componente se haya cargado.
-    //         if (status == Loader.Ready) {
-    //             console.log("LeftMenuBtn cargado correctamente.");
-    //             // Aquí puedes llamar a funciones o establecer propiedades en el componente cargado.
-    //         }
-    //     }
-    // }
+    //PROPERTY FONTS
+    property string currentFont : titillium_Web_Light_VFont.name
+    property string currentFontThin : titillium_Web_Extralight_VFont.name
+
+    FontLoader {
+        id: gepesteVFont
+        source: "../myfonts/GepesteV.ttf"
+        Component.onCompleted: {
+            console.log("Nombre de la fuente: GepesteV")
+            console.log("Ruta de la fuente: " + gepesteVFont.source)
+            console.log("Estado de la fuente: " + (gepesteVFont.status == FontLoader.Ready ? "Cargada" : "No cargada"))
+        }
+        
+    }
+
+    FontLoader {
+        id: titillium_Web_Light_VFont
+        source: "../myfonts/TitilliumWeb-Light.ttf"
+        Component.onCompleted: {
+            console.log("Nombre de la fuente: Titillium Web Light")
+            console.log("Ruta de la fuente: " + titillium_Web_Light_VFont.source)
+            console.log("Estado de la fuente: " + (titillium_Web_Light_VFont.status == FontLoader.Ready ? "Cargada" : "No cargada"))
+        }
+    }
+
+    FontLoader {
+        id: titillium_Web_Extralight_VFont
+        source: "../myfonts/TitilliumWeb-ExtraLight.ttf"
+        Component.onCompleted: {
+            console.log("Nombre de la fuente: Titillium Web Extralight")
+            console.log("Ruta de la fuente: " + titillium_Web_Extralight_VFont.source)
+            console.log("Estado de la fuente: " + (titillium_Web_Extralight_VFont.status == FontLoader.Ready ? "Cargada" : "No cargada"))
+        }
+    }
 
     // INTERNAL FUNCTIONS
     QtObject{
@@ -491,7 +505,7 @@ Window {
                         verticalAlignment: Text.AlignVCenter
                         font.pointSize: 12
                         font.bold: false
-                        font.family: "Titillium Web Extralight"
+                        font.family: currentFontThin
                         anchors.topMargin: 0
                         anchors.bottomMargin: 0
                         anchors.leftMargin: 5
@@ -508,7 +522,7 @@ Window {
                         verticalAlignment: Text.AlignVCenter
                         font.pointSize: 12
                         font.bold: false
-                        font.family: "Titillium Web Extralight"
+                        font.family: currentFontThin
                         anchors.topMargin: 0
                         anchors.bottomMargin: 0
                         anchors.leftMargin: 5
@@ -525,7 +539,7 @@ Window {
                         verticalAlignment: Text.AlignVCenter
                         font.pointSize: 12
                         font.bold: false
-                        font.family: "Titillium Web Extralight"
+                        font.family: currentFontThin
                         anchors.topMargin: 0
                         anchors.bottomMargin: 0
                         anchors.leftMargin: 5
@@ -620,7 +634,7 @@ Window {
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
                         verticalAlignment: Text.AlignVCenter
-                        font.family: "Titillium Web Light"
+                        font.family: currentFont
                         anchors.bottomMargin: 0
                         anchors.rightMargin: 300
                         anchors.leftMargin: 10
@@ -638,7 +652,7 @@ Window {
                         anchors.bottom: parent.bottom
                         horizontalAlignment: Text.AlignRight
                         verticalAlignment: Text.AlignVCenter
-                        font.family: "Titillium Web Light"
+                        font.family: currentFont
                         anchors.topMargin: 0
                         anchors.bottomMargin: 0
                         anchors.rightMargin: 6
@@ -730,7 +744,7 @@ Window {
                             verticalAlignment: Text.AlignVCenter
                             font.weight: Font.ExtraLight
                             font.pointSize: 10
-                            font.family: "Titillium Web Light"
+                            font.family: currentFont
                         }
                         Item {
                             id: separator03
@@ -813,7 +827,7 @@ Window {
                                     LeftMenuBtn {
                                         property string tag: ""
                                         font.weight: Font.Light
-                                        font.family: "Titillium Web Light"
+                                        font.family: currentFont
                                         font.pointSize: 10
                                         btnIconSource: "../images/svg_icons/icon_users.svg"
                                         btnColorDefault: isDarkMode ? leftMenuBtnColorDefaultNight : leftMenuBtnColorDefaultDay
@@ -831,9 +845,6 @@ Window {
                                 }
                             }
                         }
-
-
-
                     }
 
                     Rectangle {
@@ -892,7 +903,7 @@ Window {
                             font.weight: Font.ExtraLight
                             anchors.topMargin: 5
                             font.pointSize: 10
-                            font.family: "Titillium Web Light"
+                            font.family: currentFont
                         }
 
 
@@ -941,7 +952,7 @@ Window {
                             text: qsTr("Customer Data")
                             anchors.left: parent.left
                             anchors.top: parent.top
-                            font.family: "Titillium Web Light"
+                            font.family: currentFont
                             font.pointSize: 14
                             anchors.leftMargin: 15
                             anchors.topMargin: 10
@@ -973,7 +984,7 @@ Window {
                                 colorDefault: isDarkMode ? colorDefaultNight : colorDefaultDay
                                 selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
                                 selectionColor: isDarkMode ? selectionColorInputNight : selectionColorInputDay
-                                font.family: "Titillium Web Light"
+                                font.family: currentFont
                                 font.pointSize: 9
                                 placeholderText: "Name"
                             }
@@ -990,7 +1001,7 @@ Window {
                                 colorDefault: isDarkMode ? colorDefaultNight : colorDefaultDay
                                 selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
                                 selectionColor: isDarkMode ? selectionColorInputNight : selectionColorInputDay
-                                font.family: "Titillium Web Light"
+                                font.family: currentFont
                                 font.pointSize: 9
                                 placeholderText: "Address"
                             }
@@ -1007,7 +1018,7 @@ Window {
                                 colorDefault: isDarkMode ? colorDefaultNight : colorDefaultDay
                                 selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
                                 selectionColor: isDarkMode ? selectionColorInputNight : selectionColorInputDay
-                                font.family: "Titillium Web Light"
+                                font.family: currentFont
                                 font.pointSize: 9
                                 placeholderText: "Phone number"
                             }
@@ -1024,7 +1035,7 @@ Window {
                                 colorDefault: isDarkMode ? colorDefaultNight : colorDefaultDay
                                 selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
                                 selectionColor: isDarkMode ? selectionColorInputNight : selectionColorInputDay
-                                font.family: "Titillium Web Light"
+                                font.family: currentFont
                                 font.pointSize: 9
                                 placeholderText: "Email"
                             }
@@ -1041,7 +1052,7 @@ Window {
                                 colorDefault: isDarkMode ? colorDefaultNight : colorDefaultDay
                                 selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
                                 selectionColor: isDarkMode ? selectionColorInputNight : selectionColorInputDay
-                                font.family: "Titillium Web Light"
+                                font.family: currentFont
                                 font.pointSize: 9
                                 placeholderText: "City"
                             }
@@ -1058,7 +1069,7 @@ Window {
                                 colorDefault: isDarkMode ? colorDefaultNight : colorDefaultDay
                                 selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
                                 selectionColor: isDarkMode ? selectionColorInputNight : selectionColorInputDay
-                                font.family: "Titillium Web Light"
+                                font.family: currentFont
                                 font.pointSize: 9
                                 placeholderText: "Zip"
                             }
@@ -1135,7 +1146,7 @@ Window {
                             horizontalAlignment: Text.AlignLeft
                             verticalAlignment: Text.AlignVCenter
                             font.bold: true
-                            font.family: "Titillium Web Light"
+                            font.family: currentFont
                             anchors.leftMargin: 15
                             anchors.bottomMargin: 10
                             anchors.topMargin: 10
@@ -1249,7 +1260,7 @@ Window {
                                 horizontalAlignment: Text.AlignLeft
                                 verticalAlignment: Text.AlignVCenter
                                 font.weight: Font.Normal
-                                font.family: "Titillium Web ExtraLight"
+                                font.family: currentFontThin
                                 anchors.topMargin: 5
                                 anchors.leftMargin: 20
                                 font.pointSize: 11
@@ -1280,7 +1291,7 @@ Window {
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
                         verticalAlignment: Text.AlignVCenter
-                        font.family: "Titillium Web Light"
+                        font.family: currentFont
                         anchors.bottomMargin: 0
                         anchors.rightMargin: 30
                         anchors.topMargin: 0

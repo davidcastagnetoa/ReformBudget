@@ -2,8 +2,14 @@
 # from PySide2.QtCore import QUrl, QTimer
 import sys
 import os
+import PySide2
+
+print("Versión de PySide2:: ", PySide2.__version__)
+from PySide2.QtCore import QObject, Qt, Signal, Property, Slot, qVersion
+
+print("Versión de Qt Usada por PySide2: ", qVersion())
 from PySide2.QtCore import QObject, Qt, Signal, Property, Slot
-from utils.encrypter import generate_key, load_key, encriptedPassword, createLocalEnv
+from utils.encrypter import load_key, encriptedPassword
 from PySide2.QtGui import QGuiApplication, QIcon
 from PySide2.QtQml import QQmlApplicationEngine
 from data.user import UserData
@@ -16,6 +22,22 @@ from connection import ConnectionDB
 from utils.helpers import *
 from dotenv import load_dotenv
 from data.database import Database
+
+# from PySide2.QtGui import QFontDatabase
+
+# # Cargar la fuente
+# font_path = os.path.abspath("myfonts/GepesteV.ttf")
+# print("Ruta de la fuente:", font_path)
+
+# localfont = QFontDatabase.addApplicationFont(font_path)
+
+# if localfont == -1:
+#     print("Error al cargar la fuente")
+#     sys.exit(-1)
+# else:
+#     font_name = QFontDatabase.applicationFontFamilies(localfont)[0]
+#     print("Fuente cargada:", font_name)
+
 
 load_dotenv()
 env_file = ".env"
@@ -446,7 +468,7 @@ if __name__ == "__main__":
     engine.rootContext().setContextProperty("signupUser", signup_userdata)
 
     # ARRANCANDO MOTORES DE VENTANA
-    # engine.load(os.path.join(os.path.dirname(__file__), "test/example.qml"))  # Borrar en Producccion, solo para pruebas
+    # engine.load(os.path.join(os.path.dirname(__file__), "test/Example2.qml"))  # Borrar en Producccion, solo para pruebas
     # engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))  # Borrar en Producccion
     engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
 

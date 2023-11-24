@@ -24,6 +24,7 @@ Window {
     property bool windowCollapse: false
     property bool signUp: false
     property bool isDarkMode: false
+
     property url logoSourceW: "../images/Anera Solutions Logo W.png"
     property url logoSourceB: "../images/Anera Solutions Logo B.png"
     property url toggleDarkModelogoSourceW: "../images/svg_icons/png_icons_wanderson/bluedaynight.png"
@@ -141,6 +142,32 @@ Window {
                 textColorSecondary = "#323232"
                 isDarkMode = true 
             }
+        }
+    }
+
+    // LOAD LOCAL FONTS FROM ROOT FOLDER INSTEAD SYSTEM FONTS
+
+    //PROPERTY FONTS
+    property string currentFont : titilliumWebLightVFont.name
+
+    FontLoader {
+        id: gepesteVFont
+        source: "../myfonts/GepesteV.ttf"
+        Component.onCompleted: {
+            console.log("Nombre de la fuente: GepesteV")
+            console.log("Ruta de la fuente: " + gepesteVFont.source)
+            console.log("Estado de la fuente: " + (gepesteVFont.status == FontLoader.Ready ? "Cargada" : "No cargada"))
+        }
+        
+    }
+
+    FontLoader {
+        id: titilliumWebLightVFont
+        source: "../myfonts/TitilliumWeb-Light.ttf"
+        Component.onCompleted: {
+            console.log("Nombre de la fuente: Titillium Web Light")
+            console.log("Ruta de la fuente: " + titilliumWebLightVFont.source)
+            console.log("Estado de la fuente: " + (titilliumWebLightVFont.status == FontLoader.Ready ? "Cargada" : "No cargada"))
         }
     }
 
@@ -347,7 +374,7 @@ Window {
             verticalAlignment: Text.AlignVCenter
             anchors.bottomMargin: 4
             anchors.horizontalCenter: parent.horizontalCenter
-            font.family: "Titillium Web Light"
+            font.family: currentFont
             font.pointSize: 18
         }
 
@@ -366,7 +393,7 @@ Window {
             verticalAlignment: Text.AlignVCenter
             anchors.bottomMargin: 6
             anchors.horizontalCenter: parent.horizontalCenter
-            font.family: "Titillium Web Light"
+            font.family: currentFont
         }
 
         CustomTextField {
@@ -382,7 +409,7 @@ Window {
             colorDefault: isDarkMode ? colorDefaultDay : colorDefaultNight
             selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
             selectionColor: isDarkMode ? selectionColorInputDay : selectionColorInputNight
-            font.family: "Titillium Web Light"
+            font.family: currentFont
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottomMargin: 6
@@ -402,7 +429,7 @@ Window {
             colorDefault: isDarkMode ? colorDefaultDay : colorDefaultNight
             selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
             selectionColor: isDarkMode ? selectionColorInputDay : selectionColorInputNight
-            font.family: "Titillium Web Light"
+            font.family: currentFont
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottomMargin: 0
@@ -427,7 +454,7 @@ Window {
             colorDefault: isDarkMode ? colorDefaultDay : colorDefaultNight
             selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
             selectionColor: isDarkMode ? selectionColorInputDay : selectionColorInputNight
-            font.family: "Titillium Web Light"
+            font.family: currentFont
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottomMargin: 0
@@ -450,7 +477,7 @@ Window {
             colorDefault: isDarkMode ? colorDefaultDay : colorDefaultNight
             selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
             selectionColor: isDarkMode ? selectionColorInputDay : selectionColorInputNight
-            font.family: "Titillium Web Light"
+            font.family: currentFont
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottomMargin: 60
@@ -469,7 +496,7 @@ Window {
             text: "Crear cuenta"
             anchors.bottom: lblSignInUp.top
             font.italic: false
-            font.family: "Titillium Web Regular"
+            font.family: currentFont
             font.bold: false
             font.pointSize: 10
             anchors.bottomMargin: 7
@@ -519,7 +546,7 @@ Window {
             display: AbstractButton.TextBesideIcon
             checked: false
             font.italic: false
-            font.family: "Titillium Web Light"
+            font.family: currentFont
             font.bold: true
             font.pointSize: 12
             anchors.bottomMargin: 7
@@ -586,7 +613,7 @@ Window {
             font.bold: false
             anchors.bottomMargin: 10
             anchors.rightMargin: 30
-            font.family: "Titillium Web Light"
+            font.family: currentFont
             font.pointSize: 10
             color: if (isMouseOver) {
                         return isDarkMode ? textNightTurquoise : textDayTurquoise
@@ -626,7 +653,7 @@ Window {
             font.bold: false
             anchors.rightMargin: 30
             anchors.leftMargin: 30
-            font.family: "Titillium Web Regular"
+            font.family: currentFont
             font.pointSize: 8
             visible: false
         }
@@ -648,7 +675,7 @@ Window {
             font.bold: false
             anchors.rightMargin: 30
             anchors.bottomMargin: 15
-            font.family: "Titillium Web Light"
+            font.family: currentFont
             font.pointSize: 8
             visible: true
         }
