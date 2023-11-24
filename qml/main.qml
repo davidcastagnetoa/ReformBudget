@@ -14,14 +14,15 @@ Window {
     minimumHeight: 736
     visible: true
     color: "#00000000"
+
     title: qsTr("Reform Budget")
 
     // REMOVE TITLE BAR
     flags: Qt.Window | Qt.FramelessWindowHint
-    property var buttonList: []
+    property variant buttonList: []
 
     // Signals
-    signal clientButtonClicked(var clientData)
+    signal clientButtonClicked(var clientData) //probar a eliminar var
 
     // Custom Properties
     property string username
@@ -317,58 +318,52 @@ Window {
         }
         // Create Client LeftMenuButtons
         function createButton(name, address, mail, city, zip_code, phone) {
-            console.log("El estado del componente a crear es: " + leftMenuBtnComponent.status)
-            if (leftMenuBtnComponent.status === 1) {
-                console.log("componente listo")
-                // Genera los botones con los datos de los clientes DB
-                var newButton = leftMenuBtnComponent.createObject(columnBtnClients);
+            console.log("Intentando crear botón para:", name);
 
-                // var qml = "import QtQuick 2.15; import './controls'; LeftMenuBtn {}";
-                // var newButton = Qt.createQmlObject(qml, columnBtnClients);
+            // Verifica si el componente está listo antes de intentar crear el botón
+            if (leftMenuBtnComponent.status === Component.Ready) {
+                console.log("Componente LeftMenuBtn está listo.");
 
-                newButton.text = name;
-                newButton.secondaryTextContent = address
-
-                buttonCount++;
-                newButton.tag = "leftMenuBtn" + buttonCount;
-                newButton.width = newButton.tag.width
-
-                // La funcion de cada boton
-                newButton.clicked.connect(function() {
-                    // Itera sobre todos los botones y establece su propiedad isActiveMenu en false
-                    for (var i = 0; i < buttonList.length; i++) {
-                        buttonList[i].isActiveMenu = false;
-                        // console.log(user_id)
-                        console.log(name)
-                        console.log(address)
-                        console.log(mail)
-                        console.log(city)
-                        console.log(zip_code)
-                        console.log(phone)
-                    }
-
-                    // Establece el botón presionado en true
-                    newButton.isActiveMenu = true;
-
-                    var clientData = {
-                        name: name,
-                        address: address,
-                        mail: mail,
-                        city: city,
-                        zip_code: zip_code,
-                        phone: phone,
-                        // user_id: user_id
-                    };
-                    clientButtonClicked(clientData); // Emitir la señal
-                    
-                    // Agrega el nuevo botón a la lista buttonList
-                    buttonList.push(newButton);
+                // Crear el botón
+                var newButton = leftMenuBtnComponent.createObject(columnBtnClients, {
+                    "text": name,
+                    "secondaryTextContent": address
                 });
-            }  else {
-                console.log("Componente aun no cargado, reintentar...");
+
+                // Configurar propiedades adicionales y conectar señales
+                if (newButton) {
+                    newButton.tag = "leftMenuBtn" + (++buttonCount);
+                    newButton.width = newButton.tag.width;
+
+                    // Conectar la lógica de clic del botón
+                    newButton.clicked.connect(function() {
+                        if (Array.isArray(buttonList)) {
+                            buttonList.forEach(button => button.isActiveMenu = false);
+                        } else {
+                            console.error("buttonList no está definido o no es un array");
+                        }
+
+                        newButton.isActiveMenu = true;
+
+                        // Emitir la señal con los datos del cliente
+                        var clientData = {
+                            name, address, mail, city, zip_code, phone
+                        };
+                        clientButtonClicked(clientData);
+                        buttonList.push(newButton);
+                        console.log("Botón para", name, "creado y configurado.");
+                    });
+                } else {
+                    console.error("No se pudo crear el botón para", name);
+                }
+            } else if (leftMenuBtnComponent.status === Component.Error) {
+                console.error("Error al cargar LeftMenuBtn:", leftMenuBtnComponent.errorString());
+            } else {
+                console.log("Componente LeftMenuBtn aún no está listo. Estado:", leftMenuBtnComponent.status);
+                // Considera reintentar después de un intervalo si es necesario
                 retryTimer.start();
             }
-        }
+        }   
     }
 
     Rectangle {
@@ -1394,27 +1389,64 @@ Window {
 
     // Definición de la función que se ejecutará cuando se emita la señal clientButtonClicked
     function onClientButtonClicked(clientData) {
-        // Suponiendo que stackView es tu Loader que carga clientPage.qml
-        if (stackView.status === Loader.Ready) {
-            var clientPage = stackView.item;
+        // Verifica que clientData no sea nulo o indefinido
+        if (clientData === null || typeof clientData === 'undefined') {
+            console.error("clientData es nulo o indefinido.");
+            return;
+        }
 
-            // Asegúrate de que clientPage tiene una propiedad currentClient o un método para actualizar la UI
-            if ("currentClient" in clientPage) {
-                clientPage.currentClient = clientData;
-            } else {
-                console.error("clientPage no tiene la propiedad currentClient.");
-            }
+        // Verifica que stackView esté listo
+        if (stackView.status !== Loader.Ready) {
+            console.error("stackView aún no está listo.");
+            return;
+        }
+
+        // Obtén la instancia de clientPage desde el Loader
+        var clientPage = stackView.item;
+
+        // Verifica que clientPage exista
+        if (typeof clientPage === 'undefined') {
+            console.error("clientPage no está definido o no es accesible.");
+            return;
+        }
+
+        // Asegúrate de que clientPage tenga una propiedad currentClient
+        if (!('currentClient' in clientPage)) {
+            console.error("clientPage no tiene la propiedad currentClient.");
+            return;
+        }
+
+        // Imprime los datos recibidos para depuración
+        console.log("Datos de cliente recibidos en onClientButtonClicked:");
+        console.log("Nombre:", clientData.name);
+        console.log("Dirección:", clientData.address);
+        console.log("Correo:", clientData.mail);
+        console.log("Ciudad:", clientData.city);
+        console.log("Código Postal:", clientData.zip_code);
+        console.log("Teléfono:", clientData.phone);
+        // console.log("user_id:", clientData.user_id); // Descomenta si también esperas user_id
+
+        // Actualiza la UI con los datos del cliente
+        clientPage.currentClient = clientData;
+    }
+
+
+    Component.onCompleted: {
+        // Verifica si loginUser existe y es del tipo esperado
+        if (loginUser && loginUser.hasOwnProperty("clientsRetrieved")) {
+            loginUser.clientsRetrieved.connect(onClientsReceived);
         } else {
-            console.error("clientPage aún no está listo.");
+            console.error("Error: loginUser no está disponible o no tiene la señal clientsRetrieved");
+        }
+
+        // Verifica si clientButtonClicked es una señal válida
+        if (typeof clientButtonClicked === "function") {
+            clientButtonClicked.connect(onClientButtonClicked);
+        } else {
+            console.error("Error: clientButtonClicked no es una señal válida");
         }
     }
 
-    Component.onCompleted: {
-        // Conexión de la señal clientsRetrieved a la función onClientsReceived
-        loginUser.clientsRetrieved.connect(onClientsReceived);
-        // Conexión de la señal a la función onClientButtonClicked
-        clientButtonClicked.connect(onClientButtonClicked)
-    }
 
     Component.onDestruction: {
         // Es una buena práctica desconectar las señales cuando el objeto se destruye

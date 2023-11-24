@@ -23,21 +23,6 @@ from utils.helpers import *
 from dotenv import load_dotenv
 from data.database import Database
 
-# from PySide2.QtGui import QFontDatabase
-
-# # Cargar la fuente
-# font_path = os.path.abspath("myfonts/GepesteV.ttf")
-# print("Ruta de la fuente:", font_path)
-
-# localfont = QFontDatabase.addApplicationFont(font_path)
-
-# if localfont == -1:
-#     print("Error al cargar la fuente")
-#     sys.exit(-1)
-# else:
-#     font_name = QFontDatabase.applicationFontFamilies(localfont)[0]
-#     print("Fuente cargada:", font_name)
-
 
 load_dotenv()
 env_file = ".env"
