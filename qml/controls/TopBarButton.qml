@@ -1,6 +1,5 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtGraphicalEffects 1.15
 
 Button {
     id: topBarButton
@@ -21,11 +20,7 @@ Button {
         id: internal
 
         //MOUSE OVER AND CLICKED COLOR
-        property var dinamicColor: if(topBarButton.down){
-                                       topBarButton.down ? btnColorClicked : btnColorDefault
-                                   }else {
-                                       topBarButton.hovered ? btnColorMouseOver : btnColorDefault
-                                   }
+        property var dinamicColor: topBarButton.down ? btnColorClicked : (topBarButton.hovered ? btnColorMouseOver : btnColorDefault)
     }
 
     implicitWidth: 35
@@ -37,7 +32,7 @@ Button {
 
         Image {
             id: iconBtn
-            source: btnIconSource
+            source: Qt.resolvedUrl(btnIconSource)
             sourceSize.height: 35
             sourceSize.width: 35
             autoTransform: false
@@ -48,17 +43,5 @@ Button {
             width: 25
             fillMode: Image.PreserveAspectFit
         }
-
-        ColorOverlay {
-            anchors.fill: iconBtn
-            source: iconBtn
-            antialiasing: true
-        }
     }
 }
-
-
-
-
-
-

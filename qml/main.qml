@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import QtGraphicalEffects 1.15
+// import QtGraphicalEffects 1.15
 import "./controls"
 
 
@@ -220,17 +220,17 @@ Window {
 
     FontLoader {
         id: gepesteVFont
-        source: "../myfonts/GepesteV.ttf"
+        source: Qt.resolvedUrl("../myfonts/GepesteV.ttf")
     }
 
     FontLoader {
         id: titillium_Web_Light_VFont
-        source: "../myfonts/TitilliumWeb-Light.ttf"
+        source: Qt.resolvedUrl("../myfonts/TitilliumWeb-Light.ttf")
     }
 
     FontLoader {
         id: titillium_Web_Extralight_VFont
-        source: "../myfonts/TitilliumWeb-ExtraLight.ttf"
+        source: Qt.resolvedUrl("../myfonts/TitilliumWeb-ExtraLight.ttf")
     }
 
     // INTERNAL FUNCTIONS
@@ -246,7 +246,7 @@ Window {
                 bg.anchors.leftMargin = 0
                 bg.anchors.rightMargin = 0
                 bg.anchors.bottomMargin = 0
-                restoreButton.btnIconSource = "../images/svg_icons/restore_icon.svg"
+                restoreButton.btnIconSource = Qt.resolvedUrl("../images/svg_icons/restore_icon.svg")
             }
             else{
                 mainWindow.showNormal()
@@ -255,7 +255,7 @@ Window {
                 bg.anchors.leftMargin = 10
                 bg.anchors.rightMargin = 10
                 bg.anchors.bottomMargin = 10
-                restoreButton.btnIconSource = "../images/svg_icons/maximize_icon.svg"
+                restoreButton.btnIconSource = Qt.resolvedUrl("../images/svg_icons/maximize_icon.svg")
             }
         }
         // If Maximized Restore
@@ -264,14 +264,14 @@ Window {
                 mainWindow.showNormal()
                 windowStatus = 0
                 windowMargin = 10
-                restoreButton.btnIconSource = "../images/svg_icons/maximize_icon.svg"
+                restoreButton.btnIconSource = Qt.resolvedUrl("../images/svg_icons/maximize_icon.svg")
             }
         }
         // Restore Margins
         function restoreMargins(){
             windowStatus = 0
             windowMargin = 10
-            restoreButton.btnIconSource = "../images/svg_icons/maximize_icon.svg"
+            restoreButton.btnIconSource = Qt.resolvedUrl("../images/svg_icons/maximize_icon.svg")
         }
         // Toggle Preview right screen
         function collapsePreview(){
@@ -288,11 +288,11 @@ Window {
         // Toggle Budget Bar
         function collapseBudgetPreview(){
             if(budgetBarCollapse === false){
-                toogleBudgetPreviewBtn.btnIconSource = "../images/svg_icons/up_icon.svg"
+                toogleBudgetPreviewBtn.btnIconSource = Qt.resolvedUrl("../images/svg_icons/up_icon.svg")
                 animationbgBudgetCol.running = true
                 budgetBarCollapse = true
             }else{
-                toogleBudgetPreviewBtn.btnIconSource = "../images/svg_icons/down_icon.svg"
+                toogleBudgetPreviewBtn.btnIconSource = Qt.resolvedUrl("../images/svg_icons/down_icon.svg")
                 animationbgBudgetCol.running = true
                 budgetBarCollapse = false
             }
@@ -461,7 +461,7 @@ Window {
                         anchors.left: parent.left
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
-                        source: isDarkMode ? iconAppNight : iconAppDay
+                        source: Qt.resolvedUrl(isDarkMode ? iconAppNight : iconAppDay)
                         smooth: true
                         sourceSize.height: 30
                         sourceSize.width: 46
@@ -538,7 +538,7 @@ Window {
 
                     TopBarButton {
                         id: btnDayNight
-                        btnIconSource: isDarkMode ? toggleDarkModelogoSourceW : toggleDarkModelogoSourceB
+                        btnIconSource: Qt.resolvedUrl(isDarkMode ? toggleDarkModelogoSourceW : toggleDarkModelogoSourceB)
                         btnColorClicked: "#99f1ff"
                         btnColorMouseOver: "#6dacb6"
                         btnColorDefault: "#00000000"
@@ -551,7 +551,7 @@ Window {
                         btnColorMouseOver: isDarkMode ? btnColorMouseOverNight : btnColorMouseOverDay
                         btnColorDefault: isDarkMode ? btnColorDefaultNight : btnColorDefaultDay
                         btnColorClicked: isDarkMode ? btnColorClickedNight : btnColorClickedDay
-                        btnIconSource: "../images/svg_icons/minimize_icon.svg"
+                        btnIconSource: Qt.resolvedUrl("../images/svg_icons/minimize_icon.svg")
                         btnIconColor: isDarkMode? "#FFFFFF" : "#000000"
                         onClicked: {
                             mainWindow.showMinimized()
@@ -565,7 +565,7 @@ Window {
                         btnColorMouseOver: isDarkMode ? btnColorMouseOverNight : btnColorMouseOverDay
                         btnColorDefault: isDarkMode ? btnColorDefaultNight : btnColorDefaultDay
                         btnColorClicked: isDarkMode ? btnColorClickedNight : btnColorClickedDay
-                        btnIconSource: "../images/svg_icons/maximize_icon.svg"
+                        btnIconSource: Qt.resolvedUrl("../images/svg_icons/maximize_icon.svg")
                         btnIconColor: isDarkMode? "#FFFFFF" : "#000000"
                         onClicked: {
                             internal.maximizeRestore()
@@ -578,7 +578,7 @@ Window {
                         btnColorMouseOver: isDarkMode ? btnColorMouseOverNight : btnColorMouseOverDay
                         btnColorDefault: isDarkMode ? btnColorDefaultNight : btnColorDefaultDay
                         btnColorClicked: isDarkMode ? closeBtnColorClickedNight : closeBtnColorClickedDay
-                        btnIconSource: "../images/svg_icons/close_icon.svg"
+                        btnIconSource: Qt.resolvedUrl("../images/svg_icons/close_icon.svg")
                         btnIconColor: isDarkMode? "#FFFFFF" : "#000000"
                         onClicked: {
                             mainWindow.close()
@@ -702,7 +702,7 @@ Window {
                             height: 50
                             horizontalAlignment: Image.AlignHCenter
                             verticalAlignment: Image.AlignVCenter
-                            source: isDarkMode ? leftImageSourceNight : leftImageSourceDay
+                            source: Qt.resolvedUrl(isDarkMode ? leftImageSourceNight : leftImageSourceDay)
                             z: 0
                             mirror: false
                             sourceSize.height: 50
@@ -808,7 +808,7 @@ Window {
                                         font.weight: Font.Light
                                         font.family: currentFont
                                         font.pointSize: 10
-                                        btnIconSource: "../images/svg_icons/icon_users.svg"
+                                        btnIconSource: Qt.resolvedUrl("../images/svg_icons/icon_users.svg")
                                         btnColorDefault: isDarkMode ? leftMenuBtnColorDefaultNight : leftMenuBtnColorDefaultDay
                                         btnColorMouseOver: isDarkMode ? leftMenuBtnColorMouseOverNight : leftMenuBtnColorMouseOverDay
                                         btnColorClicked: isDarkMode ? leftMenuBtnColorClickedNight : leftMenuBtnColorClickedDay
@@ -857,7 +857,7 @@ Window {
                             btnColorClicked: "#99f1ff"
                             btnColorMouseOver: "#0f141b"
                             anchors.bottomMargin: -5
-                            btnIconSource: "../images/svg_icons/down_icon.svg"
+                            btnIconSource: Qt.resolvedUrl("../images/svg_icons/down_icon.svg")
                             anchors.horizontalCenter: parent.horizontalCenter
                             onClicked: {
                                 internal.collapseBudgetPreview()
@@ -1304,7 +1304,7 @@ Window {
                             width: 16
                             height: 16
                             anchors.fill: parent
-                            source: "../images/svg_icons/resize_icon.svg"
+                            source: Qt.resolvedUrl("../images/svg_icons/resize_icon.svg")
                             fillMode: Image.PreserveAspectCrop
                             smooth: true
                             anchors.leftMargin: 5

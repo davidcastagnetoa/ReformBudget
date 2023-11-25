@@ -1,6 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtGraphicalEffects 1.15
+// import QtGraphicalEffects 1.15
 
 Button{
     id: btnLeftMenu
@@ -94,7 +94,7 @@ Button{
         id: content
         Image {
             id: iconBtn
-            source: btnIconSource
+            source: Qt.resolvedUrl(btnIconSource)
             anchors.leftMargin: 26
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
@@ -109,7 +109,7 @@ Button{
 
         ColorOverlay{
             anchors.fill: iconBtn
-            source: iconBtn
+            source: Qt.resolvedUrl(iconBtn)
             color: isActiveMenu ? textAndOverlayColorClicked : btnLeftMenu.down ? textAndOverlayColorClicked : btnLeftMenu.hovered ? textAndOverlayColorMouseOver : textAndOverlayColorDefault
             anchors.verticalCenter: parent.verticalCenter
             antialiasing: true

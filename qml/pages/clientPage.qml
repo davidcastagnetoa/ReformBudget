@@ -65,17 +65,17 @@ Item {
 
     FontLoader {
         id: gepesteVFont
-        source: "../../myfonts/GepesteV.ttf"
+        source: Qt.resolvedUrl("../../myfonts/GepesteV.ttf")
     }
 
     FontLoader {
         id: titillium_Web_Light_VFont
-        source: "../../myfonts/TitilliumWeb-Light.ttf"
+        source: Qt.resolvedUrl("../../myfonts/TitilliumWeb-Light.ttf")
     }
 
     FontLoader {
         id: titillium_Web_Extralight_VFont
-        source: "../../myfonts/TitilliumWeb-ExtraLight.ttf"
+        source: Qt.resolvedUrl("../../myfonts/TitilliumWeb-ExtraLight.ttf")
     }
 
     // INTERNAL FUNCTIONS

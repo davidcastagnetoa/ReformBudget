@@ -1,8 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtGraphicalEffects 1.15
 
-Button{
+Button {
     id: btnLeftMenu
     text: qsTr("Left Menu Text")
 
@@ -31,17 +30,17 @@ Button{
 
     FontLoader {
         id: gepesteVFont
-        source: "../../myfonts/GepesteV.ttf"
+        source: Qt.resolvedUrl("../../myfonts/GepesteV.ttf")
     }
 
     FontLoader {
         id: titillium_Web_Light_VFont
-        source: "../../myfonts/TitilliumWeb-Light.ttf"
+        source: Qt.resolvedUrl("../../myfonts/TitilliumWeb-Light.ttf")
     }
 
     FontLoader {
         id: titillium_Web_Extralight_VFont
-        source: "../../myfonts/TitilliumWeb-ExtraLight.ttf"
+        source: Qt.resolvedUrl("../../myfonts/TitilliumWeb-ExtraLight.ttf")
     }
 
     QtObject{
@@ -110,9 +109,10 @@ Button{
     contentItem: Item{
         anchors.fill: parent
         id: content
+        
         Image {
             id: iconBtn
-            source: btnIconSource
+            source: Qt.resolvedUrl(btnIconSource)
             anchors.leftMargin: 26
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
@@ -121,19 +121,8 @@ Button{
             width: iconWidth
             height: iconHeight
             fillMode: Image.PreserveAspectFit
-            visible: false
-            antialiasing: true
-        }
+            }
 
-        ColorOverlay{
-            anchors.fill: iconBtn
-            source: iconBtn
-            color: isActiveMenu ? textAndOverlayColorClicked : btnLeftMenu.down ? textAndOverlayColorClicked : btnLeftMenu.hovered ? textAndOverlayColorMouseOver : textAndOverlayColorDefault
-            anchors.verticalCenter: parent.verticalCenter
-            antialiasing: true
-            width: iconWidth
-            height: iconHeight
-        }
         Item{
             id: item1
             width: 175

@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import "controls"
-import QtGraphicalEffects 1.0
+// import QtGraphicalEffects 1.0
 import QtQuick.Timeline 1.0
 
 
@@ -153,7 +153,7 @@ Window {
 
     FontLoader {
         id: gepesteVFont
-        source: "../myfonts/GepesteV.ttf"
+        source: Qt.resolvedUrl("../myfonts/GepesteV.ttf")
         // Component.onCompleted: {
         //     console.log("Nombre de la fuente: GepesteV")
         //     console.log("Ruta de la fuente: " + gepesteVFont.source)
@@ -163,7 +163,7 @@ Window {
 
     FontLoader {
         id: titillium_Web_Light_VFont
-        source: "../myfonts/TitilliumWeb-Light.ttf"
+        source: Qt.resolvedUrl("../myfonts/TitilliumWeb-Light.ttf")
         // Component.onCompleted: {
         //     console.log("Nombre de la fuente: Titillium Web Light")
         //     console.log("Ruta de la fuente: " + titillium_Web_Light_VFont.source)
@@ -173,7 +173,7 @@ Window {
 
     FontLoader {
         id: titillium_Web_Extralight_VFont
-        source: "../myfonts/TitilliumWeb-ExtraLight.ttf"
+        source: Qt.resolvedUrl("../myfonts/TitilliumWeb-ExtraLight.ttf")
         // Component.onCompleted: {
         //     console.log("Nombre de la fuente: Titillium Web Light")
         //     console.log("Ruta de la fuente: " + titillium_Web_Extralight_VFont.source)
@@ -281,7 +281,7 @@ Window {
         TopBarButton {
             id: btnColapse
             width: 35
-            btnIconSource: internal.getButtonIcon()
+            btnIconSource: Qt.resolvedUrl(internal.getButtonIcon())
             btnColorClicked: "#99f1ff"
             btnColorMouseOver: "#6dacb6"
             anchors.left: btnDayNight.right
@@ -298,7 +298,7 @@ Window {
         TopBarButton {
             id: btnDayNight
             width: 35
-            btnIconSource: isDarkMode ? toggleDarkModelogoSourceB : toggleDarkModelogoSourceW
+            btnIconSource: Qt.resolvedUrl(isDarkMode ? toggleDarkModelogoSourceB : toggleDarkModelogoSourceW)
             btnColorClicked: "#99f1ff"
             btnColorMouseOver: "#6dacb6"
             anchors.left: parent.left
@@ -315,7 +315,7 @@ Window {
             y: 15
             opacity: 0
             text: "Button"
-            btnIconSource: isDarkMode ? closeBtnIconSourceB : closeBtnIconSourceW
+            btnIconSource: Qt.resolvedUrl(isDarkMode ? closeBtnIconSourceB : closeBtnIconSourceW)
             anchors.right: parent.right
             anchors.top: parent.top
             colorDefault: "#00000000"
@@ -335,7 +335,7 @@ Window {
             height: 180
             opacity: 1
             anchors.bottom: lblSignIn.top
-            source: isDarkMode ? logoSourceB : logoSourceW
+            source: Qt.resolvedUrl(isDarkMode ? logoSourceB : logoSourceW)
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottomMargin: 15
             fillMode: Image.PreserveAspectFit
@@ -354,7 +354,6 @@ Window {
             z: 0
             textSize: 18
             value: 100
-            enableDropShadow: true
             baselineOffset: 0
             focus: false
             antialiasing: false
@@ -363,7 +362,6 @@ Window {
             strokeBgWidth: 8
             progressWidth: 12
             samples: 55
-            dropShadowRadius: 8
             bgStrokeColor: "#151d27"
             textColor: "#00b9ec"
             progressColor: "#436b70"

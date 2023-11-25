@@ -1,6 +1,5 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtGraphicalEffects 1.15
 
 Button {
     id: button
@@ -32,7 +31,7 @@ Button {
         width: 20
         height: 20
         anchors.verticalCenter: parent.verticalCenter
-        source: btnIconSource
+        source: Qt.resolvedUrl(btnIconSource)
         anchors.horizontalCenter: parent.horizontalCenter
         fillMode: Image.PreserveAspectFit
     }
@@ -43,7 +42,6 @@ Button {
     background: Rectangle{
         color: internal.dynamicColor
         radius: 5
-
     }
 }
 /*##^##

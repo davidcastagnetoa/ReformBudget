@@ -1,12 +1,11 @@
 import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtQuick.Shapes 1.15
-import QtGraphicalEffects 1.15
-
 Item {
     id: progress
     implicitWidth: 250
     implicitHeight: 250
-
+    
     // Properties
     // General
     property bool roundCap: true
@@ -14,10 +13,6 @@ Item {
     property real maxValue: 100
     property real value: 50
     property int samples: 12
-    // Drop Shadow
-    property bool enableDropShadow: false
-    property color dropShadowColor: "#20000000"
-    property int dropShadowRadius: 10
     // Bg Circle
     property color bgColor: "transparent"
     property color bgStrokeColor: "#101214"
@@ -38,40 +33,23 @@ Item {
 
     FontLoader {
         id: gepesteVFont
-        source: "../../myfonts/GepesteV.ttf"
+        source: Qt.resolvedUrl("../../myfonts/GepesteV.ttf")
     }
 
     FontLoader {
         id: titillium_Web_Light_VFont
-        source: "../../myfonts/TitilliumWeb-Light.ttf"
+        source: Qt.resolvedUrl("../../myfonts/TitilliumWeb-Light.ttf")
     }
 
     FontLoader {
         id: titillium_Web_Extralight_VFont
-        source: "../../myfonts/TitilliumWeb-ExtraLight.ttf"
-    }
-
-    // Internal Properties/Functions
-    QtObject{
-        id: internal
-
-        property Component dropShadow: DropShadow{
-            color: progress.dropShadowColor
-            fast: true
-            verticalOffset: 0
-            horizontalOffset: 0
-            samples: progress.samples
-            radius: progress.dropShadowRadius
-        }
+        source: Qt.resolvedUrl("../../myfonts/TitilliumWeb-ExtraLight.ttf")
     }
 
 
-    Shape{
+    Shape {
         id: shape
         anchors.fill: parent
-        layer.enabled: true
-        layer.samples: progress.samples
-        layer.effect: progress.enableDropShadow ? internal.dropShadow : null
 
         Text {
             id: textProgress
@@ -151,7 +129,7 @@ Item {
             width: 190
             height: 50
             anchors.top: parent.top
-            source: "../../images/Anera Logo III.png"
+            source: Qt.resolvedUrl("../../images/Anera Logo III.png")
             sourceSize.height: 50
             sourceSize.width: 190
             anchors.topMargin: 65

@@ -1,17 +1,18 @@
 # This Python file uses the following encoding: utf-8
-# from PySide2.QtCore import QUrl, QTimer
+# from PySide6.QtCore import QUrl, QTimer
 import sys
 import os
-import PySide2
+import PySide6
 
-print("Versión de PySide2:: ", PySide2.__version__)
-from PySide2.QtCore import QObject, Qt, Signal, Property, Slot, qVersion
+print("Versión de PySide6:: ", PySide6.__version__)
+from PySide6.QtCore import QObject, Qt, Signal, Property, Slot, qVersion
 
-print("Versión de Qt Usada por PySide2: ", qVersion())
-from PySide2.QtCore import QObject, Qt, Signal, Property, Slot
+print("Versión de Qt Usada por PySide6: ", qVersion())
+from PySide6.QtCore import QObject, Qt, Signal, Property, Slot
+
 from utils.encrypter import load_key, encriptedPassword
-from PySide2.QtGui import QGuiApplication, QIcon
-from PySide2.QtQml import QQmlApplicationEngine
+from PySide6.QtGui import QGuiApplication, QIcon
+from PySide6.QtQml import QQmlApplicationEngine
 from data.user import UserData
 from data.client import ClientData
 from data.budget import BudgetData
@@ -474,7 +475,7 @@ if __name__ == "__main__":
     # FUNCION PARA CERRAR VENTANA
     if not engine.rootObjects():
         sys.exit(-1)
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 
 # Developed by David Castagneto
