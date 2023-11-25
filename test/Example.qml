@@ -190,7 +190,7 @@ Window {
                     id: content
                     Image {
                         id: iconBtn
-                        source: btnIconSource
+                        source: Qt.resolvedUrl(btnIconSource)
                         anchors.leftMargin: 26
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left

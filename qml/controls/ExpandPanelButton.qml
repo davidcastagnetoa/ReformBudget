@@ -5,16 +5,17 @@ import QtGraphicalEffects 1.15
 
 Button {
     id: expandBtnToggle
-        //CUSTOM PROPERTIES
-        property url btnIconSource: "../../images/svg_icons/icon_arrow_right.svg"
-        property bool btnIconMirror: false
-        property color btnColorDefault: "#161b22"
-        property color btnColorMouseOver: "#0d1117"
-        property color btnColorClicked: "#00C859"
 
-        property color btnColorIconDefault: "#b0b0b0"
-        property color btnColorIconMouseOver: "#FFFFFF"
-        property color btnColorIconClicked: "#000000"
+    //CUSTOM PROPERTIES
+    property url btnIconSource: "../../images/svg_icons/icon_arrow_right.svg"
+    property bool btnIconMirror: false
+    property color btnColorDefault: "#161b22"
+    property color btnColorMouseOver: "#0d1117"
+    property color btnColorClicked: "#00C859"
+    property color btnColorIconDefault: "#b0b0b0"
+    property color btnColorIconMouseOver: "#FFFFFF"
+    property color btnColorIconClicked: "#000000"
+
     width: 30
     height: 40
 
@@ -46,7 +47,7 @@ Button {
 
             Image {
                 id:iconBtn
-                source: btnIconSource
+                source: Qt.resolvedUrl(btnIconSource)
                 mirror: btnIconMirror
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter

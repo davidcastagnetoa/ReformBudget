@@ -38,17 +38,17 @@ Item {
 
     FontLoader {
         id: gepesteVFont
-        source: "../../myfonts/GepesteV.ttf"
+        source: Qt.resolvedUrl("../../myfonts/GepesteV.ttf")
     }
 
     FontLoader {
         id: titillium_Web_Light_VFont
-        source: "../../myfonts/TitilliumWeb-Light.ttf"
+        source: Qt.resolvedUrl("../../myfonts/TitilliumWeb-Light.ttf")
     }
 
     FontLoader {
         id: titillium_Web_Extralight_VFont
-        source: "../../myfonts/TitilliumWeb-ExtraLight.ttf"
+        source: Qt.resolvedUrl("../../myfonts/TitilliumWeb-ExtraLight.ttf")
     }
 
     // Internal Properties/Functions
@@ -151,7 +151,7 @@ Item {
             width: 190
             height: 50
             anchors.top: parent.top
-            source: "../../images/Anera Logo III.png"
+            source: Qt.resolvedUrl("../../images/Anera Logo III.png")
             sourceSize.height: 50
             sourceSize.width: 190
             anchors.topMargin: 65

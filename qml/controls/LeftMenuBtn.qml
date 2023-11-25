@@ -31,17 +31,17 @@ Button{
 
     FontLoader {
         id: gepesteVFont
-        source: "../../myfonts/GepesteV.ttf"
+        source: Qt.resolvedUrl("../../myfonts/GepesteV.ttf")
     }
 
     FontLoader {
         id: titillium_Web_Light_VFont
-        source: "../../myfonts/TitilliumWeb-Light.ttf"
+        source: Qt.resolvedUrl("../../myfonts/TitilliumWeb-Light.ttf")
     }
 
     FontLoader {
         id: titillium_Web_Extralight_VFont
-        source: "../../myfonts/TitilliumWeb-ExtraLight.ttf"
+        source: Qt.resolvedUrl("../../myfonts/TitilliumWeb-ExtraLight.ttf")
     }
 
     QtObject{
@@ -112,7 +112,7 @@ Button{
         id: content
         Image {
             id: iconBtn
-            source: btnIconSource
+            source: Qt.resolvedUrl(btnIconSource)
             anchors.leftMargin: 26
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left

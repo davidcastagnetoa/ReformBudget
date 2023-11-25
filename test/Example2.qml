@@ -14,7 +14,7 @@ Window {
 
     FontLoader {
         id: customFont
-        source: "../myfonts/GepesteV.ttf"
+        source: Qt.resolvedUrl("../myfonts/GepesteV.ttf")
     }
 
     Component.onCompleted: {
