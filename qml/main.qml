@@ -22,7 +22,7 @@ Window {
     property variant buttonList: []
 
     // Signals
-    signal clientButtonClicked(list clientData) //probar a eliminar var
+    signal clientButtonClicked(var clientData) //probar a eliminar var
 
     // Custom Properties
     property string username
@@ -1424,6 +1424,7 @@ Window {
         console.log("Ciudad:", clientData.city);
         console.log("Código Postal:", clientData.zip_code);
         console.log("Teléfono:", clientData.phone);
+        console.log("\n")
         // console.log("user_id:", clientData.user_id); // Descomenta si también esperas user_id
 
         // Actualiza la UI con los datos del cliente

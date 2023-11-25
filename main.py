@@ -84,7 +84,7 @@ class Login(QObject):
     # Metodo para la consulta de clientes
     def getClientsForUser(self):
         db = Database()
-        print(self._username)
+        print("The username's logged is: ", self._username)
 
         # Consulta de todos los cliente para el superusuario XD
         if self._username == ADMIN_USERNAME:
@@ -104,7 +104,7 @@ class Login(QObject):
             }
             for client in clients
         ]
-        print(clients_list)
+        print(f"The clients belong to ${self._username} is :", clients_list)
         self.clientsRetrieved.emit(clients_list)
         db.close()
 
