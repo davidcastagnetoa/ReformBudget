@@ -10,6 +10,10 @@ from PySide6.QtCore import QObject, Qt, Signal, Property, Slot, qVersion
 print("Versión de Qt Usada por PySide6: ", qVersion())
 from PySide6.QtCore import QObject, Qt, Signal, Property, Slot
 
+from PySide6.QtQuickControls2 import QQuickStyle
+QQuickStyle.setStyle("Fusion")
+
+
 from utils.encrypter import load_key, encriptedPassword
 from PySide6.QtGui import QGuiApplication, QIcon
 from PySide6.QtQml import QQmlApplicationEngine

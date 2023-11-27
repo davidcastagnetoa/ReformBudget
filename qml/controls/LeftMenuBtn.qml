@@ -1,5 +1,5 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 
 Button {
     id: btnLeftMenu
@@ -26,7 +26,7 @@ Button {
 
     //PROPERTY FONTS
     property string currentFont : gepesteVFont.name
-    property string currentFontThin : titillium_Web_Extralight_VFont.name
+    property string currentFontThin : gepesteVFont.name
 
     FontLoader {
         id: gepesteVFont
