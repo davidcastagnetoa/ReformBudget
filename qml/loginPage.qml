@@ -188,12 +188,21 @@ Window {
         id: animationToggleRptTextPassword
 
         PropertyAnimation{
+            target: loginPage
+            property: "height"
+            to: signUp ? 556 : 616
+            duration: 450
+            easing.type: Easing.InOutCirc
+        }
+
+        PropertyAnimation{
             target: background
             property: "height"
             to: signUp ? 550 : 610
             duration: 450
             easing.type: Easing.InOutCirc
         }
+        
         
         PropertyAnimation{
             target: rptTextPassword
