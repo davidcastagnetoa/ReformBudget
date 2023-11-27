@@ -22,7 +22,7 @@ Window {
 
     //PROPERTIES
     property bool windowCollapse: false
-    property bool signUp: false
+    property bool signUp: true
     property bool isDarkMode: false
 
     property url logoSourceW: "../images/Anera Solutions Logo W.png"
@@ -104,7 +104,7 @@ Window {
             windowCollapse = !windowCollapse;
         }
         function toogleSignIn_Up() {
-            if(signUp == false){ // Modo Crear Cuenta
+            if(signUp == true){ // Modo Crear Cuenta
                 lblSignInUp.text = "Ya tienes cuenta? Inicia sesion"
                 lblSignIn.text = "Crea una Cuenta"
                 lblCorpData.text = "Registra tus datos"
@@ -113,8 +113,8 @@ Window {
                 btnLogin.visible = false
                 btnLogin.height = 0
                 animationToggleRptTextPassword.running = true
-                signUp = true
                 loginPage.height = 616
+                signUp = false
             }else{ // Modo Iniciar Sesion
                 lblSignInUp.text = "No tienes cuenta? Crea una cuenta"
                 lblSignIn.text = "Inicia Sesión"
@@ -124,8 +124,8 @@ Window {
                 btnLogin.visible = true
                 btnLogin.height = 40
                 animationToggleRptTextPassword.running = true
-                signUp = false
                 loginPage.height = 556
+                signUp = true
             }
         }
         function toggleDarkMode() {
