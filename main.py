@@ -2,7 +2,7 @@
 # from PySide2.QtCore import QUrl, QTimer
 import os
 
-os.environ["QT_DEBUG_PLUGINS"] = "1"
+# os.environ["QT_DEBUG_PLUGINS"] = "1"
 
 import sys
 import PySide2
@@ -413,7 +413,7 @@ class WindowManager(QObject):
     def __init__(self, window):
         super().__init__()
         self.window = window
-        self.alwaysOnTop = False
+        self.alwaysOnTop = True
 
     # Funcion para mostrar siempre por encima de las demas ventanas
     @Slot(bool)

@@ -21,7 +21,7 @@ Window {
     flags: Qt.SplashScreen | Qt.FramelessWindowHint
 
     //PROPERTIES
-    property bool windowCollapse: false
+    property bool windowCollapse: true
     property bool signUp: false
     property bool isDarkMode: false
 
@@ -113,8 +113,8 @@ Window {
                 btnLogin.visible = false
                 btnLogin.height = 0
                 animationToggleRptTextPassword.running = true
+                // loginPage.height = 616
                 signUp = true
-                loginPage.height = 616
             }else{ // Modo Iniciar Sesion
                 lblSignInUp.text = "No tienes cuenta? Crea una cuenta"
                 lblSignIn.text = "Inicia Sesión"
@@ -124,8 +124,8 @@ Window {
                 btnLogin.visible = true
                 btnLogin.height = 40
                 animationToggleRptTextPassword.running = true
+                // loginPage.height = 556
                 signUp = false
-                loginPage.height = 556
             }
         }
         function toggleDarkMode() {
@@ -191,6 +191,14 @@ Window {
             target: background
             property: "height"
             to: signUp ? 550 : 610
+            duration: 450
+            easing.type: Easing.InOutCirc
+        }
+
+        PropertyAnimation{
+            target: loginPage
+            property: "height"
+            to: signUp ? 556 : 616
             duration: 450
             easing.type: Easing.InOutCirc
         }
