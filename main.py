@@ -1,7 +1,10 @@
 # This Python file uses the following encoding: utf-8
 # from PySide2.QtCore import QUrl, QTimer
-import sys
 import os
+
+os.environ["QT_DEBUG_PLUGINS"] = "1"
+
+import sys
 import PySide2
 
 print("Versión de PySide2:: ", PySide2.__version__)
@@ -9,6 +12,7 @@ from PySide2.QtCore import QObject, Qt, Signal, Property, Slot, qVersion
 
 print("Versión de Qt Usada por PySide2: ", qVersion())
 from PySide2.QtCore import QObject, Qt, Signal, Property, Slot
+
 from utils.encrypter import load_key, encriptedPassword
 from PySide2.QtGui import QGuiApplication, QIcon
 from PySide2.QtQml import QQmlApplicationEngine
