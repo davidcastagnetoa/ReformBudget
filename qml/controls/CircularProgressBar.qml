@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Shapes 1.15
+import QtQuick.Shapes
+
 Item {
     id: progress
     implicitWidth: 250
@@ -13,13 +14,21 @@ Item {
     property real maxValue: 100
     property real value: 50
     property int samples: 12
+
+    // // Drop Shadow
+    property bool enableDropShadow: true
+    property color dropShadowColor: "#20000000"
+    property int dropShadowRadius: 10
+
     // Bg Circle
     property color bgColor: "transparent"
     property color bgStrokeColor: "#101214"
     property int strokeBgWidth: 16
+
     // Progress Circle
     property color progressColor: "#00C859"
     property int progressWidth: 16
+
     // Text
     property string text: "%"
     property bool textShowValue: true
@@ -46,10 +55,26 @@ Item {
         source: Qt.resolvedUrl("../../myfonts/TitilliumWeb-ExtraLight.ttf")
     }
 
+    // // // Internal Properties/Functions, revisar ShaderEffect
+    // QtObject{
+    //     id: internal
+
+    //     property Component dropShadow: DropShadow{
+    //         color: progress.dropShadowColor
+    //         fast: true
+    //         verticalOffset: 0
+    //         horizontalOffset: 0
+    //         samples: progress.samples
+    //         radius: progress.dropShadowRadius
+    //     }
+    // }
 
     Shape {
         id: shape
         anchors.fill: parent
+        layer.samples: progress.samples
+        layer.enabled: true
+        // layer.effect: progress.enableDropShadow ? internal.dropShadow : null
 
         Text {
             id: textProgress

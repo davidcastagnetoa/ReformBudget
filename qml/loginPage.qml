@@ -1,5 +1,5 @@
 import QtQuick
-import QtQuick.Window 2.15
+import QtQuick.Window
 import QtQuick.Controls
 import "controls"
 // import QtGraphicalEffects 1.0
@@ -203,7 +203,6 @@ Window {
             easing.type: Easing.InOutCirc
         }
         
-        
         PropertyAnimation{
             target: rptTextPassword
             property: "height"
@@ -363,14 +362,16 @@ Window {
             z: 0
             textSize: 18
             value: 100
+            // enableDropShadow: true
             baselineOffset: 0
             focus: false
-            antialiasing: false
+            antialiasing: true
             clip: false
             maxValue: 100
             strokeBgWidth: 8
             progressWidth: 12
             samples: 55
+            // dropShadowRadius: 8
             bgStrokeColor: "#151d27"
             textColor: "#00b9ec"
             progressColor: "#436b70"
