@@ -11,10 +11,12 @@ print("Versión de Qt Usada por PySide6: ", qVersion())
 from PySide6.QtQuickControls2 import QQuickStyle
 QQuickStyle.setStyle("Fusion")
 
-
 from utils.encrypter import load_key, encriptedPassword
 from PySide6.QtGui import QGuiApplication, QIcon
 from PySide6.QtQml import QQmlApplicationEngine
+
+os.environ["QT_FONT_DPI"] = "96"
+
 from data.user import UserData
 from data.client import ClientData
 from data.budget import BudgetData

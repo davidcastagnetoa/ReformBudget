@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Shapes 1.6
-
 Item {
     id: progress
     implicitWidth: 250
@@ -15,7 +14,7 @@ Item {
     property real value: 50
     property int samples: 12
 
-    // // Drop Shadow
+    // Drop Shadow
     property bool enableDropShadow: true
     property color dropShadowColor: "#20000000"
     property int dropShadowRadius: 10
@@ -24,11 +23,9 @@ Item {
     property color bgColor: "transparent"
     property color bgStrokeColor: "#101214"
     property int strokeBgWidth: 16
-
     // Progress Circle
     property color progressColor: "#00C859"
     property int progressWidth: 16
-
     // Text
     property string text: "%"
     property bool textShowValue: true
@@ -68,6 +65,7 @@ Item {
     //         radius: progress.dropShadowRadius
     //     }
     // }
+
 
     Shape {
         id: shape
@@ -137,7 +135,7 @@ Item {
             fillColor: "transparent"
             strokeWidth: progress.progressWidth
             capStyle: progress.roundCap ? ShapePath.RoundCap : ShapePath.FlatCap
-            
+
             PathAngleArc{
                 radiusX: (progress.width / 2) - (progress.progressWidth / 2)
                 radiusY: (progress.height / 2) - (progress.progressWidth / 2)
