@@ -13,6 +13,9 @@ from PySide2.QtCore import QObject, Qt, Signal, Property, Slot, qVersion
 print("Versión de Qt Usada por PySide2: ", qVersion())
 from PySide2.QtCore import QObject, Qt, Signal, Property, Slot
 
+from PySide2.QtQuickControls2 import QQuickStyle
+QQuickStyle.setStyle("Fusion")
+
 from utils.encrypter import load_key, encriptedPassword
 from PySide2.QtGui import QGuiApplication, QIcon
 from PySide2.QtQml import QQmlApplicationEngine
