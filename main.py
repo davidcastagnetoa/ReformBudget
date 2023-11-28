@@ -1,21 +1,24 @@
 # This Python file uses the following encoding: utf-8
 # from PySide2.QtCore import QUrl, QTimer
+from data.database import Database
+from dotenv import load_dotenv
+from utils.helpers import *
+from connection import ConnectionDB
+from models.budget import Budget
+from models.client import Client
+from models.user import User
+from data.budget import BudgetData
+from data.client import ClientData
+from data.user import UserData
+from PySide2.QtQml import QQmlApplicationEngine
+from PySide2.QtGui import QGuiApplication, QIcon
+from utils.encrypter import generate_key, load_key, encriptedPassword, createLocalEnv
+from PySide2.QtCore import QObject, Qt, Signal, Property, Slot, qVersion
 import sys
 import os
-from PySide2.QtCore import QObject, Qt, Signal, Property, Slot
-from utils.encrypter import generate_key, load_key, encriptedPassword, createLocalEnv
-from PySide2.QtGui import QGuiApplication, QIcon
-from PySide2.QtQml import QQmlApplicationEngine
-from data.user import UserData
-from data.client import ClientData
-from data.budget import BudgetData
-from models.user import User
-from models.client import Client
-from models.budget import Budget
-from connection import ConnectionDB
-from utils.helpers import *
-from dotenv import load_dotenv
-from data.database import Database
+import PySide2
+print("Versión de PySide2:: ", PySide2.__version__)
+print("Versión de Qt Usada por PySide2: ", qVersion())
 
 load_dotenv()
 env_file = ".env"
