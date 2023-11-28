@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Shapes
+import QtQuick.Shapes 1.6
 
 Item {
     id: progress
@@ -137,7 +137,7 @@ Item {
             fillColor: "transparent"
             strokeWidth: progress.progressWidth
             capStyle: progress.roundCap ? ShapePath.RoundCap : ShapePath.FlatCap
-
+            
             PathAngleArc{
                 radiusX: (progress.width / 2) - (progress.progressWidth / 2)
                 radiusY: (progress.height / 2) - (progress.progressWidth / 2)

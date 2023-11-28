@@ -6,9 +6,7 @@ import PySide6
 
 print("Versión de PySide6:: ", PySide6.__version__)
 from PySide6.QtCore import QObject, Qt, Signal, Property, Slot, qVersion
-
 print("Versión de Qt Usada por PySide6: ", qVersion())
-from PySide6.QtCore import QObject, Qt, Signal, Property, Slot
 
 from PySide6.QtQuickControls2 import QQuickStyle
 QQuickStyle.setStyle("Fusion")
