@@ -80,7 +80,7 @@ class Login(QObject):
     # Metodo para la consulta de clientes
     def getClientsForUser(self):
         db = Database()
-        print(self._username)
+        print("The username's logged is: ", self._username)
 
         # Consulta de todos los cliente para el superusuario XD
         if self._username == ADMIN_USERNAME:
@@ -100,7 +100,7 @@ class Login(QObject):
             }
             for client in clients
         ]
-        print(clients_list)
+        print(f"The clients belong to {self._username} is :", clients_list)
         self.clientsRetrieved.emit(clients_list)
         db.close()
 
@@ -411,7 +411,7 @@ class WindowManager(QObject):
     def __init__(self, window):
         super().__init__()
         self.window = window
-        self.alwaysOnTop = False
+        self.alwaysOnTop = True
 
     # Funcion para mostrar siempre por encima de las demas ventanas
     @Slot(bool)
@@ -455,8 +455,8 @@ if __name__ == "__main__":
     engine.rootContext().setContextProperty("signupUser", signup_userdata)
 
     # ARRANCANDO MOTORES DE VENTANA
+    # engine.load(os.path.join(os.path.dirname(__file__), "test/Example2.qml"))  # Borrar en Producccion, solo para pruebas
     # engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))  # Borrar en Producccion
-    # engine.load(os.path.join(os.path.dirname(__file__), "test/example.qml"))  # Borrar en Producccion
     engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
 
     # ASIGNANDO a primera posicion VENTANA loginPage

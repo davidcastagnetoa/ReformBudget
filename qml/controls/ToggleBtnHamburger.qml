@@ -34,7 +34,7 @@ Button {
 
         Image {
             id:iconBtn
-            source: btnIconSource
+            source: Qt.resolvedUrl(btnIconSource)
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
             height: 25

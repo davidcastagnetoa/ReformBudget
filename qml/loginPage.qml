@@ -21,9 +21,10 @@ Window {
     flags: Qt.SplashScreen | Qt.FramelessWindowHint
 
     //PROPERTIES
-    property bool windowCollapse: false
+    property bool windowCollapse: true
     property bool signUp: false
     property bool isDarkMode: false
+
     property url logoSourceW: "../images/Anera Solutions Logo W.png"
     property url logoSourceB: "../images/Anera Solutions Logo B.png"
     property url toggleDarkModelogoSourceW: "../images/svg_icons/png_icons_wanderson/bluedaynight.png"
@@ -112,8 +113,8 @@ Window {
                 btnLogin.visible = false
                 btnLogin.height = 0
                 animationToggleRptTextPassword.running = true
+                // loginPage.height = 616
                 signUp = true
-                loginPage.height = 616
             }else{ // Modo Iniciar Sesion
                 lblSignInUp.text = "No tienes cuenta? Crea una cuenta"
                 lblSignIn.text = "Inicia Sesión"
@@ -123,8 +124,8 @@ Window {
                 btnLogin.visible = true
                 btnLogin.height = 40
                 animationToggleRptTextPassword.running = true
+                // loginPage.height = 556
                 signUp = false
-                loginPage.height = 556
             }
         }
         function toggleDarkMode() {
@@ -144,6 +145,43 @@ Window {
         }
     }
 
+    // LOAD LOCAL FONTS FROM ROOT FOLDER INSTEAD SYSTEM FONTS
+
+    //PROPERTY FONTS
+    property string currentFont : gepesteVFont.name
+    property string currentFontThin : titillium_Web_Extralight_VFont.name
+
+    FontLoader {
+        id: gepesteVFont
+        source: Qt.resolvedUrl("../myfonts/GepesteV.ttf")
+        // Component.onCompleted: {
+        //     console.log("Nombre de la fuente: GepesteV")
+        //     console.log("Ruta de la fuente: " + gepesteVFont.source)
+        //     console.log("Estado de la fuente: " + (gepesteVFont.status == FontLoader.Ready ? "Cargada" : "No cargada"))
+        // }
+    }
+
+    FontLoader {
+        id: titillium_Web_Light_VFont
+        source: Qt.resolvedUrl("../myfonts/TitilliumWeb-Light.ttf")
+        // Component.onCompleted: {
+        //     console.log("Nombre de la fuente: Titillium Web Light")
+        //     console.log("Ruta de la fuente: " + titillium_Web_Light_VFont.source)
+        //     console.log("Estado de la fuente: " + (titillium_Web_Light_VFont.status == FontLoader.Ready ? "Cargada" : "No cargada"))
+        // }
+    }
+
+    FontLoader {
+        id: titillium_Web_Extralight_VFont
+        source: Qt.resolvedUrl("../myfonts/TitilliumWeb-ExtraLight.ttf")
+        // Component.onCompleted: {
+        //     console.log("Nombre de la fuente: Titillium Web Light")
+        //     console.log("Ruta de la fuente: " + titillium_Web_Extralight_VFont.source)
+        //     console.log("Estado de la fuente: " + (titillium_Web_Extralight_VFont.status == FontLoader.Ready ? "Cargada" : "No cargada"))
+        // }
+    }
+
+
 
 
     ParallelAnimation {
@@ -153,6 +191,14 @@ Window {
             target: background
             property: "height"
             to: signUp ? 550 : 610
+            duration: 450
+            easing.type: Easing.InOutCirc
+        }
+
+        PropertyAnimation{
+            target: loginPage
+            property: "height"
+            to: signUp ? 556 : 616
             duration: 450
             easing.type: Easing.InOutCirc
         }
@@ -243,7 +289,7 @@ Window {
         TopBarButton {
             id: btnColapse
             width: 35
-            btnIconSource: internal.getButtonIcon()
+            btnIconSource: Qt.resolvedUrl(internal.getButtonIcon())
             btnColorClicked: "#99f1ff"
             btnColorMouseOver: "#6dacb6"
             anchors.left: btnDayNight.right
@@ -260,7 +306,7 @@ Window {
         TopBarButton {
             id: btnDayNight
             width: 35
-            btnIconSource: isDarkMode ? toggleDarkModelogoSourceB : toggleDarkModelogoSourceW
+            btnIconSource: Qt.resolvedUrl(isDarkMode ? toggleDarkModelogoSourceB : toggleDarkModelogoSourceW)
             btnColorClicked: "#99f1ff"
             btnColorMouseOver: "#6dacb6"
             anchors.left: parent.left
@@ -277,7 +323,7 @@ Window {
             y: 15
             opacity: 0
             text: "Button"
-            btnIconSource: isDarkMode ? closeBtnIconSourceB : closeBtnIconSourceW
+            btnIconSource: Qt.resolvedUrl(isDarkMode ? closeBtnIconSourceB : closeBtnIconSourceW)
             anchors.right: parent.right
             anchors.top: parent.top
             colorDefault: "#00000000"
@@ -297,7 +343,7 @@ Window {
             height: 180
             opacity: 1
             anchors.bottom: lblSignIn.top
-            source: isDarkMode ? logoSourceB : logoSourceW
+            source: Qt.resolvedUrl(isDarkMode ? logoSourceB : logoSourceW)
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottomMargin: 15
             fillMode: Image.PreserveAspectFit
@@ -311,7 +357,7 @@ Window {
             visible: true
             text: "%"
             anchors.verticalCenter: parent.verticalCenter
-            textFontFamily: "Titillium Web Light"
+            textFontFamily: currentFontThin
             enabled: false
             z: 0
             textSize: 18
@@ -347,7 +393,7 @@ Window {
             verticalAlignment: Text.AlignVCenter
             anchors.bottomMargin: 4
             anchors.horizontalCenter: parent.horizontalCenter
-            font.family: "Titillium Web Light"
+            font.family: currentFont
             font.pointSize: 18
         }
 
@@ -366,7 +412,7 @@ Window {
             verticalAlignment: Text.AlignVCenter
             anchors.bottomMargin: 6
             anchors.horizontalCenter: parent.horizontalCenter
-            font.family: "Titillium Web Light"
+            font.family: currentFont
         }
 
         CustomTextField {
@@ -382,7 +428,7 @@ Window {
             colorDefault: isDarkMode ? colorDefaultDay : colorDefaultNight
             selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
             selectionColor: isDarkMode ? selectionColorInputDay : selectionColorInputNight
-            font.family: "Titillium Web Light"
+            font.family: currentFont
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottomMargin: 6
@@ -402,7 +448,7 @@ Window {
             colorDefault: isDarkMode ? colorDefaultDay : colorDefaultNight
             selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
             selectionColor: isDarkMode ? selectionColorInputDay : selectionColorInputNight
-            font.family: "Titillium Web Light"
+            font.family: currentFont
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottomMargin: 0
@@ -427,7 +473,7 @@ Window {
             colorDefault: isDarkMode ? colorDefaultDay : colorDefaultNight
             selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
             selectionColor: isDarkMode ? selectionColorInputDay : selectionColorInputNight
-            font.family: "Titillium Web Light"
+            font.family: currentFont
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottomMargin: 0
@@ -450,7 +496,7 @@ Window {
             colorDefault: isDarkMode ? colorDefaultDay : colorDefaultNight
             selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
             selectionColor: isDarkMode ? selectionColorInputDay : selectionColorInputNight
-            font.family: "Titillium Web Light"
+            font.family: currentFont
             font.pointSize: 9
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottomMargin: 60
@@ -469,7 +515,7 @@ Window {
             text: "Crear cuenta"
             anchors.bottom: lblSignInUp.top
             font.italic: false
-            font.family: "Titillium Web Regular"
+            font.family: currentFont
             font.bold: false
             font.pointSize: 10
             anchors.bottomMargin: 7
@@ -519,7 +565,7 @@ Window {
             display: AbstractButton.TextBesideIcon
             checked: false
             font.italic: false
-            font.family: "Titillium Web Light"
+            font.family: currentFont
             font.bold: true
             font.pointSize: 12
             anchors.bottomMargin: 7
@@ -586,7 +632,7 @@ Window {
             font.bold: false
             anchors.bottomMargin: 10
             anchors.rightMargin: 30
-            font.family: "Titillium Web Light"
+            font.family: currentFont
             font.pointSize: 10
             color: if (isMouseOver) {
                         return isDarkMode ? textNightTurquoise : textDayTurquoise
@@ -626,7 +672,7 @@ Window {
             font.bold: false
             anchors.rightMargin: 30
             anchors.leftMargin: 30
-            font.family: "Titillium Web Regular"
+            font.family: currentFont
             font.pointSize: 8
             visible: false
         }
@@ -648,7 +694,7 @@ Window {
             font.bold: false
             anchors.rightMargin: 30
             anchors.bottomMargin: 15
-            font.family: "Titillium Web Light"
+            font.family: currentFont
             font.pointSize: 8
             visible: true
         }

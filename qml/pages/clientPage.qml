@@ -59,6 +59,25 @@ Item {
         onTriggered: warningLabel.visible = false
     }
 
+    //PROPERTY FONTS
+    property string currentFont : gepesteVFont.name
+    property string currentFontThin : titillium_Web_Extralight_VFont.name
+
+    FontLoader {
+        id: gepesteVFont
+        source: Qt.resolvedUrl("../../myfonts/GepesteV.ttf")
+    }
+
+    FontLoader {
+        id: titillium_Web_Light_VFont
+        source: Qt.resolvedUrl("../../myfonts/TitilliumWeb-Light.ttf")
+    }
+
+    FontLoader {
+        id: titillium_Web_Extralight_VFont
+        source: Qt.resolvedUrl("../../myfonts/TitilliumWeb-ExtraLight.ttf")
+    }
+
     // INTERNAL FUNCTIONS
     QtObject{
         id: internal
@@ -109,7 +128,7 @@ Item {
                         anchors.leftMargin: 0
                         font.pointSize: 10
                         font.weight: Font.Normal
-                        font.family: "Titillium Web"
+                        font.family: currentFont
                     }
 
                     Label {
@@ -128,7 +147,7 @@ Item {
                         style: Text.Normal
                         font.pointSize: 10
                         font.weight: Font.Light
-                        font.family: "Titillium Web"
+                        font.family: currentFont
                         anchors.leftMargin: 10
                     }
                 }
@@ -152,7 +171,7 @@ Item {
                         anchors.leftMargin: 0
                         font.pointSize: 10
                         font.weight: Font.Normal
-                        font.family: "Titillium Web"
+                        font.family: currentFont
                     }
                     Label {
                         id: textResponseMail
@@ -168,7 +187,7 @@ Item {
                         fontSizeMode: Text.HorizontalFit
                         font.weight: Font.Light
                         font.pointSize: 10
-                        font.family: "Titillium Web"
+                        font.family: currentFont
                         anchors.leftMargin: 10
                     }
                 }
@@ -192,7 +211,7 @@ Item {
                         anchors.leftMargin: 0
                         font.pointSize: 10
                         font.weight: Font.Normal
-                        font.family: "Titillium Web"
+                        font.family: currentFont
                     }
                     Label {
                         id: textResponsePhone
@@ -209,7 +228,7 @@ Item {
                         fontSizeMode: Text.HorizontalFit
                         font.weight: Font.Light
                         font.pointSize: 10
-                        font.family: "Titillium Web"
+                        font.family: currentFont
                         anchors.leftMargin: 10
                     }
                 }
@@ -233,7 +252,7 @@ Item {
                         anchors.leftMargin: 0
                         font.pointSize: 10
                         font.weight: Font.Normal
-                        font.family: "Titillium Web"
+                        font.family: currentFont
                     }
                     Label {
                         id: textResponseAddress
@@ -248,7 +267,7 @@ Item {
                         font.styleName: "Light"
                         fontSizeMode: Text.HorizontalFit
                         font.pointSize: 10
-                        font.family: "Titillium Web"
+                        font.family: currentFont
                         font.weight: Font.Light
                         anchors.leftMargin: 10
                     }
@@ -273,7 +292,7 @@ Item {
                         anchors.leftMargin: 0
                         font.pointSize: 10
                         font.weight: Font.Normal
-                        font.family: "Titillium Web"
+                        font.family: currentFont
                     }
                     Label {
                         id: textResponseZip_code
@@ -289,7 +308,7 @@ Item {
                         fontSizeMode: Text.HorizontalFit
                         font.weight: Font.Light
                         font.pointSize: 10
-                        font.family: "Titillium Web"
+                        font.family: currentFont
                         anchors.leftMargin: 10
                     }
                 }
@@ -313,7 +332,7 @@ Item {
                         anchors.leftMargin: 0
                         font.pointSize: 10
                         font.weight: Font.Normal
-                        font.family: "Titillium Web"
+                        font.family: currentFont
                     }
                     Label {
                         id: textResponseCity
@@ -329,7 +348,7 @@ Item {
                         fontSizeMode: Text.HorizontalFit
                         font.weight: Font.Light
                         font.pointSize: 10
-                        font.family: "Titillium Web"
+                        font.family: currentFont
                         anchors.leftMargin: 10
                     }
                 }

@@ -8,7 +8,6 @@ Button{
 
     // CUSTOM PROPERTIES
     property string tag: ""
-    
     property url btnIconSource: "../../images/svg_icons/icon_users.svg"
     property color btnColorDefault: "#0d1117"
     property color btnColorMouseOver: "#161b22"
@@ -25,6 +24,25 @@ Button{
     property color textSecondaryColorDefault: "#C9D1D9"
     property color textSecondaryColorMouseOver: "#6E7681"
     property color textSecondaryColorClicked: "#a1a1a1"
+
+    //PROPERTY FONTS
+    property string currentFont : gepesteVFont.name
+    property string currentFontThin : titillium_Web_Extralight_VFont.name
+
+    FontLoader {
+        id: gepesteVFont
+        source: Qt.resolvedUrl("../../myfonts/GepesteV.ttf")
+    }
+
+    FontLoader {
+        id: titillium_Web_Light_VFont
+        source: Qt.resolvedUrl("../../myfonts/TitilliumWeb-Light.ttf")
+    }
+
+    FontLoader {
+        id: titillium_Web_Extralight_VFont
+        source: Qt.resolvedUrl("../../myfonts/TitilliumWeb-ExtraLight.ttf")
+    }
 
     QtObject{
         id: internal
@@ -94,7 +112,7 @@ Button{
         id: content
         Image {
             id: iconBtn
-            source: btnIconSource
+            source: Qt.resolvedUrl(btnIconSource)
             anchors.leftMargin: 26
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
@@ -145,7 +163,7 @@ Button{
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
                 font.weight: Font.Light
-                font.family: "Titillium Web Light"
+                font.family: currentFontThin
                 font.pointSize: 10
                 anchors.rightMargin: 15
                 anchors.bottomMargin: 12
@@ -154,6 +172,7 @@ Button{
         }
 
     }
+    
     Component.onCompleted: {
         console.log("LeftMenuBtn componente cargado correctamente.")
     }

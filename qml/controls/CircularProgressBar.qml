@@ -32,6 +32,25 @@ Item {
     property int textSize: 12
     property color textColor: "#979aa0"
 
+    //PROPERTY FONTS
+    property string currentFont : gepesteVFont.name
+    property string currentFontThin : titillium_Web_Extralight_VFont.name
+
+    FontLoader {
+        id: gepesteVFont
+        source: Qt.resolvedUrl("../../myfonts/GepesteV.ttf")
+    }
+
+    FontLoader {
+        id: titillium_Web_Light_VFont
+        source: Qt.resolvedUrl("../../myfonts/TitilliumWeb-Light.ttf")
+    }
+
+    FontLoader {
+        id: titillium_Web_Extralight_VFont
+        source: Qt.resolvedUrl("../../myfonts/TitilliumWeb-ExtraLight.ttf")
+    }
+
     // Internal Properties/Functions
     QtObject{
         id: internal
@@ -63,7 +82,7 @@ Item {
             verticalAlignment: Text.AlignVCenter
             anchors.bottomMargin: 80
             font.pointSize: 25
-            font.family: "Titillium Web Extralight"
+            font.family: currentFontThin
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
@@ -88,7 +107,7 @@ Item {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.family: "Titillium Web Light"
+                font.family: currentFont
             }
         }
 
@@ -132,7 +151,7 @@ Item {
             width: 190
             height: 50
             anchors.top: parent.top
-            source: "../../images/Anera Logo III.png"
+            source: Qt.resolvedUrl("../../images/Anera Logo III.png")
             sourceSize.height: 50
             sourceSize.width: 190
             anchors.topMargin: 65

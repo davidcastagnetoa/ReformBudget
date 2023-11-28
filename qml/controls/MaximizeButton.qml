@@ -5,7 +5,7 @@ import QtGraphicalEffects 1.15
 Button{
     id: btnTopBar
     // CUSTOM PROPERTIES
-    property url btnIconSource: "../../images/svg_icons/minimize_icon.svg"
+    property url btnIconSource: "../../images/svg_icons/maximize_icon.svg"
     property color btnColorDefault: "#161b22"
     property color btnColorMouseOver: "#0d1117"
     property color btnColorClicked: "#00C859"
@@ -37,7 +37,7 @@ Button{
         Image {
             id: iconBtn
             anchors.verticalCenter: parent.verticalCenter
-            source: "../../images/svg_icons/maximize_icon.svg"
+            source: Qt.resolvedUrl(btnIconSource)
             anchors.verticalCenterOffset: 0
             anchors.horizontalCenterOffset: 0
             anchors.horizontalCenter: parent.horizontalCenter

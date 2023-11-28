@@ -7,7 +7,7 @@ import "../../qml/controls"
 Item {
     //PROPERTIES
     // Client selected data
-    property var currentClient: ({
+    property variant currentClient: ({
         user_id: 0,
         name: "",
         address: "",
@@ -17,7 +17,7 @@ Item {
         phone: ""
     })
 
-    property var budgetsClient: ({
+    property variant budgetsClient: ({
         client_id: 0,
         budgetId: "",
         budgetName: "",

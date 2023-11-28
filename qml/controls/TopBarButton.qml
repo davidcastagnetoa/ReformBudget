@@ -37,7 +37,7 @@ Button {
 
         Image {
             id: iconBtn
-            source: btnIconSource
+            source: Qt.resolvedUrl(btnIconSource)
             sourceSize.height: 35
             sourceSize.width: 35
             autoTransform: false

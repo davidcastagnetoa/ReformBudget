@@ -2,33 +2,38 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import QtGraphicalEffects 1.15
 import "./controls"
+
 
 Window {
     id: mainWindow
     width: 1420
     height: 870
+    minimumWidth: 1383
+    minimumHeight: 736
     visible: true
     color: "#00000000"
+
     title: qsTr("Reform Budget")
 
     // REMOVE TITLE BAR
     flags: Qt.Window | Qt.FramelessWindowHint
-    property var buttonList: []
+    property variant buttonList: []
 
     // Signals
-    signal clientButtonClicked(var clientData)
+    signal clientButtonClicked(var clientData) //probar a eliminar var
 
     // Custom Properties
     property string username
     property alias mainWindow: mainWindow
 
     // // PROPERTIES
+    property bool isDarkMode: true
     property int windowStatus: 0
     property int windowMargin: 10
     property bool previewCollapse: false
     property bool budgetBarCollapse: false
-    property bool isDarkMode: true
     property int buttonCount: 2
     
     // IMAGES
@@ -206,19 +211,27 @@ Window {
         }
     }
 
-    // Loader {
-    //     id: leftMenuBtnLoader
-    //     source: "./controls/LeftMenuBtn.qml"  // Ruta al archivo QML del botón.
-    //     asynchronous: true  // Cargar el componente de forma asíncrona.
+    
+    // LOAD LOCAL FONTS FROM ROOT FOLDER INSTEAD SYSTEM FONTS
 
-    //     onLoaded: {
-    //         // Lógica a ejecutar una vez que el componente se haya cargado.
-    //         if (status == Loader.Ready) {
-    //             console.log("LeftMenuBtn cargado correctamente.");
-    //             // Aquí puedes llamar a funciones o establecer propiedades en el componente cargado.
-    //         }
-    //     }
-    // }
+    //PROPERTY FONTS
+    property string currentFont : gepesteVFont.name
+    property string currentFontThin : titillium_Web_Extralight_VFont.name
+
+    FontLoader {
+        id: gepesteVFont
+        source: Qt.resolvedUrl("../myfonts/GepesteV.ttf")
+    }
+
+    FontLoader {
+        id: titillium_Web_Light_VFont
+        source: Qt.resolvedUrl("../myfonts/TitilliumWeb-Light.ttf")
+    }
+
+    FontLoader {
+        id: titillium_Web_Extralight_VFont
+        source: Qt.resolvedUrl("../myfonts/TitilliumWeb-ExtraLight.ttf")
+    }
 
     // INTERNAL FUNCTIONS
     QtObject{
@@ -233,7 +246,7 @@ Window {
                 bg.anchors.leftMargin = 0
                 bg.anchors.rightMargin = 0
                 bg.anchors.bottomMargin = 0
-                restoreButton.btnIconSource = "../images/svg_icons/restore_icon.svg"
+                restoreButton.btnIconSource = Qt.resolvedUrl("../images/svg_icons/restore_icon.svg")
             }
             else{
                 mainWindow.showNormal()
@@ -242,7 +255,7 @@ Window {
                 bg.anchors.leftMargin = 10
                 bg.anchors.rightMargin = 10
                 bg.anchors.bottomMargin = 10
-                restoreButton.btnIconSource = "../images/svg_icons/maximize_icon.svg"
+                restoreButton.btnIconSource = Qt.resolvedUrl("../images/svg_icons/maximize_icon.svg")
             }
         }
         // If Maximized Restore
@@ -251,14 +264,14 @@ Window {
                 mainWindow.showNormal()
                 windowStatus = 0
                 windowMargin = 10
-                restoreButton.btnIconSource = "../images/svg_icons/maximize_icon.svg"
+                restoreButton.btnIconSource = Qt.resolvedUrl("../images/svg_icons/maximize_icon.svg")
             }
         }
         // Restore Margins
         function restoreMargins(){
             windowStatus = 0
             windowMargin = 10
-            restoreButton.btnIconSource = "../images/svg_icons/maximize_icon.svg"
+            restoreButton.btnIconSource = Qt.resolvedUrl("../images/svg_icons/maximize_icon.svg")
         }
         // Toggle Preview right screen
         function collapsePreview(){
@@ -275,11 +288,11 @@ Window {
         // Toggle Budget Bar
         function collapseBudgetPreview(){
             if(budgetBarCollapse === false){
-                toogleBudgetPreviewBtn.btnIconSource = "../images/svg_icons/up_icon.svg"
+                toogleBudgetPreviewBtn.btnIconSource = Qt.resolvedUrl("../images/svg_icons/up_icon.svg")
                 animationbgBudgetCol.running = true
                 budgetBarCollapse = true
             }else{
-                toogleBudgetPreviewBtn.btnIconSource = "../images/svg_icons/down_icon.svg"
+                toogleBudgetPreviewBtn.btnIconSource = Qt.resolvedUrl("../images/svg_icons/down_icon.svg")
                 animationbgBudgetCol.running = true
                 budgetBarCollapse = false
             }
@@ -305,58 +318,52 @@ Window {
         }
         // Create Client LeftMenuButtons
         function createButton(name, address, mail, city, zip_code, phone) {
-            console.log("El estado del componente a crear es: " + leftMenuBtnComponent.status)
-            if (leftMenuBtnComponent.status === 1) {
-                console.log("componente listo")
-                // Genera los botones con los datos de los clientes DB
-                var newButton = leftMenuBtnComponent.createObject(columnBtnClients);
+            console.log("Intentando crear botón para:", name);
 
-                // var qml = "import QtQuick 2.15; import './controls'; LeftMenuBtn {}";
-                // var newButton = Qt.createQmlObject(qml, columnBtnClients);
+            // Verifica si el componente está listo antes de intentar crear el botón
+            if (leftMenuBtnComponent.status === Component.Ready) {
+                console.log("Componente LeftMenuBtn está listo.");
 
-                newButton.text = name;
-                newButton.secondaryTextContent = address
-
-                buttonCount++;
-                newButton.tag = "leftMenuBtn" + buttonCount;
-                newButton.width = newButton.tag.width
-
-                // La funcion de cada boton
-                newButton.clicked.connect(function() {
-                    // Itera sobre todos los botones y establece su propiedad isActiveMenu en false
-                    for (var i = 0; i < buttonList.length; i++) {
-                        buttonList[i].isActiveMenu = false;
-                        // console.log(user_id)
-                        console.log(name)
-                        console.log(address)
-                        console.log(mail)
-                        console.log(city)
-                        console.log(zip_code)
-                        console.log(phone)
-                    }
-
-                    // Establece el botón presionado en true
-                    newButton.isActiveMenu = true;
-
-                    var clientData = {
-                        name: name,
-                        address: address,
-                        mail: mail,
-                        city: city,
-                        zip_code: zip_code,
-                        phone: phone,
-                        // user_id: user_id
-                    };
-                    clientButtonClicked(clientData); // Emitir la señal
-                    
-                    // Agrega el nuevo botón a la lista buttonList
-                    buttonList.push(newButton);
+                // Crear el botón
+                var newButton = leftMenuBtnComponent.createObject(columnBtnClients, {
+                    "text": name,
+                    "secondaryTextContent": address
                 });
-            }  else {
-                console.log("Componente aun no cargado, reintentar...");
+
+                // Configurar propiedades adicionales y conectar señales
+                if (newButton) {
+                    newButton.tag = "leftMenuBtn" + (++buttonCount);
+                    newButton.width = newButton.tag.width;
+
+                    // Conectar la lógica de clic del botón
+                    newButton.clicked.connect(function() {
+                        if (Array.isArray(buttonList)) {
+                            buttonList.forEach(button => button.isActiveMenu = false);
+                        } else {
+                            console.error("buttonList no está definido o no es un array");
+                        }
+
+                        newButton.isActiveMenu = true;
+
+                        // Emitir la señal con los datos del cliente
+                        var clientData = {
+                            name, address, mail, city, zip_code, phone
+                        };
+                        clientButtonClicked(clientData);
+                        buttonList.push(newButton);
+                        console.log("Botón para", name, "creado y configurado.");
+                    });
+                } else {
+                    console.error("No se pudo crear el botón para", name);
+                }
+            } else if (leftMenuBtnComponent.status === Component.Error) {
+                console.error("Error al cargar LeftMenuBtn:", leftMenuBtnComponent.errorString());
+            } else {
+                console.log("Componente LeftMenuBtn aún no está listo. Estado:", leftMenuBtnComponent.status);
+                // Considera reintentar después de un intervalo si es necesario
                 retryTimer.start();
             }
-        }
+        }   
     }
 
     Rectangle {
@@ -454,7 +461,7 @@ Window {
                         anchors.left: parent.left
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
-                        source: isDarkMode ? iconAppNight : iconAppDay
+                        source: Qt.resolvedUrl(isDarkMode ? iconAppNight : iconAppDay)
                         smooth: true
                         sourceSize.height: 30
                         sourceSize.width: 46
@@ -477,7 +484,7 @@ Window {
                         verticalAlignment: Text.AlignVCenter
                         font.pointSize: 12
                         font.bold: false
-                        font.family: "Titillium Web Extralight"
+                        font.family: currentFontThin
                         anchors.topMargin: 0
                         anchors.bottomMargin: 0
                         anchors.leftMargin: 5
@@ -494,7 +501,7 @@ Window {
                         verticalAlignment: Text.AlignVCenter
                         font.pointSize: 12
                         font.bold: false
-                        font.family: "Titillium Web Extralight"
+                        font.family: currentFontThin
                         anchors.topMargin: 0
                         anchors.bottomMargin: 0
                         anchors.leftMargin: 5
@@ -511,7 +518,7 @@ Window {
                         verticalAlignment: Text.AlignVCenter
                         font.pointSize: 12
                         font.bold: false
-                        font.family: "Titillium Web Extralight"
+                        font.family: currentFontThin
                         anchors.topMargin: 0
                         anchors.bottomMargin: 0
                         anchors.leftMargin: 5
@@ -531,7 +538,7 @@ Window {
 
                     TopBarButton {
                         id: btnDayNight
-                        btnIconSource: isDarkMode ? toggleDarkModelogoSourceW : toggleDarkModelogoSourceB
+                        btnIconSource: Qt.resolvedUrl(isDarkMode ? toggleDarkModelogoSourceW : toggleDarkModelogoSourceB)
                         btnColorClicked: "#99f1ff"
                         btnColorMouseOver: "#6dacb6"
                         btnColorDefault: "#00000000"
@@ -544,7 +551,7 @@ Window {
                         btnColorMouseOver: isDarkMode ? btnColorMouseOverNight : btnColorMouseOverDay
                         btnColorDefault: isDarkMode ? btnColorDefaultNight : btnColorDefaultDay
                         btnColorClicked: isDarkMode ? btnColorClickedNight : btnColorClickedDay
-                        btnIconSource: "../images/svg_icons/minimize_icon.svg"
+                        btnIconSource: Qt.resolvedUrl("../images/svg_icons/minimize_icon.svg")
                         btnIconColor: isDarkMode? "#FFFFFF" : "#000000"
                         onClicked: {
                             mainWindow.showMinimized()
@@ -558,7 +565,7 @@ Window {
                         btnColorMouseOver: isDarkMode ? btnColorMouseOverNight : btnColorMouseOverDay
                         btnColorDefault: isDarkMode ? btnColorDefaultNight : btnColorDefaultDay
                         btnColorClicked: isDarkMode ? btnColorClickedNight : btnColorClickedDay
-                        btnIconSource: "../images/svg_icons/maximize_icon.svg"
+                        btnIconSource: Qt.resolvedUrl("../images/svg_icons/maximize_icon.svg")
                         btnIconColor: isDarkMode? "#FFFFFF" : "#000000"
                         onClicked: {
                             internal.maximizeRestore()
@@ -571,7 +578,7 @@ Window {
                         btnColorMouseOver: isDarkMode ? btnColorMouseOverNight : btnColorMouseOverDay
                         btnColorDefault: isDarkMode ? btnColorDefaultNight : btnColorDefaultDay
                         btnColorClicked: isDarkMode ? closeBtnColorClickedNight : closeBtnColorClickedDay
-                        btnIconSource: "../images/svg_icons/close_icon.svg"
+                        btnIconSource: Qt.resolvedUrl("../images/svg_icons/close_icon.svg")
                         btnIconColor: isDarkMode? "#FFFFFF" : "#000000"
                         onClicked: {
                             mainWindow.close()
@@ -606,7 +613,7 @@ Window {
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
                         verticalAlignment: Text.AlignVCenter
-                        font.family: "Titillium Web Light"
+                        font.family: currentFont
                         anchors.bottomMargin: 0
                         anchors.rightMargin: 300
                         anchors.leftMargin: 10
@@ -624,7 +631,7 @@ Window {
                         anchors.bottom: parent.bottom
                         horizontalAlignment: Text.AlignRight
                         verticalAlignment: Text.AlignVCenter
-                        font.family: "Titillium Web Light"
+                        font.family: currentFont
                         anchors.topMargin: 0
                         anchors.bottomMargin: 0
                         anchors.rightMargin: 6
@@ -695,7 +702,7 @@ Window {
                             height: 50
                             horizontalAlignment: Image.AlignHCenter
                             verticalAlignment: Image.AlignVCenter
-                            source: isDarkMode ? leftImageSourceNight : leftImageSourceDay
+                            source: Qt.resolvedUrl(isDarkMode ? leftImageSourceNight : leftImageSourceDay)
                             z: 0
                             mirror: false
                             sourceSize.height: 50
@@ -716,7 +723,7 @@ Window {
                             verticalAlignment: Text.AlignVCenter
                             font.weight: Font.ExtraLight
                             font.pointSize: 10
-                            font.family: "Titillium Web Light"
+                            font.family: currentFont
                         }
                         Item {
                             id: separator03
@@ -749,7 +756,7 @@ Window {
                                 spacing: -1
 
                                 // LeftMenuBtn{
-                                //     id: leftMenuExample
+                                //     id: leftMenuExample01
                                 //     btnColorDefault: isDarkMode ? leftMenuBtnColorDefaultNight : leftMenuBtnColorDefaultDay
                                 //     btnColorMouseOver: isDarkMode ? leftMenuBtnColorMouseOverNight : leftMenuBtnColorMouseOverDay
                                 //     btnColorClicked: isDarkMode ? leftMenuBtnColorClickedNight : leftMenuBtnColorClickedDay
@@ -761,6 +768,37 @@ Window {
                                 //     textSecondaryColorClicked: isDarkMode ? textSecondaryColorClickedNight : textSecondaryColorClickedDay
                                 //     activeMenuColorRight: isDarkMode ? activeMenuColorRightNight : activeMenuColorRightDay
                                 //     activeMenuColorLeft: isDarkMode ? activeMenuColorLeftNight : activeMenuColorLeftDay
+                                //     onClicked: updateButtonStates(leftMenuExample01)
+                                // }
+                                // LeftMenuBtn{
+                                //     id: leftMenuExample02
+                                //     btnColorDefault: isDarkMode ? leftMenuBtnColorDefaultNight : leftMenuBtnColorDefaultDay
+                                //     btnColorMouseOver: isDarkMode ? leftMenuBtnColorMouseOverNight : leftMenuBtnColorMouseOverDay
+                                //     btnColorClicked: isDarkMode ? leftMenuBtnColorClickedNight : leftMenuBtnColorClickedDay
+                                //     textAndOverlayColorDefault: isDarkMode ? textAndOverlayColorDefaultNight : textAndOverlayColorDefaultDay
+                                //     textAndOverlayColorMouseOver: isDarkMode ? textAndOverlayColorMouseOverNight : textAndOverlayColorMouseOverDay
+                                //     textAndOverlayColorClicked: isDarkMode ? textAndOverlayColorClickedNight : textAndOverlayColorClickedDay
+                                //     textSecondaryColorDefault: isDarkMode ? textSecondaryColorDefaultNight : textSecondaryColorDefaultDay
+                                //     textSecondaryColorMouseOver: isDarkMode ? textSecondaryColorMouseOverNight : textSecondaryColorMouseOverDay
+                                //     textSecondaryColorClicked: isDarkMode ? textSecondaryColorClickedNight : textSecondaryColorClickedDay
+                                //     activeMenuColorRight: isDarkMode ? activeMenuColorRightNight : activeMenuColorRightDay
+                                //     activeMenuColorLeft: isDarkMode ? activeMenuColorLeftNight : activeMenuColorLeftDay
+                                //     onClicked: updateButtonStates(leftMenuExample02)
+                                // }
+                                // LeftMenuBtn{
+                                //     id: leftMenuExample03
+                                //     btnColorDefault: isDarkMode ? leftMenuBtnColorDefaultNight : leftMenuBtnColorDefaultDay
+                                //     btnColorMouseOver: isDarkMode ? leftMenuBtnColorMouseOverNight : leftMenuBtnColorMouseOverDay
+                                //     btnColorClicked: isDarkMode ? leftMenuBtnColorClickedNight : leftMenuBtnColorClickedDay
+                                //     textAndOverlayColorDefault: isDarkMode ? textAndOverlayColorDefaultNight : textAndOverlayColorDefaultDay
+                                //     textAndOverlayColorMouseOver: isDarkMode ? textAndOverlayColorMouseOverNight : textAndOverlayColorMouseOverDay
+                                //     textAndOverlayColorClicked: isDarkMode ? textAndOverlayColorClickedNight : textAndOverlayColorClickedDay
+                                //     textSecondaryColorDefault: isDarkMode ? textSecondaryColorDefaultNight : textSecondaryColorDefaultDay
+                                //     textSecondaryColorMouseOver: isDarkMode ? textSecondaryColorMouseOverNight : textSecondaryColorMouseOverDay
+                                //     textSecondaryColorClicked: isDarkMode ? textSecondaryColorClickedNight : textSecondaryColorClickedDay
+                                //     activeMenuColorRight: isDarkMode ? activeMenuColorRightNight : activeMenuColorRightDay
+                                //     activeMenuColorLeft: isDarkMode ? activeMenuColorLeftNight : activeMenuColorLeftDay
+                                //     onClicked: updateButtonStates(leftMenuExample03)
                                 // }
 
                                 Component {
@@ -768,9 +806,9 @@ Window {
                                     LeftMenuBtn {
                                         property string tag: ""
                                         font.weight: Font.Light
-                                        font.family: "Titillium Web Light"
+                                        font.family: currentFont
                                         font.pointSize: 10
-                                        btnIconSource: "../images/svg_icons/icon_users.svg"
+                                        btnIconSource: Qt.resolvedUrl("../images/svg_icons/icon_users.svg")
                                         btnColorDefault: isDarkMode ? leftMenuBtnColorDefaultNight : leftMenuBtnColorDefaultDay
                                         btnColorMouseOver: isDarkMode ? leftMenuBtnColorMouseOverNight : leftMenuBtnColorMouseOverDay
                                         btnColorClicked: isDarkMode ? leftMenuBtnColorClickedNight : leftMenuBtnColorClickedDay
@@ -786,9 +824,6 @@ Window {
                                 }
                             }
                         }
-
-
-
                     }
 
                     Rectangle {
@@ -822,7 +857,7 @@ Window {
                             btnColorClicked: "#99f1ff"
                             btnColorMouseOver: "#0f141b"
                             anchors.bottomMargin: -5
-                            btnIconSource: "../images/svg_icons/down_icon.svg"
+                            btnIconSource: Qt.resolvedUrl("../images/svg_icons/down_icon.svg")
                             anchors.horizontalCenter: parent.horizontalCenter
                             onClicked: {
                                 internal.collapseBudgetPreview()
@@ -847,7 +882,7 @@ Window {
                             font.weight: Font.ExtraLight
                             anchors.topMargin: 5
                             font.pointSize: 10
-                            font.family: "Titillium Web Light"
+                            font.family: currentFont
                         }
 
 
@@ -896,7 +931,7 @@ Window {
                             text: qsTr("Customer Data")
                             anchors.left: parent.left
                             anchors.top: parent.top
-                            font.family: "Titillium Web Light"
+                            font.family: currentFont
                             font.pointSize: 14
                             anchors.leftMargin: 15
                             anchors.topMargin: 10
@@ -928,7 +963,7 @@ Window {
                                 colorDefault: isDarkMode ? colorDefaultNight : colorDefaultDay
                                 selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
                                 selectionColor: isDarkMode ? selectionColorInputNight : selectionColorInputDay
-                                font.family: "Titillium Web Light"
+                                font.family: currentFont
                                 font.pointSize: 9
                                 placeholderText: "Name"
                             }
@@ -945,7 +980,7 @@ Window {
                                 colorDefault: isDarkMode ? colorDefaultNight : colorDefaultDay
                                 selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
                                 selectionColor: isDarkMode ? selectionColorInputNight : selectionColorInputDay
-                                font.family: "Titillium Web Light"
+                                font.family: currentFont
                                 font.pointSize: 9
                                 placeholderText: "Address"
                             }
@@ -962,7 +997,7 @@ Window {
                                 colorDefault: isDarkMode ? colorDefaultNight : colorDefaultDay
                                 selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
                                 selectionColor: isDarkMode ? selectionColorInputNight : selectionColorInputDay
-                                font.family: "Titillium Web Light"
+                                font.family: currentFont
                                 font.pointSize: 9
                                 placeholderText: "Phone number"
                             }
@@ -979,7 +1014,7 @@ Window {
                                 colorDefault: isDarkMode ? colorDefaultNight : colorDefaultDay
                                 selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
                                 selectionColor: isDarkMode ? selectionColorInputNight : selectionColorInputDay
-                                font.family: "Titillium Web Light"
+                                font.family: currentFont
                                 font.pointSize: 9
                                 placeholderText: "Email"
                             }
@@ -996,7 +1031,7 @@ Window {
                                 colorDefault: isDarkMode ? colorDefaultNight : colorDefaultDay
                                 selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
                                 selectionColor: isDarkMode ? selectionColorInputNight : selectionColorInputDay
-                                font.family: "Titillium Web Light"
+                                font.family: currentFont
                                 font.pointSize: 9
                                 placeholderText: "City"
                             }
@@ -1013,7 +1048,7 @@ Window {
                                 colorDefault: isDarkMode ? colorDefaultNight : colorDefaultDay
                                 selectedTextColor: isDarkMode ? selectedTextColorInputNight : selectedTextColorInputDay
                                 selectionColor: isDarkMode ? selectionColorInputNight : selectionColorInputDay
-                                font.family: "Titillium Web Light"
+                                font.family: currentFont
                                 font.pointSize: 9
                                 placeholderText: "Zip"
                             }
@@ -1090,7 +1125,7 @@ Window {
                             horizontalAlignment: Text.AlignLeft
                             verticalAlignment: Text.AlignVCenter
                             font.bold: true
-                            font.family: "Titillium Web Light"
+                            font.family: currentFont
                             anchors.leftMargin: 15
                             anchors.bottomMargin: 10
                             anchors.topMargin: 10
@@ -1204,7 +1239,7 @@ Window {
                                 horizontalAlignment: Text.AlignLeft
                                 verticalAlignment: Text.AlignVCenter
                                 font.weight: Font.Normal
-                                font.family: "Titillium Web ExtraLight"
+                                font.family: currentFontThin
                                 anchors.topMargin: 5
                                 anchors.leftMargin: 20
                                 font.pointSize: 11
@@ -1235,7 +1270,7 @@ Window {
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
                         verticalAlignment: Text.AlignVCenter
-                        font.family: "Titillium Web Light"
+                        font.family: currentFont
                         anchors.bottomMargin: 0
                         anchors.rightMargin: 30
                         anchors.topMargin: 0
@@ -1260,6 +1295,7 @@ Window {
                             target: null
                             onActiveChanged: if(active){
                                                  mainWindow.startSystemResize(Qt.RightEdge | Qt.BottomEdge)
+                                                 console.log(mainWindow.width + " " + mainWindow.height)
                                              }
                         }
 
@@ -1268,7 +1304,7 @@ Window {
                             width: 16
                             height: 16
                             anchors.fill: parent
-                            source: "../images/svg_icons/resize_icon.svg"
+                            source: Qt.resolvedUrl("../images/svg_icons/resize_icon.svg")
                             fillMode: Image.PreserveAspectCrop
                             smooth: true
                             anchors.leftMargin: 5
@@ -1350,34 +1386,72 @@ Window {
             internal.createButton(clientName, clientAddress, clientEmail, clientCity, clientZipCode, clientPhone);
         }
     }
-    
-    Component.onCompleted: {
-        // Conexión de la señal clientsRetrieved a la función onClientsReceived
-        loginUser.clientsRetrieved.connect(onClientsReceived);
-        // Conexión de la señal a la función onClientButtonClicked
-        clientButtonClicked.connect(onClientButtonClicked)
+
+    // Definición de la función que se ejecutará cuando se emita la señal clientButtonClicked
+    function onClientButtonClicked(clientData) {
+        // Verifica que clientData no sea nulo o indefinido
+        if (clientData === null || typeof clientData === 'undefined') {
+            console.error("clientData es nulo o indefinido.");
+            return;
+        }
+
+        // Verifica que stackView esté listo
+        if (stackView.status !== Loader.Ready) {
+            console.error("stackView aún no está listo.");
+            return;
+        }
+
+        // Obtén la instancia de clientPage desde el Loader
+        var clientPage = stackView.item;
+
+        // Verifica que clientPage exista
+        if (typeof clientPage === 'undefined') {
+            console.error("clientPage no está definido o no es accesible.");
+            return;
+        }
+
+        // Asegúrate de que clientPage tenga una propiedad currentClient
+        if (!('currentClient' in clientPage)) {
+            console.error("clientPage no tiene la propiedad currentClient.");
+            return;
+        }
+
+        // Imprime los datos recibidos para depuración
+        console.log("Datos de cliente recibidos en onClientButtonClicked:");
+        console.log("Nombre:", clientData.name);
+        console.log("Dirección:", clientData.address);
+        console.log("Correo:", clientData.mail);
+        console.log("Ciudad:", clientData.city);
+        console.log("Código Postal:", clientData.zip_code);
+        console.log("Teléfono:", clientData.phone);
+        console.log("\n")
+        // console.log("user_id:", clientData.user_id); // Descomenta si también esperas user_id
+
+        // Actualiza la UI con los datos del cliente
+        clientPage.currentClient = clientData;
     }
+
+
+    Component.onCompleted: {
+        // Verifica si loginUser existe y es del tipo esperado
+        if (loginUser && loginUser.hasOwnProperty("clientsRetrieved")) {
+            loginUser.clientsRetrieved.connect(onClientsReceived);
+        } else {
+            console.error("Error: loginUser no está disponible o no tiene la señal clientsRetrieved");
+        }
+
+        // Verifica si clientButtonClicked es una señal válida
+        if (typeof clientButtonClicked === "function") {
+            clientButtonClicked.connect(onClientButtonClicked);
+        } else {
+            console.error("Error: clientButtonClicked no es una señal válida");
+        }
+    }
+
 
     Component.onDestruction: {
         // Es una buena práctica desconectar las señales cuando el objeto se destruye
         loginUser.clientsRetrieved.disconnect(onClientsReceived);
-    }
-
-    // Definición de la función que se ejecutará cuando se emita la señal clientButtonClicked
-    function onClientButtonClicked(clientData) {
-        // Suponiendo que stackView es tu Loader que carga clientPage.qml
-        if (stackView.status === Loader.Ready) {
-            var clientPage = stackView.item;
-
-            // Asegúrate de que clientPage tiene una propiedad currentClient o un método para actualizar la UI
-            if ("currentClient" in clientPage) {
-                clientPage.currentClient = clientData;
-            } else {
-                console.error("clientPage no tiene la propiedad currentClient.");
-            }
-        } else {
-            console.error("clientPage aún no está listo.");
-        }
     }
 }
 

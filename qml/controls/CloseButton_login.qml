@@ -32,7 +32,7 @@ Button {
         width: 20
         height: 20
         anchors.verticalCenter: parent.verticalCenter
-        source: btnIconSource
+        source: Qt.resolvedUrl(btnIconSource)
         anchors.horizontalCenter: parent.horizontalCenter
         fillMode: Image.PreserveAspectFit
     }
