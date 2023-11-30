@@ -15,7 +15,7 @@ Window {
     height: 556
     title: qsTr("Acceso")
 
-    signal loginSuccessful()
+    signal loginSuccessful
 
     //REMOVE TITLE BAR
     flags: Qt.SplashScreen | Qt.FramelessWindowHint
@@ -494,7 +494,8 @@ Window {
                         win.username = textUsername.text
                         win.show()
                         loginSuccessful()
-                        visible = false
+                        console.log("loginPage destoyed!")
+                        // loginPage.close()
                     } else {
                         console.log(message)
                         lblIncorrectLoginData.visible = true
@@ -548,7 +549,8 @@ Window {
                         win.username = textUsername.text
                         win.show()
                         loginSuccessful()
-                        visible = false
+                        // loginPage.close()
+                        console.log("loginPage destoyed!")
                     }
                     else if (user === "No existe usuario o debe crear una cuenta"){
                         console.log(user)

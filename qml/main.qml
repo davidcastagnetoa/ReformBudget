@@ -8,6 +8,8 @@ Window {
     id: mainWindow
     width: 1420
     height: 870
+    minimumWidth: 1383
+    minimumHeight: 736
     visible: true
     color: "#00000000"
     title: qsTr("Reform Budget")
@@ -29,7 +31,7 @@ Window {
     property bool previewCollapse: false
     property bool budgetBarCollapse: false
     property bool isDarkMode: true
-    property int buttonCount: 2
+    property int buttonCount: 0
     
     // IMAGES
     property url toggleDarkModelogoSourceW: "../images/svg_icons/png_icons_wanderson/bluedaynight.png"
@@ -305,21 +307,25 @@ Window {
         }
         // Create Client LeftMenuButtons
         function createButton(name, address, mail, city, zip_code, phone) {
+            console.log("\n")
             console.log("El estado del componente a crear es: " + leftMenuBtnComponent.status)
             if (leftMenuBtnComponent.status === 1) {
                 console.log("componente listo")
                 // Genera los botones con los datos de los clientes DB
                 var newButton = leftMenuBtnComponent.createObject(columnBtnClients);
+                console.log("newButton data: " + newButton)
 
                 // var qml = "import QtQuick 2.15; import './controls'; LeftMenuBtn {}";
                 // var newButton = Qt.createQmlObject(qml, columnBtnClients);
 
-                newButton.text = name;
-                newButton.secondaryTextContent = address
-
                 buttonCount++;
                 newButton.tag = "leftMenuBtn" + buttonCount;
-                newButton.width = newButton.tag.width
+                console.log("leftMenuBtnComponent TAG is: " + newButton.tag)
+                newButton.text = name;
+                console.log("leftMenuBtnComponent client name: " + newButton.text)
+                newButton.secondaryTextContent = address
+                newButton.width = 200
+                newButton.height = 60
 
                 // La funcion de cada boton
                 newButton.clicked.connect(function() {
@@ -327,6 +333,7 @@ Window {
                     for (var i = 0; i < buttonList.length; i++) {
                         buttonList[i].isActiveMenu = false;
                         // console.log(user_id)
+                        console.log("\n")
                         console.log(name)
                         console.log(address)
                         console.log(mail)
@@ -767,6 +774,10 @@ Window {
                                     id: leftMenuBtnComponent
                                     LeftMenuBtn {
                                         property string tag: ""
+                                        text: qsTr("Default text")
+                                        secondaryTextContent: qsTr("Default secondary text")
+                                        width: 0
+                                        height: 0
                                         font.weight: Font.Light
                                         font.family: "Titillium Web Light"
                                         font.pointSize: 10

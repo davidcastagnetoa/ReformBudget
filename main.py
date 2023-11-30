@@ -12,11 +12,13 @@ from data.client import ClientData
 from data.user import UserData
 from PySide2.QtQml import QQmlApplicationEngine
 from PySide2.QtGui import QGuiApplication, QIcon
-from utils.encrypter import generate_key, load_key, encriptedPassword, createLocalEnv
+from utils.encrypter import load_key, encriptedPassword
 from PySide2.QtCore import QObject, Qt, Signal, Property, Slot, qVersion
+from PySide2 import QtCore
 import sys
 import os
 import PySide2
+
 print("Versión de PySide2:: ", PySide2.__version__)
 print("Versión de Qt Usada por PySide2: ", qVersion())
 
@@ -56,7 +58,7 @@ class Login(QObject):
         self._userId = None  # Nueva variable para guardar el user_id
 
     # Property para el user_id
-    @Property(int, notify=userIdChanged)
+    @QtCore.Property(int, notify=userIdChanged)
     def userId(self):
         return self._userId
 
@@ -67,7 +69,7 @@ class Login(QObject):
             self.userIdChanged.emit()
 
     # Property para el username
-    @Property(str, notify=loggedUsernameChanged)
+    @QtCore.Property(str, notify=loggedUsernameChanged)
     def loggedUsername(self):
         return self._loggedUsername
 
@@ -100,7 +102,7 @@ class Login(QObject):
             }
             for client in clients
         ]
-        print(clients_list)
+        print(f"The client list of ${self._username} is :", clients_list)
         self.clientsRetrieved.emit(clients_list)
         db.close()
 
@@ -112,8 +114,7 @@ class Login(QObject):
         response = userData.login(user)
 
         if response == "user_not_found":
-            self.userLoged.emit(
-                "No existe usuario debe crear una cuenta", None)
+            self.userLoged.emit("No existe usuario debe crear una cuenta", None)
             return
         elif response == "incorrect_password":
             self.userLoged.emit("Contraseña incorrecta!", None)
@@ -143,7 +144,7 @@ class signUp(QObject):
         self._loggedUsername = ""
         self._userId = None  # Nueva variable para guardar el user_id
 
-    @Property(int, notify=userIdChanged)
+    @QtCore.Property(int, notify=userIdChanged)
     def userId(self):
         return self._userId
 
@@ -153,7 +154,7 @@ class signUp(QObject):
             self._userId = value
             self.userIdChanged.emit()
 
-    @Property(str, notify=loggedUsernameChanged)
+    @QtCore.Property(str, notify=loggedUsernameChanged)
     def loggedUsername(self):
         return self._loggedUsername
 
@@ -241,8 +242,7 @@ class ClientManager(QObject):
 
         # Creamos al cliente (Lo que guarda en DB)
         newClient = clientData.create_Client(
-            Client(name, address, email, city,
-                   zip_code, phone, user_id), user_id
+            Client(name, address, email, city, zip_code, phone, user_id), user_id
         )
 
         # Validamos que el cliente se haya creado correctamente
@@ -252,8 +252,7 @@ class ClientManager(QObject):
             return
 
         # Aquí se debería emitir la señal clientCreated para su uso en el lado del cliente
-        self.clientCreated.emit(name, address, email,
-                                city, zip_code, phone, user_id)
+        self.clientCreated.emit(name, address, email, city, zip_code, phone, user_id)
         self.clientValidated.emit("Cliente creado")
 
     # Funcion para editar cliente (aun no en uso en cliente)
@@ -274,8 +273,7 @@ class ClientManager(QObject):
 
         # Llama al Metodo Data que edita el cliente en la DB (aun en desarrollo)
         editedClient = clientData.update_Client(
-            Client(name, address, email, city,
-                   zip_code, phone, user_id), user_id
+            Client(name, address, email, city, zip_code, phone, user_id), user_id
         )
 
         if editedClient is None:
@@ -283,16 +281,14 @@ class ClientManager(QObject):
             print("Error al editar al cliente")
             return
 
-        self.clientEdited.emit(name, address, email,
-                               city, zip_code, phone, user_id)
+        self.clientEdited.emit(name, address, email, city, zip_code, phone, user_id)
         self.clientUpgraded.emit("Cliente editado")
 
 
 # Clase para la creacion de presupuestos
 class BudgetManager(QObject):
     # Señales
-    budgetCreated = Signal(str, str, int, int, int, str,
-                           str, str, str, str, str, int)
+    budgetCreated = Signal(str, str, int, int, int, str, str, str, str, str, str, int)
     budgetValidated = Signal(str)
 
     def __init__(self, parent=None):
@@ -467,11 +463,11 @@ if __name__ == "__main__":
     engine.rootContext().setContextProperty("WindowManager", window_manager)
 
     # FUNCION PARA CERRAR VENTANA
-    def close_login():
+    def close_and_destroy_login():
         login_window.close()
 
     # Connect the signal to the close function
-    login_window.loginSuccessful.connect(close_login)
+    login_window.loginSuccessful.connect(close_and_destroy_login)
 
     # FUNCION PARA CERRAR VENTANA
     if not engine.rootObjects():
