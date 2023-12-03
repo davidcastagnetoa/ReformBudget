@@ -1,14 +1,31 @@
 {
     "files": [
-        "qml/controls/ToggleBtnRightSide.qml",
-        "qml/loginPage.qml",
-        "qml/controls/ToggleBtnHamburger.qml",
-        "qml/controls/LeftMenuBtn.qml",
-        "qml/controls/CustomButton.qml",
-        "qml/main.qml",
+        "connection.py",
+        "data/budget.py",
+        "data/client.py",
+        "data/database.py",
+        "data/user.py",
+        "images/LogoDay.png",
         "main.py",
-        "qml/controls/ExpandPanelButton.qml",
+        "models/budget.py",
+        "models/client.py",
+        "models/user.py",
+        "qml/controls/CircularProgressBar.qml",
+        "qml/controls/CloseButton.qml",
+        "qml/controls/CloseButton_login.qml",
+        "qml/controls/CustomButton.qml",
+        "qml/controls/CustomTextField.qml",
         "qml/controls/ExpandBudgetButton.qml",
-        "qml/pages/clientPage.qml"
-        ]
+        "qml/controls/ExpandPanelButton.qml",
+        "qml/controls/LeftMenuBtn.qml",
+        "qml/controls/MaximizeButton.qml","qml/controls/MinimizeButton.qml","qml/controls/RestoreButton.qml",
+        "qml/controls/ToggleBtnHamburger.qml",
+        "qml/controls/ToggleBtnRightSide.qml",
+        "qml/controls/TopBarButton.qml",
+        "qml/loginPage.qml",
+        "qml/main.qml",
+        "qml/pages/clientPage.qml",
+        "utils/encrypter.py",
+        "utils/helpers.py"
+    ]
 }

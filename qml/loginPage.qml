@@ -15,7 +15,7 @@ Window {
     height: 556
     title: qsTr("Acceso")
 
-    signal loginSuccessful()
+    signal loginSuccessful
 
     //REMOVE TITLE BAR
     flags: Qt.SplashScreen | Qt.FramelessWindowHint
@@ -370,7 +370,6 @@ Window {
             maxValue: 100
             strokeBgWidth: 8
             progressWidth: 12
-            samples: 55
             // dropShadowRadius: 8
             bgStrokeColor: "#151d27"
             textColor: "#00b9ec"
@@ -540,7 +539,8 @@ Window {
                         win.username = textUsername.text
                         win.show()
                         loginSuccessful()
-                        visible = false
+                        console.log("loginPage destroyed!")
+                        //loginPage.close()
                     } else {
                         console.log(message)
                         lblIncorrectLoginData.visible = true
@@ -594,7 +594,8 @@ Window {
                         win.username = textUsername.text
                         win.show()
                         loginSuccessful()
-                        visible = false
+                        console.log("loginPage destroyed!")
+                        //loginPage.close()
                     }
                     else if (user === "No existe usuario o debe crear una cuenta"){
                         console.log(user)

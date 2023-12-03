@@ -12,7 +12,7 @@ Item {
     property int startAngle: -90
     property real maxValue: 100
     property real value: 50
-    property int samples: 12
+    property int samples: 16
 
     // Drop Shadow
     property bool enableDropShadow: true

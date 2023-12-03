@@ -6,9 +6,11 @@ import PySide6
 
 print("Versión de PySide6:: ", PySide6.__version__)
 from PySide6.QtCore import QObject, Qt, Signal, Property, Slot, qVersion
+
 print("Versión de Qt Usada por PySide6: ", qVersion())
 
 from PySide6.QtQuickControls2 import QQuickStyle
+
 QQuickStyle.setStyle("Fusion")
 
 from utils.encrypter import load_key, encriptedPassword
@@ -464,23 +466,21 @@ if __name__ == "__main__":
     # ARRANCANDO MOTORES DE VENTANA
     # engine.load(os.path.join(os.path.dirname(__file__), "test/Example2.qml"))  # Borrar en Producccion, solo para pruebas
     # engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))  # Borrar en Producccion
-    view.setSource("qml/loginPage.qml")
-    view.show()
-    # engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
+    engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
 
     # ASIGNANDO a primera posicion VENTANA loginPage
-    # login_window = engine.rootObjects()[0]
+    login_window = engine.rootObjects()[0]
 
     # Carga la clase WindowManager
-    # window_manager = WindowManager(login_window)
-    # engine.rootContext().setContextProperty("WindowManager", window_manager)
+    window_manager = WindowManager(login_window)
+    engine.rootContext().setContextProperty("WindowManager", window_manager)
 
     # FUNCION PARA CERRAR VENTANA
-    def close_login():
+    def close_and_destroy_login():
         login_window.close()
 
     # Connect the signal to the close function
-    # login_window.loginSuccessful.connect(close_login)
+    login_window.loginSuccessful.connect(close_and_destroy_login)
 
     # FUNCION PARA CERRAR VENTANA
     if not engine.rootObjects():
