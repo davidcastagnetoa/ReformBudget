@@ -79,8 +79,7 @@ rb_venv/
 venv/
 
 # Qt Creator
-main.pyproject.user
-main.pyproject
+
 
 # key
 *.key

@@ -26,7 +26,7 @@ Window {
 
     // Custom Properties
     property string username
-    property alias mainWindow: mainWindow
+    // property alias mainWindow: mainWindow
 
     // // PROPERTIES
     property bool isDarkMode: true

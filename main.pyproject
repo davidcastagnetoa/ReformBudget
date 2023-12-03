@@ -1,0 +1,14 @@
+{
+    "files": [
+        "qml/controls/ToggleBtnRightSide.qml",
+        "qml/loginPage.qml",
+        "qml/controls/ToggleBtnHamburger.qml",
+        "qml/controls/LeftMenuBtn.qml",
+        "qml/controls/CustomButton.qml",
+        "qml/main.qml",
+        "main.py",
+        "qml/controls/ExpandPanelButton.qml",
+        "qml/controls/ExpandBudgetButton.qml",
+        "qml/pages/clientPage.qml"
+        ]
+}

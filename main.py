@@ -15,6 +15,9 @@ from utils.encrypter import load_key, encriptedPassword
 from PySide6.QtGui import QGuiApplication, QIcon
 from PySide6.QtQml import QQmlApplicationEngine
 
+from PySide6.QtWidgets import QApplication
+from PySide6.QtQuick import QQuickView
+
 os.environ["QT_FONT_DPI"] = "96"
 
 from data.user import UserData
@@ -436,7 +439,8 @@ class WindowManager(QObject):
 
 
 if __name__ == "__main__":
-    app = QGuiApplication(sys.argv)
+    app = QApplication()
+    view = QQuickView()
     app.setWindowIcon(QIcon("./images/anera_ico.ico"))
     engine = QQmlApplicationEngine()
 
@@ -460,21 +464,23 @@ if __name__ == "__main__":
     # ARRANCANDO MOTORES DE VENTANA
     # engine.load(os.path.join(os.path.dirname(__file__), "test/Example2.qml"))  # Borrar en Producccion, solo para pruebas
     # engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))  # Borrar en Producccion
-    engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
+    view.setSource("qml/loginPage.qml")
+    view.show()
+    # engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
 
     # ASIGNANDO a primera posicion VENTANA loginPage
-    login_window = engine.rootObjects()[0]
+    # login_window = engine.rootObjects()[0]
 
     # Carga la clase WindowManager
-    window_manager = WindowManager(login_window)
-    engine.rootContext().setContextProperty("WindowManager", window_manager)
+    # window_manager = WindowManager(login_window)
+    # engine.rootContext().setContextProperty("WindowManager", window_manager)
 
     # FUNCION PARA CERRAR VENTANA
     def close_login():
         login_window.close()
 
     # Connect the signal to the close function
-    login_window.loginSuccessful.connect(close_login)
+    # login_window.loginSuccessful.connect(close_login)
 
     # FUNCION PARA CERRAR VENTANA
     if not engine.rootObjects():
