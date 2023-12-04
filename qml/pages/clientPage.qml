@@ -32,12 +32,30 @@ Item {
         budgetNotes: "",
     })
 
-    // Budgets's client selected data
+    // Budgets's client selected data colors
     property color textLblColor: "#818995"
     property color textResTxtColor: "#FFFFFF"
     property color textBgColorRectangle: "#161b22"
     property color textBgBorderRectangle: "#21262d"
 
+    // Custom Field texts & placeholder
+    property color textColorInput : "#ffffff"
+    property color placeholderTextColorInput : "#b1b4bf"
+    property color selectionColorInput : "#99f1ff"
+    property color selectedTextColorInput : "#ffffff"
+
+    // Custom Field Bg
+    property color colorDefaultInput : "#161b22"
+    property color colorOnFocusInput : "#202833"
+    property color colorMouseOverInput : "#293341"
+
+    // // Indicators Bg
+    // property color indicatorColorDefault: "#202833"
+    // property color indicatorColorFocus: "#293341"
+    // property color indicatorColorHovered: "#344052"
+    
+
+    // Signals
     onCurrentClientChanged: {
         if (currentClient !== null) {
             // Actualizar otros elementos de la UI con los datos del cliente
@@ -59,8 +77,10 @@ Item {
         onTriggered: warningLabel.visible = false
     }
 
+
+
     //PROPERTY FONTS
-    property string currentFont : gepesteVFont.name
+    property string currentFont : titillium_Web_Light_VFont.name
     property string currentFontThin : titillium_Web_Extralight_VFont.name
 
     FontLoader {
@@ -93,7 +113,7 @@ Item {
             width: 350
             height: 141
             color: textBgColorRectangle
-            radius: 10
+            radius: 8
             border.color: textBgBorderRectangle
             border.width: 1
             anchors.left: parent.left
@@ -357,8 +377,86 @@ Item {
             }
         }
 
+        Rectangle{
+            id: budgetDataBg
+            width: 350
+            height: 141
+            color: "#00000000"
+            radius: 8
+            border.color: "#00000000"
+            border.width: 1
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: textBgClientData.bottom
+            anchors.leftMargin: 10
+            anchors.rightMargin: 30
+            anchors.topMargin: 10
 
+            CustomTextField {
+                id: descriptionItem
+                width: (bgPage.width * 1/3) - 5
+                color: textColorInput
+                placeholderTextColor: placeholderTextColorInput
+                colorOnFocus: colorOnFocusInput
+                colorMouseOver: colorMouseOverInput
+                colorDefault: colorDefaultInput
+                selectedTextColor: selectedTextColorInput
+                selectionColor: selectionColorInput
+                font.family: currentFont
+                font.pointSize: 9
+                placeholderText: "Description"
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.topMargin: 0
+                anchors.leftMargin: 0
+                anchors.rightMargin: 0
+            }
+
+            CustomNumberField {
+                id: quantityItem
+                // color: textColorInput
+                anchors.top: descriptionItem.bottom
+                anchors.topMargin: 7
+                anchors.left: parent.left
+                anchors.leftMargin: 0
+                colorOnFocus: colorOnFocusInput
+                colorMouseOver: colorMouseOverInput
+                colorDefault: colorDefaultInput
+
+                // Text color SpinBox
+                textColorSpinbox: textColorInput
+                selectedTextColorSpinbox: selectedTextColorInput
+                selectionColorSpinbox: selectionColorInput
+
+                // // Indicators btn colors
+                // indicatorBtnColorDefault: indicatorColorDefault
+                // indicatorBtnColorFocus: indicatorColorFocus
+                // indicatorBtnColorHovered: indicatorColorHovered
+            }
+            
+            // CustonmButton {
+            //     id: addArticle
+            //     width: 150
+            //     height: 35
+            //     text: "Add Entrance"
+
+            //     anchors.left: parent.left
+            //     anchors.bottom: parent.bottom
+            //     anchors.leftMargin: 10
+            //     anchors.bottomMargin: 10
+
+            //     font.family: currentFont
+            //     font.pointSize: 9
+
+            //     textBtnColorDefault: txtBtnColorDefault
+            //     textBtnColorMouseOver: txtBtnColorMouseOver
+            //     textBtnColorClicked: txtBtnColorClicked
+            //     colorDefault: colorDefaultBgBtn
+            //     colorPressed: colorPressedBgBtn
+            //     colorMouseOver: colorMouseOverBgBtn
+            // }
+        }
     }
-
 }
 

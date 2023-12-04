@@ -110,6 +110,10 @@ Window {
                 lblCorpData.text = "Registra tus datos"
                 btnCreateUser.visible = true
                 btnCreateUser.height = 40
+
+                rptTextPassword.visible = true
+                textEmail.visible = true
+
                 btnLogin.visible = false
                 btnLogin.height = 0
                 animationToggleRptTextPassword.running = true
@@ -121,6 +125,10 @@ Window {
                 lblCorpData.text = "Accede con tu usuario y contraseña"
                 btnCreateUser.visible = false
                 btnCreateUser.height = 0
+
+                rptTextPassword.visible = false
+                textEmail.visible = false
+
                 btnLogin.visible = true
                 btnLogin.height = 40
                 animationToggleRptTextPassword.running = true
@@ -463,7 +471,7 @@ Window {
             y: 389
             height: 0
             opacity: 1
-            visible: true
+            visible: false
             anchors.bottom: textEmail.top
             color: isDarkMode ? textColorInputDay : textColorInputNight
             placeholderTextColor: isDarkMode ? placeholderTextColorDay : placeholderTextColorNight
@@ -486,7 +494,7 @@ Window {
             y: 389
             height: 0
             opacity: 1
-            visible: true
+            visible: false
             anchors.bottom: lblSignInUp.top
             color: isDarkMode ? textColorInputDay : textColorInputNight
             placeholderTextColor: isDarkMode ? placeholderTextColorDay : placeholderTextColorNight

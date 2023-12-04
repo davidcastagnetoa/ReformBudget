@@ -147,7 +147,7 @@ Window {
     property color placeholderTextColorNight: "#b1b4bf"
     property color textColorInputNight: "#ffffff"
     property color selectionColorInputNight: "#99f1ff"
-    property color selectedTextColorInputNight: "#ffffff"
+    property color selectedTextColorInputNight: "#000000" //"#ffffff"
     
     // InputField Light
     property color colorOnFocusDay: "#ccd1d3"
@@ -156,7 +156,7 @@ Window {
     property color placeholderTextColorDay: "#111215"
     property color textColorInputDay: "#000000"
     property color selectionColorInputDay: "#161b22"
-    property color selectedTextColorInputDay: "#000000"
+    property color selectedTextColorInputDay: "#ffffff" //"#000000"
 
     //Button
     property color colorDefaultBtnDay: "#0c1122"
@@ -306,23 +306,45 @@ Window {
                 clientPage.textBgBorderRectangle = "#66657686";
                 clientPage.textLblColor = "#656D76";
                 clientPage.textResTxtColor = "#1f2328";
+                clientPage.textColorInput = "#000000";
+                clientPage.placeholderTextColorInput = "#111215";
+                clientPage.colorOnFocusInput = "#ccd1d3";
+                clientPage.colorMouseOverInput = "#d9d9d9";
+                clientPage.colorDefaultInput = "#ececec";
+                clientPage.selectionColorInput = "#161b22";
+                clientPage.selectedTextColorInput = "#ffffff"; //"#000000"
+
+                // clientPage.indicatorColorDefault = "#ccd1d3"
+                // clientPage.indicatorColorFocus = "#d9d9d9"
+                // clientPage.indicatorColorHovered = "#E9E8E8"
                 isDarkMode = false 
-            }else{
+            } else{
                 // Dark
                 clientPage.textBgColorRectangle = "#161b22";
                 clientPage.textBgBorderRectangle = "#21262d";
                 clientPage.textLblColor = "#818995";
                 clientPage.textResTxtColor = "#FFFFFF";
+                clientPage.textColorInput = "#ffffff";
+                clientPage.placeholderTextColorInput = "#b1b4bf";
+                clientPage.colorOnFocusInput = "#202833";
+                clientPage.colorMouseOverInput = "#293341";
+                clientPage.colorDefaultInput = "#161b22";
+                clientPage.selectionColorInput = "#99f1ff";
+                clientPage.selectedTextColorInput = "#000000"; //"#ffffff"
+
+                // clientPage.indicatorColorDefault = "#202833"
+                // clientPage.indicatorColorFocus = "#293341"
+                // clientPage.indicatorColorHovered = "#344052"
                 isDarkMode = true 
             }
         }
         // Create Client LeftMenuButtons
         function createButton(name, address, mail, city, zip_code, phone) {
-            console.log("Intentando crear botón para:", name);
+            console.log("Trying to create button for:", name);
 
             // Verifica si el componente está listo antes de intentar crear el botón
             if (leftMenuBtnComponent.status === Component.Ready) {
-                console.log("Componente LeftMenuBtn está listo.");
+                console.log("Component LeftMenuBtn ready.");
 
                 // Crear el botón
                 var newButton = leftMenuBtnComponent.createObject(columnBtnClients, {
@@ -340,7 +362,7 @@ Window {
                         if (Array.isArray(buttonList)) {
                             buttonList.forEach(button => button.isActiveMenu = false);
                         } else {
-                            console.error("buttonList no está definido o no es un array");
+                            console.error("buttonList is undefined or is not an array");
                         }
 
                         newButton.isActiveMenu = true;
@@ -351,15 +373,15 @@ Window {
                         };
                         clientButtonClicked(clientData);
                         buttonList.push(newButton);
-                        console.log("Botón para", name, "creado y configurado.");
+                        console.log("Button for", name, "created and configured.");
                     });
                 } else {
-                    console.error("No se pudo crear el botón para", name);
+                    console.error("Button for", name, "cannot be created");
                 }
             } else if (leftMenuBtnComponent.status === Component.Error) {
-                console.error("Error al cargar LeftMenuBtn:", leftMenuBtnComponent.errorString());
+                console.error("Error to load LeftMenuBtn:", leftMenuBtnComponent.errorString());
             } else {
-                console.log("Componente LeftMenuBtn aún no está listo. Estado:", leftMenuBtnComponent.status);
+                console.log("Component LeftMenuBtn still not ready. Status:", leftMenuBtnComponent.status);
                 // Considera reintentar después de un intervalo si es necesario
                 retryTimer.start();
             }

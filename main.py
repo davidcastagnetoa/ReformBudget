@@ -114,7 +114,7 @@ class Login(QObject):
             }
             for client in clients
         ]
-        print(f"The clients belong to ${self._username} is :", clients_list)
+        # print(f"The clients belong to ${self._username} is :", clients_list)
         self.clientsRetrieved.emit(clients_list)
         db.close()
 

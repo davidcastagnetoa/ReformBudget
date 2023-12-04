@@ -85,4 +85,4 @@ venv/
 *.key
 
 .vscode
-*.db
+# *.db

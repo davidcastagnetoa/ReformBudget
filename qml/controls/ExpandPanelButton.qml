@@ -44,6 +44,6 @@ Button {
             height: 25
             width: 15
             fillMode: Image.PreserveAspectFit
-            }
+        }
     }
 }
