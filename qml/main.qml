@@ -37,14 +37,20 @@ Window {
     property int buttonCount: 2
     
     // IMAGES
-    property url toggleDarkModelogoSourceW: "../images/svg_icons/png_icons_wanderson/bluedaynight.png"
-    property url toggleDarkModelogoSourceB: "../images/svg_icons/png_icons_wanderson/blackdaynight.png"
-    property url resizeImageSourceNight: "../images/svg_icons/png_icons_wanderson/resize_icon_Dark.png"
-    property url resizeImageSourceDay: "../images/svg_icons/png_icons_wanderson/resize_icon_Light.png"
-    property url leftImageSourceNight: "../images/ReformBudgetLogoNight.png"
-    property url leftImageSourceDay: "../images/ReformBudgetLogoDay.png"
-    property url iconAppNight: "../images/LogoNight.png"
-    property url iconAppDay: "../images/LogoDay.png"
+    property url leftMenuIconUrlDay: Qt.resolvedUrl("../images/svg_icons/icon_users_dark.svg")
+    property url leftMenuIconUrlNight: Qt.resolvedUrl("../images/svg_icons/icon_users_white.svg")
+
+    property url leftMenuIconUrlClickedNight: Qt.resolvedUrl("../images/svg_icons/icon_users_dark_clicked.svg")
+    property url leftMenuIconUrlClickedDay: Qt.resolvedUrl("../images/svg_icons/icon_users_white_clicked.svg")
+
+    property url toggleDarkModelogoSourceW: Qt.resolvedUrl("../images/svg_icons/png_icons_wanderson/bluedaynight.png")
+    property url toggleDarkModelogoSourceB: Qt.resolvedUrl("../images/svg_icons/png_icons_wanderson/blackdaynight.png")
+    property url resizeImageSourceNight: Qt.resolvedUrl("../images/svg_icons/png_icons_wanderson/resize_icon_Dark.png")
+    property url resizeImageSourceDay: Qt.resolvedUrl("../images/svg_icons/png_icons_wanderson/resize_icon_Light.png")
+    property url leftImageSourceNight: Qt.resolvedUrl("../images/ReformBudgetLogoNight.png")
+    property url leftImageSourceDay: Qt.resolvedUrl("../images/ReformBudgetLogoDay.png")
+    property url iconAppNight: Qt.resolvedUrl("../images/LogoNight.png")
+    property url iconAppDay: Qt.resolvedUrl("../images/LogoDay.png")
     property color warningLabelNight: "#ffa0a0"
     property color warningLabelDay: "#A60000"
 
@@ -133,8 +139,8 @@ Window {
     property color textSecondaryColorClickedDay: "#a1a1a1"
     property color activeMenuColorLeftNight: "#99f1ff"
     property color activeMenuColorRightNight: "#99f1ff"
-    property color activeMenuColorLeftDay: "#ec733a"
-    property color activeMenuColorRightDay: "#ec733a"
+    property color activeMenuColorLeftDay: "#FF6C26"
+    property color activeMenuColorRightDay: "#FF6C26"
 
     // bgBudgetCol
     property color bgBudgetColBgNight : "#161b22"
@@ -161,7 +167,7 @@ Window {
     //Button
     property color colorDefaultBtnDay: "#0c1122"
     property color colorMouseOverBtnDay: "#111831"
-    property color colorPressedBtnDay: "#ec733a"
+    property color colorPressedBtnDay: "#FF6C26"
 
     property color textBtnColorDefaultDay: "#FFFFFF"
     property color textBtnColorMouseOverDay: "#FFFFFF"
@@ -830,7 +836,10 @@ Window {
                                         font.weight: Font.Light
                                         font.family: currentFont
                                         font.pointSize: 10
-                                        btnIconSource: Qt.resolvedUrl("../images/svg_icons/icon_users.svg")
+                                        btnIconSource: isDarkMode ? leftMenuIconUrlNight : leftMenuIconUrlDay
+
+                                        btnIconSourceClicked: isDarkMode ? leftMenuIconUrlClickedNight : leftMenuIconUrlClickedDay
+
                                         btnColorDefault: isDarkMode ? leftMenuBtnColorDefaultNight : leftMenuBtnColorDefaultDay
                                         btnColorMouseOver: isDarkMode ? leftMenuBtnColorMouseOverNight : leftMenuBtnColorMouseOverDay
                                         btnColorClicked: isDarkMode ? leftMenuBtnColorClickedNight : leftMenuBtnColorClickedDay

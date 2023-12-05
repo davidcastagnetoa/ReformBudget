@@ -8,6 +8,8 @@ Button {
     // CUSTOM PROPERTIES
     property string tag: ""
     property url btnIconSource: "../../images/svg_icons/icon_users.svg"
+    property url btnIconSourceClicked: "../../images/svg_icons/icon_users_white_clicked.svg"
+    
     property color btnColorDefault: "#0d1117"
     property color btnColorMouseOver: "#161b22"
     property color btnColorClicked: "#6dacb6"
@@ -112,7 +114,7 @@ Button {
         
         Image {
             id: iconBtn
-            source: Qt.resolvedUrl(btnIconSource)
+            source: isActiveMenu ? Qt.resolvedUrl(btnIconSourceClicked) : btnLeftMenu.down ? Qt.resolvedUrl(btnIconSourceClicked) : btnLeftMenu.hovered ?  Qt.resolvedUrl(btnIconSource) : Qt.resolvedUrl(btnIconSource)
             anchors.leftMargin: 26
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left

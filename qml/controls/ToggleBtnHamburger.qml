@@ -5,6 +5,8 @@ Button {
     id: btnToggle
     //CUSTOM PROPERTIES
     property url btnIconSource: "../../images/svg_icons/menu_icon.svg"
+    property url btnIconSourceClicked: "../../images/svg_icons/menu_icon.svg"
+
     property color btnColorDefault: "#161b22"
     property color btnColorMouseOver: "#0d1117"
     property color btnColorClicked: "#00C859"
