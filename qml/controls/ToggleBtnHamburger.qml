@@ -1,5 +1,8 @@
-import QtQuick
-import QtQuick.Controls
+// import QtQuick
+// import QtQuick.Controls
+//// For Qt Creator
+import QtQuick 2.10
+import QtQuick.Controls 2.12
 
 Button {
     id: btnToggle

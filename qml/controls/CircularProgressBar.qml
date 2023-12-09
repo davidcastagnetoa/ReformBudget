@@ -1,5 +1,8 @@
-import QtQuick
-import QtQuick.Controls
+// import QtQuick
+// import QtQuick.Controls
+//// For Qt Creator
+import QtQuick 2.15
+import QtQuick.Controls 2.5
 import QtQuick.Shapes 1.6
 Item {
     id: progress
@@ -166,6 +169,6 @@ Item {
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;height:250;width:250}D{i:5}D{i:11}
+    D{i:0;autoSize:true;height:250;width:250}
 }
 ##^##*/

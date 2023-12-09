@@ -1,5 +1,7 @@
-import QtQuick
-import QtQuick.Controls
+// import QtQuick
+// import QtQuick.Controls
+import QtQuick 2.10
+import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.15
 import "../controls"
 
@@ -36,11 +38,12 @@ Item {
     property color textLblColor: "#818995"
     property color textResTxtColor: "#FFFFFF"
     property color textBgColorRectangle: "#161b22"
-    property color textBgBorderRectangle: "#21262d"
+    // property color textBgBorderRectangle: "#21262d"
 
     // Custom Field texts & placeholder
     property color textColorInput : "#ffffff"
     property color placeholderTextColorInput : "#b1b4bf"
+    property color textFieldBorderColorInput : "#f2000000"
     property color selectionColorInput : "#99f1ff"
     property color selectedTextColorInput : "#ffffff"
 
@@ -114,7 +117,7 @@ Item {
             height: 141
             color: textBgColorRectangle
             radius: 8
-            border.color: textBgBorderRectangle
+            border.color: textFieldBorderColorInput //textBgBorderRectangle
             border.width: 1
             anchors.left: parent.left
             anchors.top: parent.top
@@ -396,6 +399,7 @@ Item {
                 id: descriptionItem
                 width: (bgPage.width * 1/3) - 5
                 color: textColorInput
+                textFieldBorderColor: textFieldBorderColorInput
                 placeholderTextColor: placeholderTextColorInput
                 colorOnFocus: colorOnFocusInput
                 colorMouseOver: colorMouseOverInput
@@ -425,6 +429,7 @@ Item {
                 colorDefault: colorDefaultInput
 
                 // Text color SpinBox
+                textFieldBorderColor: textFieldBorderColorInput
                 textColorSpinbox: textColorInput
                 selectedTextColorSpinbox: selectedTextColorInput
                 selectionColorSpinbox: selectionColorInput

@@ -1,7 +1,8 @@
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Controls
-
+// import QtQuick
+// import QtQuick.Controls
+//// For Qt Creator
+import QtQuick 2.10
+import QtQuick.Controls 2.12
 
 SpinBox {
     id: spinBoxField
@@ -11,6 +12,7 @@ SpinBox {
     property color colorDefault: "#161b22"
     property color colorOnFocus: "#202833"
     property color colorMouseOver: "#293341"
+    property color textFieldBorderColor: "#cc121212"
 
     // Text color SpinBox
     property color textColorSpinbox : "#ffffff"
@@ -37,6 +39,7 @@ SpinBox {
 
     background: Rectangle {
         color: internal.dynamicColor
+        border.color: textFieldBorderColor
         radius: 7
     }
 

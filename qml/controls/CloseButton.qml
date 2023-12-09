@@ -1,10 +1,13 @@
-import QtQuick
-import QtQuick.Controls
+// import QtQuick
+// import QtQuick.Controls
+//// For Qt Creator
+import QtQuick 2.10
+import QtQuick.Controls 2.12
 
 Button {
     id: btnTopBar
     // CUSTOM PROPERTIES
-    property url btnIconSource: "../../images/svg_icons/minimize_icon.svg"
+    property url btnIconSource: "../../images/svg_icons/minimize_icon_white.svg"
     property color btnColorDefault: "#161b22"
     property color btnColorMouseOver: "#0d1117"
     property color btnColorClicked: "#00C859"
@@ -28,7 +31,7 @@ Button {
 
         Image {
             id: iconBtn
-            source: Qt.resolvedUrl("../../images/svg_icons/close_icon.svg")
+            source: Qt.resolvedUrl(btnIconSource)
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
             height: 20

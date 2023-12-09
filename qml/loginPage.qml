@@ -1,6 +1,10 @@
-import QtQuick
-import QtQuick.Window
-import QtQuick.Controls
+// import QtQuick
+// import QtQuick.Window
+// import QtQuick.Controls
+//// For Qt Creator
+import QtQuick 2.15
+import QtQuick.Window 2.12
+import QtQuick.Controls 2.12
 import "controls"
 // import QtGraphicalEffects 1.0
 import QtQuick.Timeline 1.0
@@ -33,9 +37,11 @@ Window {
     property url onTopButtonLogoW: "../images/svg_icons/png_icons_wanderson/forward.png"
     property url onDownButtonLogoB: "../images/svg_icons/png_icons_wanderson/backward.png"
     property url onDownButtonLogoW: "../images/svg_icons/png_icons_wanderson/backward-W.png"
+
     //Close button
     property url closeBtnIconSourceW: "../images/svg_icons/png_icons_wanderson/close_icon.png"
     property url closeBtnIconSourceB: "../images/svg_icons/png_icons_wanderson/close_icon-B.png"
+
     // Bg
     property color gradientStart : "#0d1117"
     property color gradientEnd : "#000000"
@@ -48,6 +54,7 @@ Window {
     property color btnColorDefault: "#6dacb6"
     property color btnColorMouseOver: "#6198a1"
     property color btnColorClicked: "#99f1ff"
+
     // InputField
     property color colorOnFocusNight: "#202833"
     property color colorMouseOverNight: "#293341"
@@ -56,6 +63,8 @@ Window {
     property color textColorInputNight: "#ffffff"
     property color selectedTextColorInputNight: "#ffffff"
     property color selectionColorInputNight: "#99f1ff"
+    property color textFieldBorderColorNight: "#f2000000" //"#d9313131"
+
     // InputField
     property color colorOnFocusDay: "#ccd1d3"
     property color colorMouseOverDay: "#d9d9d9" 
@@ -64,6 +73,7 @@ Window {
     property color textColorInputDay: "#000000"
     property color selectedTextColorInputDay: "#000000"
     property color selectionColorInputDay: "#161b22"
+    property color textFieldBorderColorDay: "#bf757575"
     
     //Button
     property color colorDefaultBtnNight: "#0c1122"
@@ -429,6 +439,7 @@ Window {
             opacity: 0
             anchors.bottom: textPassword.top
             color: isDarkMode ? textColorInputDay : textColorInputNight
+            textFieldBorderColor: isDarkMode ? textFieldBorderColorDay : textFieldBorderColorNight
             placeholderTextColor: isDarkMode ? placeholderTextColorDay : placeholderTextColorNight
             colorOnFocus: isDarkMode ? colorOnFocusDay : colorOnFocusNight
             colorMouseOver: isDarkMode ? colorMouseOverDay: colorMouseOverNight
@@ -449,6 +460,7 @@ Window {
             opacity: 1
             anchors.bottom: rptTextPassword.top
             color: isDarkMode ? textColorInputDay : textColorInputNight
+            textFieldBorderColor: isDarkMode ? textFieldBorderColorDay : textFieldBorderColorNight
             placeholderTextColor: isDarkMode ? placeholderTextColorDay : placeholderTextColorNight
             colorOnFocus: isDarkMode ? colorOnFocusDay : colorOnFocusNight
             colorMouseOver: isDarkMode ? colorMouseOverDay: colorMouseOverNight
@@ -474,6 +486,7 @@ Window {
             visible: false
             anchors.bottom: textEmail.top
             color: isDarkMode ? textColorInputDay : textColorInputNight
+            textFieldBorderColor: isDarkMode ? textFieldBorderColorDay : textFieldBorderColorNight
             placeholderTextColor: isDarkMode ? placeholderTextColorDay : placeholderTextColorNight
             colorOnFocus: isDarkMode ? colorOnFocusDay : colorOnFocusNight
             colorMouseOver: isDarkMode ? colorMouseOverDay: colorMouseOverNight
@@ -497,6 +510,7 @@ Window {
             visible: false
             anchors.bottom: lblSignInUp.top
             color: isDarkMode ? textColorInputDay : textColorInputNight
+            textFieldBorderColor: isDarkMode ? textFieldBorderColorDay : textFieldBorderColorNight
             placeholderTextColor: isDarkMode ? placeholderTextColorDay : placeholderTextColorNight
             colorOnFocus: isDarkMode ? colorOnFocusDay : colorOnFocusNight
             colorMouseOver: isDarkMode ? colorMouseOverDay: colorMouseOverNight

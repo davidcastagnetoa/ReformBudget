@@ -1,37 +1,35 @@
 # This Python file uses the following encoding: utf-8
 # from PySide6.QtCore import QUrl, QTimer
+from data.database import Database
+from dotenv import load_dotenv
+from utils.helpers import *
+from connection import ConnectionDB
+from models.budget import Budget
+from models.client import Client
+from models.user import User
+from data.budget import BudgetData
+from data.client import ClientData
+from data.user import UserData
+from PySide6.QtQuick import QQuickView
+from PySide6.QtWidgets import QApplication
+from PySide6.QtQml import QQmlApplicationEngine
+from PySide6.QtGui import QGuiApplication, QIcon
+from utils.encrypter import load_key, encriptedPassword
+from PySide6.QtQuickControls2 import QQuickStyle
+from PySide6.QtCore import QObject, Qt, Signal, Property, Slot, qVersion
 import sys
 import os
 import PySide6
 
 print("Versión de PySide6:: ", PySide6.__version__)
-from PySide6.QtCore import QObject, Qt, Signal, Property, Slot, qVersion
 
 print("Versión de Qt Usada por PySide6: ", qVersion())
 
-from PySide6.QtQuickControls2 import QQuickStyle
 
 QQuickStyle.setStyle("Fusion")
 
-from utils.encrypter import load_key, encriptedPassword
-from PySide6.QtGui import QGuiApplication, QIcon
-from PySide6.QtQml import QQmlApplicationEngine
-
-from PySide6.QtWidgets import QApplication
-from PySide6.QtQuick import QQuickView
 
 os.environ["QT_FONT_DPI"] = "96"
-
-from data.user import UserData
-from data.client import ClientData
-from data.budget import BudgetData
-from models.user import User
-from models.client import Client
-from models.budget import Budget
-from connection import ConnectionDB
-from utils.helpers import *
-from dotenv import load_dotenv
-from data.database import Database
 
 
 load_dotenv()
@@ -126,7 +124,8 @@ class Login(QObject):
         response = userData.login(user)
 
         if response == "user_not_found":
-            self.userLoged.emit("No existe usuario debe crear una cuenta", None)
+            self.userLoged.emit(
+                "No existe usuario debe crear una cuenta", None)
             return
         elif response == "incorrect_password":
             self.userLoged.emit("Contraseña incorrecta!", None)
@@ -254,7 +253,8 @@ class ClientManager(QObject):
 
         # Creamos al cliente (Lo que guarda en DB)
         newClient = clientData.create_Client(
-            Client(name, address, email, city, zip_code, phone, user_id), user_id
+            Client(name, address, email, city,
+                   zip_code, phone, user_id), user_id
         )
 
         # Validamos que el cliente se haya creado correctamente
@@ -264,7 +264,8 @@ class ClientManager(QObject):
             return
 
         # Aquí se debería emitir la señal clientCreated para su uso en el lado del cliente
-        self.clientCreated.emit(name, address, email, city, zip_code, phone, user_id)
+        self.clientCreated.emit(name, address, email,
+                                city, zip_code, phone, user_id)
         self.clientValidated.emit("Cliente creado")
 
     # Funcion para editar cliente (aun no en uso en cliente)
@@ -285,7 +286,8 @@ class ClientManager(QObject):
 
         # Llama al Metodo Data que edita el cliente en la DB (aun en desarrollo)
         editedClient = clientData.update_Client(
-            Client(name, address, email, city, zip_code, phone, user_id), user_id
+            Client(name, address, email, city,
+                   zip_code, phone, user_id), user_id
         )
 
         if editedClient is None:
@@ -293,14 +295,16 @@ class ClientManager(QObject):
             print("Error al editar al cliente")
             return
 
-        self.clientEdited.emit(name, address, email, city, zip_code, phone, user_id)
+        self.clientEdited.emit(name, address, email,
+                               city, zip_code, phone, user_id)
         self.clientUpgraded.emit("Cliente editado")
 
 
 # Clase para la creacion de presupuestos
 class BudgetManager(QObject):
     # Señales
-    budgetCreated = Signal(str, str, int, int, int, str, str, str, str, str, str, int)
+    budgetCreated = Signal(str, str, int, int, int, str,
+                           str, str, str, str, str, int)
     budgetValidated = Signal(str)
 
     def __init__(self, parent=None):

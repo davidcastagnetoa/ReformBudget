@@ -1,10 +1,12 @@
-import QtQuick
+// import QtQuick
+// import QtQuick.Controls
+//// For Qt Creator
+import QtQuick 2.10
+import QtQuick.Controls 2.12
 import QtQuick.Window 2.15
-import QtQuick.Controls
 import QtQuick.Layouts 1.15
-// import QtGraphicalEffects 1.15
 import "./controls"
-
+// import QtGraphicalEffects 1.15
 
 Window {
     id: mainWindow
@@ -39,9 +41,26 @@ Window {
     // IMAGES
     property url leftMenuIconUrlDay: Qt.resolvedUrl("../images/svg_icons/icon_users_dark.svg")
     property url leftMenuIconUrlNight: Qt.resolvedUrl("../images/svg_icons/icon_users_white.svg")
-
     property url leftMenuIconUrlClickedNight: Qt.resolvedUrl("../images/svg_icons/icon_users_dark_clicked.svg")
     property url leftMenuIconUrlClickedDay: Qt.resolvedUrl("../images/svg_icons/icon_users_white_clicked.svg")
+
+    // Maximize, minimize, restore buttons
+    // Restore Button Icon
+    property url btnIconSourceRestoreDay: Qt.resolvedUrl("../images/svg_icons/restore_icon_dark.svg")
+    property url btnIconSourceRestoreNight: Qt.resolvedUrl("../images/svg_icons/restore_icon_white.svg")
+    //Maximize Button Icon
+    property url btnIconSourceMaximizeDay: Qt.resolvedUrl("../images/svg_icons/maximize_icon_dark.svg")
+    property url btnIconSourceMaximizeNight: Qt.resolvedUrl("../images/svg_icons/maximize_icon_white.svg")
+    //Minimize Button Icon
+    property url btnIconSourceMinimizeDay: Qt.resolvedUrl("../images/svg_icons/minimize_icon_dark.svg")
+    property url btnIconSourceMinimizeNight: Qt.resolvedUrl("../images/svg_icons/minimize_icon_white.svg")
+    // Close Button Icon
+    property url btnIconSourceCloseDay: Qt.resolvedUrl("../images/svg_icons/close_icon_dark.svg")
+    property url btnIconSourceCloseNight: Qt.resolvedUrl("../images/svg_icons/close_icon_white.svg")
+    
+    // Toggle Hamburger Button
+    property url toggleBtnHamburgerUrlDay: Qt.resolvedUrl("../images/svg_icons/menu_icon_dark.svg")
+    property url toggleBtnHamburgerUrlNight: Qt.resolvedUrl("../images/svg_icons/menu_icon_white.svg")
 
     property url toggleDarkModelogoSourceW: Qt.resolvedUrl("../images/svg_icons/png_icons_wanderson/bluedaynight.png")
     property url toggleDarkModelogoSourceB: Qt.resolvedUrl("../images/svg_icons/png_icons_wanderson/blackdaynight.png")
@@ -103,7 +122,7 @@ Window {
     property color toggleBtnHamburgerColorMouseOverDay: "#aeb3b4"
     property color toggleBtnHamburgerColorClickedDay: "#5f969e"
 
-    // minimizeButton, restoreButton, closeButton
+    // minimizeButton, restoreButton, closeButton Bg colors
     property color btnColorDefaultNight: "#161b22"
     property color btnColorMouseOverNight: "#0d1117"
     property color btnColorClickedNight: "#6dacb6"
@@ -154,6 +173,7 @@ Window {
     property color textColorInputNight: "#ffffff"
     property color selectionColorInputNight: "#99f1ff"
     property color selectedTextColorInputNight: "#000000" //"#ffffff"
+    property color textFieldBorderColorNight: "#f2000000" //"#d9313131"
     
     // InputField Light
     property color colorOnFocusDay: "#ccd1d3"
@@ -163,6 +183,7 @@ Window {
     property color textColorInputDay: "#000000"
     property color selectionColorInputDay: "#161b22"
     property color selectedTextColorInputDay: "#ffffff" //"#000000"
+    property color textFieldBorderColorDay: "#bf757575"
 
     //Button
     property color colorDefaultBtnDay: "#0c1122"
@@ -181,12 +202,6 @@ Window {
     property color textBtnColorDefaultNight: "#000000"
     property color textBtnColorMouseOverNight: "#000000"
     property color textBtnColorClickedNight: "#1F2328"
-
-    //Client Page
-    property color textBgBorderRectangleNight : "#161b22"
-    property color textBgColorRectangleNight : "#21262d"
-    property color textBgBorderRectangleDay : "#161b22"
-    property color textBgColorRectangleDay : "#21262d"
 
     property int userID: {
         // console.log("loginUser.userId: ", loginUser && loginUser.userId);
@@ -252,7 +267,8 @@ Window {
                 bg.anchors.leftMargin = 0
                 bg.anchors.rightMargin = 0
                 bg.anchors.bottomMargin = 0
-                restoreButton.btnIconSource = Qt.resolvedUrl("../images/svg_icons/restore_icon.svg")
+                restoreButton.btnIconSource = Qt.resolvedUrl(isDarkMode ? btnIconSourceRestoreNight : btnIconSourceRestoreDay)
+                // restoreButton.btnIconSource = Qt.resolvedUrl("../images/svg_icons/restore_icon.svg")
             }
             else{
                 mainWindow.showNormal()
@@ -261,7 +277,8 @@ Window {
                 bg.anchors.leftMargin = 10
                 bg.anchors.rightMargin = 10
                 bg.anchors.bottomMargin = 10
-                restoreButton.btnIconSource = Qt.resolvedUrl("../images/svg_icons/maximize_icon.svg")
+                restoreButton.btnIconSource = Qt.resolvedUrl(isDarkMode ? btnIconSourceMaximizeNight : btnIconSourceMaximizeDay)
+                // restoreButton.btnIconSource = Qt.resolvedUrl("../images/svg_icons/maximize_icon.svg")
             }
         }
         // If Maximized Restore
@@ -270,14 +287,16 @@ Window {
                 mainWindow.showNormal()
                 windowStatus = 0
                 windowMargin = 10
-                restoreButton.btnIconSource = Qt.resolvedUrl("../images/svg_icons/maximize_icon.svg")
+                restoreButton.btnIconSource = Qt.resolvedUrl(isDarkMode ? btnIconSourceMaximizeNight : btnIconSourceMaximizeDay)
+                // restoreButton.btnIconSource = Qt.resolvedUrl("../images/svg_icons/maximize_icon.svg")
             }
         }
         // Restore Margins
         function restoreMargins(){
             windowStatus = 0
             windowMargin = 10
-            restoreButton.btnIconSource = Qt.resolvedUrl("../images/svg_icons/maximize_icon.svg")
+            restoreButton.btnIconSource = Qt.resolvedUrl(isDarkMode ? btnIconSourceMaximizeNight : btnIconSourceMaximizeDay)
+            // restoreButton.btnIconSource = Qt.resolvedUrl("../images/svg_icons/maximize_icon.svg")
         }
         // Toggle Preview right screen
         function collapsePreview(){
@@ -309,11 +328,12 @@ Window {
             if(isDarkMode === true){
                 // Light
                 clientPage.textBgColorRectangle = "#ececec";
-                clientPage.textBgBorderRectangle = "#66657686";
+                // clientPage.textBgBorderRectangle = "#66657686";
                 clientPage.textLblColor = "#656D76";
                 clientPage.textResTxtColor = "#1f2328";
                 clientPage.textColorInput = "#000000";
                 clientPage.placeholderTextColorInput = "#111215";
+                clientPage.textFieldBorderColorInput = "#bf757575";
                 clientPage.colorOnFocusInput = "#ccd1d3";
                 clientPage.colorMouseOverInput = "#d9d9d9";
                 clientPage.colorDefaultInput = "#ececec";
@@ -327,11 +347,12 @@ Window {
             } else{
                 // Dark
                 clientPage.textBgColorRectangle = "#161b22";
-                clientPage.textBgBorderRectangle = "#21262d";
+                // clientPage.textBgBorderRectangle = "#21262d";
                 clientPage.textLblColor = "#818995";
                 clientPage.textResTxtColor = "#FFFFFF";
                 clientPage.textColorInput = "#ffffff";
                 clientPage.placeholderTextColorInput = "#b1b4bf";
+                clientPage.textFieldBorderColorInput = "#f2000000";
                 clientPage.colorOnFocusInput = "#202833";
                 clientPage.colorMouseOverInput = "#293341";
                 clientPage.colorDefaultInput = "#161b22";
@@ -434,6 +455,7 @@ Window {
                     btnColorDefault: isDarkMode ? toggleBtnHamburgerColorDefaultNight : toggleBtnHamburgerColorDefaultDay
                     btnColorClicked: isDarkMode ? toggleBtnHamburgerColorClickedNight : toggleBtnHamburgerColorClickedDay
                     btnIconColor: isDarkMode? "#FFFFFF" : "#000000"
+                    btnIconSource : isDarkMode? toggleBtnHamburgerUrlNight : toggleBtnHamburgerUrlDay
                     onClicked: animationMenu.running = true
                 }
 
@@ -579,7 +601,8 @@ Window {
                         btnColorMouseOver: isDarkMode ? btnColorMouseOverNight : btnColorMouseOverDay
                         btnColorDefault: isDarkMode ? btnColorDefaultNight : btnColorDefaultDay
                         btnColorClicked: isDarkMode ? btnColorClickedNight : btnColorClickedDay
-                        btnIconSource: Qt.resolvedUrl("../images/svg_icons/minimize_icon.svg")
+                        btnIconSource: Qt.resolvedUrl(isDarkMode ? btnIconSourceMinimizeNight : btnIconSourceMinimizeDay)
+                        // btnIconSource: Qt.resolvedUrl("../images/svg_icons/minimize_icon.svg")
                         btnIconColor: isDarkMode? "#FFFFFF" : "#000000"
                         onClicked: {
                             mainWindow.showMinimized()
@@ -593,7 +616,8 @@ Window {
                         btnColorMouseOver: isDarkMode ? btnColorMouseOverNight : btnColorMouseOverDay
                         btnColorDefault: isDarkMode ? btnColorDefaultNight : btnColorDefaultDay
                         btnColorClicked: isDarkMode ? btnColorClickedNight : btnColorClickedDay
-                        btnIconSource: Qt.resolvedUrl("../images/svg_icons/maximize_icon.svg")
+                        btnIconSource: Qt.resolvedUrl(isDarkMode ? btnIconSourceRestoreNight : btnIconSourceRestoreDay)
+                        // btnIconSource: Qt.resolvedUrl("../images/svg_icons/maximize_icon.svg")
                         btnIconColor: isDarkMode? "#FFFFFF" : "#000000"
                         onClicked: {
                             internal.maximizeRestore()
@@ -606,7 +630,8 @@ Window {
                         btnColorMouseOver: isDarkMode ? btnColorMouseOverNight : btnColorMouseOverDay
                         btnColorDefault: isDarkMode ? btnColorDefaultNight : btnColorDefaultDay
                         btnColorClicked: isDarkMode ? closeBtnColorClickedNight : closeBtnColorClickedDay
-                        btnIconSource: Qt.resolvedUrl("../images/svg_icons/close_icon.svg")
+                        btnIconSource: Qt.resolvedUrl(isDarkMode ? btnIconSourceCloseNight : btnIconSourceCloseDay)
+                        // btnIconSource: Qt.resolvedUrl("../images/svg_icons/close_icon.svg")
                         btnIconColor: isDarkMode? "#FFFFFF" : "#000000"
                         onClicked: {
                             mainWindow.close()
@@ -861,7 +886,8 @@ Window {
                         id: bgBudgetCol
                         x: 0
                         y: 800
-                        height: 300
+                        // height: 300
+                        height: leftMenu.height * 2/5
                         color: isDarkMode ? bgBudgetColBgNight : bgBudgetColBgDay
                         border.color: "#00000000"
                         border.width: 0
@@ -875,7 +901,7 @@ Window {
                             id: animationbgBudgetCol
                             target: bgBudgetCol
                             property: "height"
-                            to: if(bgBudgetCol.height == 300) return 30; else return 300
+                            to: if(bgBudgetCol.height == leftMenu.height * 2/5) return 30; else return leftMenu.height * 2/5
                             duration: 250
                             easing.type: Easing.InOutQuint
                         }
@@ -988,6 +1014,7 @@ Window {
                                 y: 0
                                 width: (customerData.width * 1/3) - 5
                                 color: isDarkMode ? textColorInputNight : textColorInputDay
+                                textFieldBorderColor: isDarkMode ? textFieldBorderColorNight : textFieldBorderColorDay
                                 placeholderTextColor: isDarkMode ? placeholderTextColorNight : placeholderTextColorDay
                                 colorOnFocus: isDarkMode ? colorOnFocusNight : colorOnFocusDay
                                 colorMouseOver: isDarkMode ? colorMouseOverNight : colorMouseOverDay
@@ -1005,6 +1032,7 @@ Window {
                                 y: 0
                                 width: (customerData.width * 1/3) - 5
                                 color: isDarkMode ? textColorInputNight : textColorInputDay
+                                textFieldBorderColor: isDarkMode ? textFieldBorderColorNight : textFieldBorderColorDay
                                 placeholderTextColor: isDarkMode ? placeholderTextColorNight : placeholderTextColorDay
                                 colorOnFocus: isDarkMode ? colorOnFocusNight : colorOnFocusDay
                                 colorMouseOver: isDarkMode ? colorMouseOverNight : colorMouseOverDay
@@ -1022,6 +1050,7 @@ Window {
                                 y: 0
                                 width: (customerData.width * 1/3) - 5
                                 color: isDarkMode ? textColorInputNight : textColorInputDay
+                                textFieldBorderColor: isDarkMode ? textFieldBorderColorNight : textFieldBorderColorDay
                                 placeholderTextColor: isDarkMode ? placeholderTextColorNight : placeholderTextColorDay
                                 colorOnFocus: isDarkMode ? colorOnFocusNight : colorOnFocusDay
                                 colorMouseOver: isDarkMode ? colorMouseOverNight : colorMouseOverDay
@@ -1039,6 +1068,7 @@ Window {
                                 y: 47
                                 width: (customerData.width * 1/3) - 5
                                 color: isDarkMode ? textColorInputNight : textColorInputDay
+                                textFieldBorderColor: isDarkMode ? textFieldBorderColorNight : textFieldBorderColorDay
                                 placeholderTextColor: isDarkMode ? placeholderTextColorNight : placeholderTextColorDay
                                 colorOnFocus: isDarkMode ? colorOnFocusNight : colorOnFocusDay
                                 colorMouseOver: isDarkMode ? colorMouseOverNight : colorMouseOverDay
@@ -1056,6 +1086,7 @@ Window {
                                 y: 47
                                 width: (customerData.width * 1/3) - 5
                                 color: isDarkMode ? textColorInputNight : textColorInputDay
+                                textFieldBorderColor: isDarkMode ? textFieldBorderColorNight : textFieldBorderColorDay
                                 placeholderTextColor: isDarkMode ? placeholderTextColorNight : placeholderTextColorDay
                                 colorOnFocus: isDarkMode ? colorOnFocusNight : colorOnFocusDay
                                 colorMouseOver: isDarkMode ? colorMouseOverNight : colorMouseOverDay
@@ -1073,6 +1104,7 @@ Window {
                                 y: 47
                                 width: (customerData.width * 1/3) - 5
                                 color: isDarkMode ? textColorInputNight : textColorInputDay
+                                textFieldBorderColor: isDarkMode ? textFieldBorderColorNight : textFieldBorderColorDay
                                 placeholderTextColor: isDarkMode ? placeholderTextColorNight : placeholderTextColorDay
                                 colorOnFocus: isDarkMode ? colorOnFocusNight : colorOnFocusDay
                                 colorMouseOver: isDarkMode ? colorMouseOverNight : colorMouseOverDay
