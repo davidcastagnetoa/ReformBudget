@@ -1,5 +1,6 @@
 // import QtQuick
 // import QtQuick.Controls
+
 //// For Qt Creator
 import QtQuick 2.10
 import QtQuick.Controls 2.12
@@ -21,7 +22,7 @@ TextField {
                                    }else{
                                        textField.hovered ? colorMouseOver : colorDefault
                                    }
-    }
+    }   
 
     implicitWidth: 300
     implicitHeight: 40

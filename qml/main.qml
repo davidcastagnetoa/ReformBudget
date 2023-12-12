@@ -185,7 +185,7 @@ Window {
     property color selectedTextColorInputDay: "#ffffff" //"#000000"
     property color textFieldBorderColorDay: "#bf757575"
 
-    //Button
+    //CustomButton Day
     property color colorDefaultBtnDay: "#0c1122"
     property color colorMouseOverBtnDay: "#111831"
     property color colorPressedBtnDay: "#FF6C26"
@@ -194,7 +194,7 @@ Window {
     property color textBtnColorMouseOverDay: "#FFFFFF"
     property color textBtnColorClickedDay: "#000000"
 
-    //Button
+    //CustomButton Night
     property color colorDefaultBtnNight: "#6dacb6"
     property color colorMouseOverBtnNight: "#6198a1"
     property color colorPressedBtnNight: "#99f1ff"
@@ -327,8 +327,8 @@ Window {
             var clientPage = stackView.item;
             if(isDarkMode === true){
                 // Light
-                clientPage.textBgColorRectangle = "#ececec";
                 // clientPage.textBgBorderRectangle = "#66657686";
+                clientPage.textBgColorRectangle = "#ececec";
                 clientPage.textLblColor = "#656D76";
                 clientPage.textResTxtColor = "#1f2328";
                 clientPage.textColorInput = "#000000";
@@ -340,14 +340,22 @@ Window {
                 clientPage.selectionColorInput = "#161b22";
                 clientPage.selectedTextColorInput = "#ffffff"; //"#000000"
 
+                // CustomButton
+                clientPage.txtBtnColorDefault = "#FFFFFF";
+                clientPage.txtBtnColorMouseOver = "#FFFFFF";
+                clientPage.txtBtnColorClicked = "#000000";
+                clientPage.colorDefaultBgBtn = "#0c1122";
+                clientPage.colorMouseOverBgBtn = "#111831";
+                clientPage.colorPressedBgBtn = "#FF6C26";
+
                 // clientPage.indicatorColorDefault = "#ccd1d3"
                 // clientPage.indicatorColorFocus = "#d9d9d9"
                 // clientPage.indicatorColorHovered = "#E9E8E8"
                 isDarkMode = false 
             } else{
                 // Dark
-                clientPage.textBgColorRectangle = "#161b22";
                 // clientPage.textBgBorderRectangle = "#21262d";
+                clientPage.textBgColorRectangle = "#161b22";
                 clientPage.textLblColor = "#818995";
                 clientPage.textResTxtColor = "#FFFFFF";
                 clientPage.textColorInput = "#ffffff";
@@ -358,6 +366,14 @@ Window {
                 clientPage.colorDefaultInput = "#161b22";
                 clientPage.selectionColorInput = "#99f1ff";
                 clientPage.selectedTextColorInput = "#000000"; //"#ffffff"
+
+                // CustomButton
+                clientPage.txtBtnColorDefault = "#000000";
+                clientPage.txtBtnColorMouseOver = "#000000";
+                clientPage.txtBtnColorClicked = "#1F2328";
+                clientPage.colorDefaultBgBtn = "#6dacb6";
+                clientPage.colorMouseOverBgBtn = "#6198a1";
+                clientPage.colorPressedBgBtn = "#99f1ff";
 
                 // clientPage.indicatorColorDefault = "#202833"
                 // clientPage.indicatorColorFocus = "#293341"
@@ -1122,15 +1138,18 @@ Window {
                         CustomButton{
                             id: createCustomer
                             y: 160
-                            width: 150
+                            width: 135
                             height: 35
                             text: "Add customer"
                             anchors.left: parent.left
                             anchors.bottom: parent.bottom
                             anchors.leftMargin: 10
                             anchors.bottomMargin: 10
+                            
+                            font.family: currentFont
                             font.weight: Font.Light
                             font.pointSize: 9
+                            
                             textBtnColorDefault: isDarkMode ? textBtnColorDefaultNight : textBtnColorDefaultDay
                             textBtnColorMouseOver: isDarkMode ? textBtnColorMouseOverNight : textBtnColorMouseOverDay
                             textBtnColorClicked: isDarkMode ? textBtnColorClickedNight : textBtnColorClickedDay

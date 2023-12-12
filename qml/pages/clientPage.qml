@@ -56,6 +56,14 @@ Item {
     // property color indicatorColorDefault: "#202833"
     // property color indicatorColorFocus: "#293341"
     // property color indicatorColorHovered: "#344052"
+
+    // CustomButton
+    property color txtBtnColorDefault : "#000000";
+    property color txtBtnColorMouseOver : "#000000";
+    property color txtBtnColorClicked : "#1F2328";
+    property color colorDefaultBgBtn : "#6dacb6";
+    property color colorMouseOverBgBtn : "#6198a1";
+    property color colorPressedBgBtn : "#99f1ff";
     
 
     // Signals
@@ -83,7 +91,7 @@ Item {
 
 
     //PROPERTY FONTS
-    property string currentFont : titillium_Web_Light_VFont.name
+    property string currentFont : gepesteVFont.name
     property string currentFontThin : titillium_Web_Extralight_VFont.name
 
     FontLoader {
@@ -111,6 +119,7 @@ Item {
         color: "#00000000"
         anchors.fill: parent
 
+        // Customer Entrance Data
         Rectangle {
             id: textBgClientData
             width: 350
@@ -380,6 +389,8 @@ Item {
             }
         }
 
+        // Budget Data
+        // BG
         Rectangle{
             id: budgetDataBg
             width: 350
@@ -395,6 +406,7 @@ Item {
             anchors.rightMargin: 30
             anchors.topMargin: 10
 
+            // Description Text Input (String)
             CustomTextField {
                 id: descriptionItem
                 width: (bgPage.width * 1/3) - 5
@@ -417,6 +429,7 @@ Item {
                 anchors.rightMargin: 0
             }
 
+            // Quantity Number Input (Integer)
             CustomNumberField {
                 id: quantityItem
                 // color: textColorInput
@@ -427,40 +440,64 @@ Item {
                 colorOnFocus: colorOnFocusInput
                 colorMouseOver: colorMouseOverInput
                 colorDefault: colorDefaultInput
-
                 // Text color SpinBox
                 textFieldBorderColor: textFieldBorderColorInput
                 textColorSpinbox: textColorInput
                 selectedTextColorSpinbox: selectedTextColorInput
                 selectionColorSpinbox: selectionColorInput
-
                 // // Indicators btn colors
                 // indicatorBtnColorDefault: indicatorColorDefault
                 // indicatorBtnColorFocus: indicatorColorFocus
                 // indicatorBtnColorHovered: indicatorColorHovered
             }
+
+            // Price Number Input (Float)
+            CustomValueField {
+                id: priceItem
+                width: 100
+                color: textColorInput
+                textFieldBorderColor: textFieldBorderColorInput
+                placeholderTextColor: placeholderTextColorInput
+                colorOnFocus: colorOnFocusInput
+                colorMouseOver: colorMouseOverInput
+                colorDefault: colorDefaultInput
+                selectedTextColor: selectedTextColorInput
+                selectionColor: selectionColorInput
+                font.family: currentFont
+                font.pointSize: 9
+                placeholderText: "Price €"
+                anchors.top: descriptionItem.bottom
+                anchors.left: quantityItem.right
+                // anchors.right: addArticle.left
+                anchors.topMargin: 7
+                anchors.leftMargin: 10  
+                // inputType: ImhFormattedNumbersOnly
+
+                // anchors.rightMargin: 0
+            }
             
-            // CustonmButton {
-            //     id: addArticle
-            //     width: 150
-            //     height: 35
-            //     text: "Add Entrance"
+            // Create Entrance Button
+            CustomButton {
+                id: addArticle
+                width: 135
+                height: 35
+                text: "Add Entrance"
+                anchors.top: descriptionItem.bottom
+                anchors.topMargin: 7
+                anchors.right: parent.right
+                anchors.rightMargin: 0
 
-            //     anchors.left: parent.left
-            //     anchors.bottom: parent.bottom
-            //     anchors.leftMargin: 10
-            //     anchors.bottomMargin: 10
+                font.family: currentFont
+                font.weight: Font.Light
+                font.pointSize: 9
 
-            //     font.family: currentFont
-            //     font.pointSize: 9
-
-            //     textBtnColorDefault: txtBtnColorDefault
-            //     textBtnColorMouseOver: txtBtnColorMouseOver
-            //     textBtnColorClicked: txtBtnColorClicked
-            //     colorDefault: colorDefaultBgBtn
-            //     colorPressed: colorPressedBgBtn
-            //     colorMouseOver: colorMouseOverBgBtn
-            // }
+                textBtnColorDefault: txtBtnColorDefault
+                textBtnColorMouseOver: txtBtnColorMouseOver
+                textBtnColorClicked: txtBtnColorClicked
+                colorDefault: colorDefaultBgBtn
+                colorMouseOver: colorMouseOverBgBtn
+                colorPressed: colorPressedBgBtn
+            }
         }
     }
 }
