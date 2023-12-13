@@ -6,91 +6,72 @@ import QtQuick 2.10
 import QtQuick.Controls 2.12
 
 TextField {
-    id: valueField
+    id: numberValueField
 
     // Custom Properties
     property color colorDefault: "#161b22"
     property color colorOnFocus: "#202833"
     property color colorMouseOver: "#293341"
     property color textFieldBorderColor: "#cc121212"
-    property string textWithCurrency: "€ " + valueField.text // Añade el símbolo del euro
-
-    // Text color SpinBox
-    property color textColorSpinbox : "#ffffff"
-    property color selectedTextColorSpinbox : "#000000"
-    property color selectionColorSpinbox : "#00FF7B"
 
     QtObject{
         id: internal
-        property var dynamicColor: if(valueField.focus){
-                                        valueField.focus ? colorOnFocus : colorDefault
+
+        property var dynamicColor: if(numberValueField.focus){
+                                        numberValueField.focus ? colorOnFocus : colorDefault
                                    }else{
-                                       valueField.hovered ? colorMouseOver : colorDefault
+                                       numberValueField.hovered ? colorMouseOver : colorDefault
                                    }
-    }
+    }   
 
     implicitWidth: 300
     implicitHeight: 40
     placeholderText: qsTr("Type something")
     color: "#ffffff" // Establece el color del texto aquí
     background: Rectangle {
+        id: bgTextField
         color: internal.dynamicColor
         radius: 10
         border.color: textFieldBorderColor
         border.width: 1
+
+        Label {
+            id: euroSymbol
+            text: "€"
+            font.pointSize: 10
+            font.family: numberValueField.font.family
+            color: numberValueField.color
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            verticalAlignment: Text.AlignVCenter
+            anchors.verticalCenter: parent.verticalCenter
+        }
     }
 
     selectByMouse: true
     selectedTextColor: "#FFFFFF" // Establece el color del texto resaltado
     selectionColor: "#00FF7B" // Establece el color del fondo texto resaltado
     placeholderTextColor: "#b1b4bf" // Establece el color del texto de fondo
+    leftPadding: 25
+    rightPadding: 10
 
-    leftPadding: 30
-    inputMethodHints: Qt.ImhFormattedNumbersOnly
+    horizontalAlignment: Text.AlignRight
 
+    // Asegurarse de que el texto ingresado es un flotante
     validator: DoubleValidator {
-        notation: DoubleValidator.StandardNotation
         bottom: 0.0
         decimals: 2
     }
-
-    // Sobreescritura del componente para incluir el símbolo de euro
-    // contentItem: Text {
-    //     text: valueField.textWithCurrency
-    //     font: valueField.font
-
-    //     color: textColorSpinbox // Establece el color del texto aquí
-    //     selectedTextColor: selectedTextColorSpinbox // Establece el color del texto resaltado
-    //     selectionColor: selectionColorSpinbox // Establece el color del fondo texto resaltado
-    //     horizontalAlignment: Text.AlignLeft
-    //     verticalAlignment: Text.AlignVCenter
-    //     elide: Text.ElideRight
-    //     leftPadding: valueField.leftPadding
-    //     rightPadding: valueField.rightPadding
-    // }
-
-    // Evento para manejar la eliminación del símbolo de euro al editar
-    onTextChanged: {
-        if (!text.startsWith("€ ")) {
-            text = "€ " + text.replace("€ ", "");
-        }
-    }
-
-    // Evento para posicionar correctamente el cursor
-    // onCursorPositionChanged: {
-    //     if (cursorPosition < 2) {
-    //         cursorPosition = 2;
-    //     }
-    // }
 }
 
 
-// A REVISAR
+
+// // A REVISAR
 // import QtQuick 2.10
 // import QtQuick.Controls 2.12
 
 // TextField {
-//     id: textField
+//     id: valueField
 
 //     // Custom Properties
 //     property color colorDefault: "#161b22"
@@ -101,9 +82,13 @@ TextField {
 //     // Esta propiedad contendrá el valor numérico real sin el símbolo de euro.
 //     property real numericValue: 0.0
 
-//     QtObject {
-//         id: internal
-//         property var dynamicColor: textField.focus ? colorOnFocus : (textField.hovered ? colorMouseOver : colorDefault)
+//     QtObject{
+//     id: internal
+//     property var dynamicColor: if(valueField.focus){
+//                                     valueField.focus ? colorOnFocus : colorDefault
+//                                 }else{
+//                                     valueField.hovered ? colorMouseOver : colorDefault
+//                                 }
 //     }
 
 //     implicitWidth: 300
@@ -130,21 +115,44 @@ TextField {
 //         decimals: 2
 //     }
 
-//     // Añadir el símbolo de euro al displayText
-//     displayText: "€ " + text
+//     // Usamos un Texto en un Row para poner el símbolo del euro delante
+//     Row {
+//         anchors.left: parent.left
+//         anchors.leftMargin: 10
+//         anchors.verticalCenter: parent.verticalCenter
+//         spacing: 0
 
-//     onTextChanged: {
-//         // Actualizar el valor numérico real cada vez que cambie el texto.
-//         numericValue = parseFloat(text);
-//     }
+//         Label {
+//             id: euroSymbol
+//             text: "€"
+//             verticalAlignment: Text.AlignVCenter
+//         }
 
-//     // Ajustar el cursor para no permitir que se coloque antes del símbolo de euro
-//     onCursorPositionChanged: {
-//         if (cursorPosition < 2) {
-//             cursorPosition = 2;
+//         TextField {
+//             id: innerInput
+//             width: valueField.width - euroSymbol.width
+//             anchors.verticalCenter: euroSymbol.verticalCenter
+//             text: valueField.text
+//             font: valueField.font
+
+//             // Asegurarse de que el texto ingresado es un flotante
+//             validator: DoubleValidator {
+//                 bottom: 0.0
+//                 decimals: 2
+//             }
+
+//             // Asegurarse de que el valor cambia al modificar el texto
+//             onTextChanged: valueField.text = text
 //         }
 //     }
+
+//     // Asegurarse de que el cursor del texto se coloca correctamente
+//     onCursorPositionChanged: {
+//         innerInput.cursorPosition = cursorPosition - 1
+//     }
 // }
+
+
 
 
 /*##^##

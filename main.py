@@ -463,10 +463,8 @@ if __name__ == "__main__":
 
     # ARRANCANDO MOTORES DE VENTANA
     # engine.load(os.path.join(os.path.dirname(__file__), "test/Example2.qml"))  # Borrar en Producccion, solo para pruebas
-    engine.load(
-        os.path.join(os.path.dirname(__file__), "qml/main.qml")
-    )  # Borrar en Producccion
-    # engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
+    # engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))  # Borrar en Producccion
+    engine.load(os.path.join(os.path.dirname(__file__), "qml/loginPage.qml"))
 
     # ASIGNANDO a primera posicion VENTANA loginPage
     login_window = engine.rootObjects()[0]
@@ -480,7 +478,7 @@ if __name__ == "__main__":
         login_window.close()
 
     # Connect the signal to the close function
-    # login_window.loginSuccessful.connect(close_and_destroy_login)
+    login_window.loginSuccessful.connect(close_and_destroy_login)
 
     # FUNCION PARA CERRAR VENTANA
     if not engine.rootObjects():

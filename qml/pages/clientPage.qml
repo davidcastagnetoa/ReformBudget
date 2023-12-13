@@ -93,6 +93,7 @@ Item {
     //PROPERTY FONTS
     property string currentFont : gepesteVFont.name
     property string currentFontThin : titillium_Web_Extralight_VFont.name
+    property string currentFontThin_2 : titillium_Web_Light_VFont.name
 
     FontLoader {
         id: gepesteVFont
@@ -454,7 +455,7 @@ Item {
             // Price Number Input (Float)
             CustomValueField {
                 id: priceItem
-                width: 100
+                width: 105
                 color: textColorInput
                 textFieldBorderColor: textFieldBorderColorInput
                 placeholderTextColor: placeholderTextColorInput
@@ -463,9 +464,9 @@ Item {
                 colorDefault: colorDefaultInput
                 selectedTextColor: selectedTextColorInput
                 selectionColor: selectionColorInput
-                font.family: currentFont
-                font.pointSize: 9
-                placeholderText: "Price €"
+                font.family: currentFontThin_2
+                font.pointSize: 10
+                placeholderText: "Price "
                 anchors.top: descriptionItem.bottom
                 anchors.left: quantityItem.right
                 // anchors.right: addArticle.left
