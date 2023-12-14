@@ -9,7 +9,7 @@ class BudgetData:
         self.db = con.ConnectionDB().connect()
         self.cursor = self.db.cursor()
         self.cursor.execute(
-            "INSERT INTO budgets (budgetId, budgetName, budgetAmountSubtotal, budgetAmountTaxes, budgetAmountTotal, budgetDate, budgetDescription, budgetStatus, budgetType, budgetCategory, budgetNotes, client_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO budgets (budgetId, budgetName, budgetAmountSubtotal, budgetAmountTaxes, budgetAmountTotal, budgetDate, budgetStatus, budgetType, budgetCategory, budgetNotes, client_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (
                 budget._budgetId,
                 budget._budgetName,
@@ -17,7 +17,6 @@ class BudgetData:
                 budget._budgetAmountTaxes,
                 budget._budgetAmountTotal,
                 budget._budgetDate,
-                budget._budgetDescription,
                 budget._budgetStatus,
                 budget._budgetType,
                 budget._budgetCategory,

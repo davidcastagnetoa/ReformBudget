@@ -306,21 +306,20 @@ class BudgetManager(QObject):
         self._budget = Budget()  # Instancia vacía de cliente.
 
     # Funcion para crear presupuesto y emitir señales (aqui recibe los datos desde el lado del cliente)
-    @Slot(str, str, float, float, float, str, str, str, str, str, str, int)
+    @Slot(str, str, float, float, float, str, str, str, str, str, int)
     def createBudget(
         self,
-        budgetId,
-        budgetName,
-        budgetAmountSubtotal,
-        budgetAmountTaxes,
-        budgetAmountTotal,
-        budgetDate,
-        budgetDescription,
-        budgetStatus,
-        budgetType,
+        budgetId,  # [integer] Id de Dactura en DB (auto)
+        budgetName,  # [string] Numero de Factura
+        budgetAmountSubtotal,  # [integer] Suma de Subtotal de todos los items sin impuestos
+        budgetAmountTaxes,  # [integer] Suma de Impuestos de todos los items
+        budgetAmountTotal,  # [integer] Suma Total de todos los items
+        budgetDate,  # [string] Fecha de creacion del presupuesto
+        budgetStatus,  # [list] Borrador, Aceptado, Rechazado, Pendiente
+        budgetType,  # [string] A elegir por usuario
         budgetCategory,
         budgetNotes,
-        client_id,
+        client_id,  # Id del cliente al que está asociado
     ):
         if (
             not budgetId
@@ -329,7 +328,6 @@ class BudgetManager(QObject):
             or not budgetAmountTaxes
             or not budgetAmountTotal
             or not budgetDate
-            or not budgetDescription
             or not budgetStatus
             or not budgetType
             or not budgetCategory
@@ -345,12 +343,16 @@ class BudgetManager(QObject):
 
         # # Pasamos la fecha desde el cliente a formato datetime
         # budgetDate = datetime.strptime(budgetDate, "%d/%m/%Y")
+
         # # Pasamos el status desde el cliente a formato booleano
         # budgetStatus = budgetStatus == "Activo"
+
         # # Pasamos el tipo desde el cliente a formato booleano
         # budgetType = budgetType == "Fijo"
+
         # # Pasamos la categoria desde el cliente a formato booleano
         # budgetCategory = budgetCategory == "Personal"
+
         # # Pasamos los notas desde el cliente a formato booleano
         # budgetNotes = budgetNotes == "Sin notas"
 
@@ -366,7 +368,6 @@ class BudgetManager(QObject):
                 budgetAmountTaxes_inCents,
                 budgetAmountTotal_inCents,
                 budgetDate,
-                budgetDescription,
                 budgetStatus,
                 budgetType,
                 budgetCategory,
@@ -382,7 +383,7 @@ class BudgetManager(QObject):
             print("Error al crear el presupuesto")
             return
 
-        # self._budget.update_info(budgetId, budgetName, budgetAmountSubtotal, budgetAmountTaxes, budgetAmountTotal, budgetDate, budgetDescription, budgetStatus, budgetType, budgetCategory, budgetNotes, client_id)  # For update budget
+        # self._budget.update_info(budgetId, budgetName, budgetAmountSubtotal, budgetAmountTaxes, budgetAmountTotal, budgetDate, budgetStatus, budgetType, budgetCategory, budgetNotes, client_id)  # For update budget
 
         # Pasamos las cantidades hacia el lado del cliente, de centimos(integer) a euros(float)
         budgetAmountSubtotal_inEurs = round(
@@ -403,7 +404,6 @@ class BudgetManager(QObject):
             budgetAmountTaxes_inEurs,
             budgetAmountTotal_inEurs,
             budgetDate,
-            budgetDescription,
             budgetStatus,
             budgetType,
             budgetCategory,

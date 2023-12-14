@@ -10,7 +10,6 @@ class Budget(QObject):
         budgetAmountTaxes=int,
         budgetAmountTotal=int,
         budgetDate="",
-        budgetDescription="",
         budgetStatus="",
         budgetType="",
         budgetCategory="",
@@ -25,7 +24,7 @@ class Budget(QObject):
         self._budgetAmountTaxes = budgetAmountTaxes
         self._budgetAmountTotal = budgetAmountTotal
         self._budgetDate = budgetDate
-        self._budgetDescription = budgetDescription
+
         self._budgetStatus = budgetStatus
         self._budgetType = budgetType
         self._budgetCategory = budgetCategory
@@ -40,7 +39,6 @@ class Budget(QObject):
         budgetAmountTaxes,
         budgetAmountTotal,
         budgetDate,
-        budgetDescription,
         budgetStatus,
         budgetType,
         budgetCategory,
@@ -53,7 +51,6 @@ class Budget(QObject):
         self._budgetAmountTaxes = budgetAmountTaxes
         self._budgetAmountTotal = budgetAmountTotal
         self._budgetDate = budgetDate
-        self._budgetDescription = budgetDescription
         self._budgetStatus = budgetStatus
         self._budgetType = budgetType
         self._budgetCategory = budgetCategory

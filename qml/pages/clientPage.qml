@@ -20,18 +20,17 @@ Item {
     })
 
     property var budgetsClient: ({
-        client_id: 0,
         budgetId: "",
         budgetName: "",
         budgetAmountSubtotal: 0,
         budgetAmountTaxes: 0,
         budgetAmountTotal: 0,
         budgetDate: "",
-        budgetDescription: "",
         budgetStatus: "",
         budgetType: "",
         budgetCategory: "",
         budgetNotes: "",
+        client_id: 0,
     })
 
     // Budgets's client selected data colors
@@ -120,7 +119,7 @@ Item {
         color: "#00000000"
         anchors.fill: parent
 
-        // Customer Entrance Data
+        // Customer Data
         Rectangle {
             id: textBgClientData
             width: 350
@@ -130,8 +129,8 @@ Item {
             border.color: textFieldBorderColorInput //textBgBorderRectangle
             border.width: 1
             anchors.left: parent.left
-            anchors.top: parent.top
             anchors.leftMargin: 10
+            anchors.top: parent.top
             anchors.topMargin: 15
 
             Column {
@@ -337,8 +336,8 @@ Item {
                         font.letterSpacing: 0.25
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
-                        font.styleName: "Light"
                         fontSizeMode: Text.HorizontalFit
+                        font.styleName: "Light"
                         font.weight: Font.Light
                         font.pointSize: 10
                         font.family: currentFont
@@ -390,7 +389,89 @@ Item {
             }
         }
 
-        // Budget Data
+        // Id Budget Input Field
+        CustomTextField {
+            id: budgetNumber
+            width: 115
+            anchors.left : textBgClientData.right
+            anchors.leftMargin : 10
+            anchors.top: parent.top
+            anchors.topMargin: 15
+            color: textColorInput
+            textFieldBorderColor: textFieldBorderColorInput
+            placeholderTextColor: placeholderTextColorInput
+            colorOnFocus: colorOnFocusInput
+            colorMouseOver: colorMouseOverInput
+            colorDefault: colorDefaultInput
+            selectedTextColor: selectedTextColorInput
+            selectionColor: selectionColorInput
+            font.styleName: "Light"
+            font.weight: Font.Light
+            font.pointSize: 9
+            font.family: currentFont
+            placeholderText: "Id Budget"
+        }
+        // Status Budget Input Field
+        CustomTextField {
+            id: budgetStatus
+            width: 115
+            anchors.left : textBgClientData.right
+            anchors.leftMargin : 10
+            anchors.top: budgetNumber.bottom
+            anchors.topMargin: 10
+            color: textColorInput
+            textFieldBorderColor: textFieldBorderColorInput
+            placeholderTextColor: placeholderTextColorInput
+            colorOnFocus: colorOnFocusInput
+            colorMouseOver: colorMouseOverInput
+            colorDefault: colorDefaultInput
+            selectedTextColor: selectedTextColorInput
+            selectionColor: selectionColorInput
+            font.styleName: "Light"
+            font.weight: Font.Light
+            font.pointSize: 9
+            font.family: currentFont
+            placeholderText: "Status"
+        }
+        // // Date Budget Field
+        // CustomTextField {
+        //     id: budget
+        //     width: 115
+        //     anchors.left : textBgClientData.right
+        //     anchors.leftMargin : 10
+        //     anchors.top: budgetStatus.bottom
+        //     anchors.topMargin: 10
+        //     color: textColorInput
+        //     textFieldBorderColor: textFieldBorderColorInput
+        //     placeholderTextColor: placeholderTextColorInput
+        //     colorOnFocus: colorOnFocusInput
+        //     colorMouseOver: colorMouseOverInput
+        //     colorDefault: colorDefaultInput
+        //     selectedTextColor: selectedTextColorInput
+        //     selectionColor: selectionColorInput
+        //     font.styleName: "Light"
+        //     font.weight: Font.Light
+        //     font.pointSize: 9
+        //     font.family: currentFont
+        //     placeholderText: "Date"
+        // }
+
+        LabelCustom{
+            id: budget
+            width: 115
+            anchors.left : textBgClientData.right
+            anchors.leftMargin : 10
+            anchors.top: budgetStatus.bottom
+            anchors.topMargin: 10
+            customText: "14/12/2023"
+            labelFieldBorderColor: textFieldBorderColorInput
+
+            customStyleName: "Light"
+            customFamily: currentFont
+            customPointSize: 9
+        }   
+
+        // Budget Inputs
         // BG
         Rectangle{
             id: budgetDataBg
@@ -419,8 +500,12 @@ Item {
                 colorDefault: colorDefaultInput
                 selectedTextColor: selectedTextColorInput
                 selectionColor: selectionColorInput
+
+                font.styleName: "Light"
+                font.weight: Font.Light
+                font.pointSize: 10
                 font.family: currentFont
-                font.pointSize: 9
+
                 placeholderText: "Description"
                 anchors.top: parent.top
                 anchors.left: parent.left

@@ -80,7 +80,6 @@ class ConnectionDB:
         budgetAmountTaxes INTEGER,
         budgetAmountTotal INTEGER,
         budgetDate TEXT, -- ISO8601 formatted date as TEXT,
-        budgetDescription TEXT,
         budgetStatus TEXT,
         budgetType TEXT,
         budgetCategory TEXT,

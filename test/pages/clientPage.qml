@@ -25,7 +25,7 @@ Item {
         budgetAmountTaxes: 0,
         budgetAmountTotal: 0,
         budgetDate: "",
-        budgetDescription: "",
+        
         budgetStatus: "",
         budgetType: "",
         budgetCategory: "",

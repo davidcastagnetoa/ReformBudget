@@ -334,6 +334,7 @@ Window {
                 clientPage.textColorInput = "#000000";
                 clientPage.placeholderTextColorInput = "#111215";
                 clientPage.textFieldBorderColorInput = "#bf757575";
+                
                 clientPage.colorOnFocusInput = "#ccd1d3";
                 clientPage.colorMouseOverInput = "#d9d9d9";
                 clientPage.colorDefaultInput = "#ececec";
@@ -361,6 +362,7 @@ Window {
                 clientPage.textColorInput = "#ffffff";
                 clientPage.placeholderTextColorInput = "#b1b4bf";
                 clientPage.textFieldBorderColorInput = "#f2000000";
+                
                 clientPage.colorOnFocusInput = "#202833";
                 clientPage.colorMouseOverInput = "#293341";
                 clientPage.colorDefaultInput = "#161b22";

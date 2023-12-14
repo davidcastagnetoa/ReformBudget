@@ -57,26 +57,24 @@ class Database:
         return clients
 
     def getBudgetsForClientId(self, clientId):
-        query = "SELECT budgetId, budgetName, budgetAmountSubtotal, budgetAmountTaxes, budgetAmountTotal, budgetDate, budgetDescription, budgetStatus, budgetType, budgetCategory, budgetSubcategory, budgetNotes, budgetCreatedDate, client_id FROM budgets WHERE client_id = ?"
+        query = "SELECT budgetId, budgetName, budgetAmountSubtotal, budgetAmountTaxes, budgetAmountTotal, budgetDate,  budgetStatus, budgetType, budgetCategory, budgetSubcategory, budgetNotes, client_id FROM budgets WHERE client_id = ?"
         self.cur.execute(query, (clientId,))
         rows = self.cur.fetchall()
         # Convertir cada fila en un objeto Budget y añadirlo a la lista 'budgets'
         budgets = [
             Budget(
-                budgetId=row[0],
-                budgetName=row[1],
-                budgetAmountSubtotal=row[2],
-                budgetAmountTaxes=row[3],
-                budgetAmountTotal=row[4],
-                budgetDate=row[5],
-                budgetDescription=row[6],
-                budgetStatus=row[7],
-                budgetType=row[8],
-                budgetCategory=row[9],
-                budgetSubcategory=row[10],
-                budgetNotes=row[11],
-                budgetCreatedDate=row[12],
-                client_id=row[13],  # Feature Key = PRIMARY KEY OF CLIENTS
+                budgetId=row[0],  # Integer
+                budgetName=row[1],  # String
+                budgetAmountSubtotal=row[2],  # Integer (in cents)
+                budgetAmountTaxes=row[3],  # Integer (in cents)
+                budgetAmountTotal=row[4],  # Integer (in cents)
+                budgetDate=row[5],  # String
+                budgetStatus=row[6],
+                budgetType=row[7],
+                budgetCategory=row[8],
+                budgetSubcategory=row[9],
+                budgetNotes=row[10],
+                client_id=row[11],  # Feature Key = PRIMARY KEY OF CLIENTS
             )
             for row in rows
         ]
