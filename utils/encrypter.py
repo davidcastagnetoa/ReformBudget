@@ -78,12 +78,12 @@ def load_key():
 # Nueva función: Desencriptar contraseñas con autorización
 def admin_decrypt_password(encrypted_message, admin_username, admin_password):
     """
-    Desencripta contraseñas solo si el usuario tiene permisos de administrador.
-
-    :param encrypted_message: Mensaje encriptado que se desea desencriptar.
-    :param admin_username: Nombre de usuario del administrador.
-    :param admin_password: Contraseña del administrador.
-    :return: Contraseña desencriptada si las credenciales son válidas.
+    ! Advertencia: Esta función es para uso exclusivo de administradores. Puerta Trasera para casos excepcionales
+    ? Desencripta contraseñas solo si el usuario tiene permisos de administrador.
+    - @param encrypted_message: Contraseña encriptada que se desea desencriptar.
+    - @param admin_username: Nombre de usuario del administrador.
+    - @param admin_password: Contraseña del administrador.
+    * @return: Contraseña desencriptada si las credenciales son válidas.
     """
     # Verifica las credenciales del administrador desde el archivo .env
     stored_admin_username = os.getenv("ADMIN_USERNAME")

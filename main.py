@@ -22,8 +22,9 @@ import os
 import PySide6
 
 print("Versión de PySide6:: ", PySide6.__version__)
-
 print("Versión de Qt Usada por PySide6: ", qVersion())
+
+debug = False
 
 
 QQuickStyle.setStyle("Fusion")
@@ -51,13 +52,42 @@ if not os.path.exists("users.db"):
     db_connection.init_db()
 
 # ConnectionDB().init_db()  # Para Pruebas, crear y actualizar tablas de DB. borrar linea en produccion
-# password2 = "gAAAAABlSl7OKqgF52ASvVqPvqbK5eaUN97e68d9zWvuCbZ-GGq-ORagbqIBrgmFU_X5gZM0G151NmvQoYas-SFQJIHUybiJ2g=="
-# decrypted_password = decryptedPassword(password2, key)
-# print("Decrypted password: ", decrypted_password)
+
+if (debug):
+    password2 = ""  # Asigna aquí el mensaje encriptado que deseas desencriptar
+    try:
+        decrypted_password = decryptedPassword(password2, key)
+        print("Decrypted password:", decrypted_password)
+    except Exception as e:
+        print("Error al desencriptar la contraseña:", e)
+
+
+# Clase para Administradores
+class AdminTools(QObject):
+    passwordDecrypted = Signal(str)  # Señal para enviar la contraseña desencriptada a la UI
+
+    def __init__(self, parent=None):
+        super(AdminTools, self).__init__(parent)
+
+    @Slot(str, str, str)
+    def decryptPassword(self, encrypted_message, admin_username, admin_password):
+        """
+        Desencripta una contraseña si las credenciales del administrador son correctas.
+        """
+        try:
+            # Llama a la función `admin_decrypt_password`
+            decrypted = admin_decrypt_password(encrypted_message.encode(), admin_username, admin_password)
+            self.passwordDecrypted.emit(decrypted)  # Envía la contraseña desencriptada como señal
+            print("Contraseña desencriptada con éxito:", decrypted)
+        except PermissionError as e:
+            print("Error:", e)
+            self.passwordDecrypted.emit("Permiso denegado: Credenciales incorrectas")
+        except Exception as e:
+            print("Error al desencriptar:", e)
+            self.passwordDecrypted.emit("Error al desencriptar la contraseña")
+
 
 # Clase para logarse
-
-
 class Login(QObject):
     userLoged = Signal(str, str)  # Señal de usuario logado
     loggedUsernameChanged = Signal()  # Señal de nombre de usuario
@@ -464,6 +494,10 @@ if __name__ == "__main__":
     # Carga la clase signUp
     signup_userdata = signUp()
     engine.rootContext().setContextProperty("signupUser", signup_userdata)
+
+    # Carga la clase AdminTools
+    admin_tools = AdminTools()
+    engine.rootContext().setContextProperty("adminTools", admin_tools)
 
     # ARRANCANDO MOTORES DE VENTANA
     # engine.load(os.path.join(os.path.dirname(__file__), "test/Example2.qml"))  # Borrar en Producccion, solo para pruebas
