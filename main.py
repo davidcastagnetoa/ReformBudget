@@ -14,7 +14,7 @@ from PySide6.QtQuick import QQuickView
 from PySide6.QtWidgets import QApplication
 from PySide6.QtQml import QQmlApplicationEngine
 from PySide6.QtGui import QGuiApplication, QIcon
-from utils.encrypter import load_key, encriptedPassword
+from utils.encrypter import load_key, encriptedPassword, decryptedPassword, admin_decrypt_password
 from PySide6.QtQuickControls2 import QQuickStyle
 from PySide6.QtCore import QObject, Qt, Signal, Property, Slot, qVersion
 import sys
@@ -51,9 +51,13 @@ if not os.path.exists("users.db"):
     db_connection.init_db()
 
 # ConnectionDB().init_db()  # Para Pruebas, crear y actualizar tablas de DB. borrar linea en produccion
-
+# password2 = "gAAAAABlSl7OKqgF52ASvVqPvqbK5eaUN97e68d9zWvuCbZ-GGq-ORagbqIBrgmFU_X5gZM0G151NmvQoYas-SFQJIHUybiJ2g=="
+# decrypted_password = decryptedPassword(password2, key)
+# print("Decrypted password: ", decrypted_password)
 
 # Clase para logarse
+
+
 class Login(QObject):
     userLoged = Signal(str, str)  # Señal de usuario logado
     loggedUsernameChanged = Signal()  # Señal de nombre de usuario
@@ -475,6 +479,7 @@ if __name__ == "__main__":
 
     # FUNCION PARA CERRAR VENTANA
     def close_and_destroy_login():
+        print("Cerrando ventana login")
         login_window.close()
 
     # Connect the signal to the close function

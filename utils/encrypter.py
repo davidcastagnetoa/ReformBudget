@@ -73,3 +73,26 @@ def load_key():
     filename = os.path.abspath("pylon.key")
     print(f"Cargando llave desde: {filename}")
     return open(filename, "rb").read()
+
+
+# Nueva función: Desencriptar contraseñas con autorización
+def admin_decrypt_password(encrypted_message, admin_username, admin_password):
+    """
+    Desencripta contraseñas solo si el usuario tiene permisos de administrador.
+
+    :param encrypted_message: Mensaje encriptado que se desea desencriptar.
+    :param admin_username: Nombre de usuario del administrador.
+    :param admin_password: Contraseña del administrador.
+    :return: Contraseña desencriptada si las credenciales son válidas.
+    """
+    # Verifica las credenciales del administrador desde el archivo .env
+    stored_admin_username = os.getenv("ADMIN_USERNAME")
+    stored_admin_password = os.getenv("ADMIN_PASS")
+
+    if admin_username == stored_admin_username and admin_password == stored_admin_password:
+        print("Autenticación de administrador exitosa.")
+        key = load_key()
+        decrypted_message = decryptedPassword(encrypted_message, key)
+        return decrypted_message
+    else:
+        raise PermissionError("Credenciales de administrador inválidas o acceso no autorizado.")

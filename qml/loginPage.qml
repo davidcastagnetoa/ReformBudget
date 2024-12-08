@@ -22,7 +22,9 @@ Window {
     signal loginSuccessful
 
     //REMOVE TITLE BAR
-    flags: Qt.SplashScreen | Qt.FramelessWindowHint
+    // flags: Qt.SplashScreen | Qt.FramelessWindowHint
+    flags: Qt.Window | Qt.FramelessWindowHint
+
 
     //PROPERTIES
     property bool windowCollapse: false
